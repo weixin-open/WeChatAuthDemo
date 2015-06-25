@@ -41,7 +41,7 @@
         UIButton *btn_login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [btn_login setTitle:@"Bind Existed Account" forState:UIControlStateNormal];
         btn_login.titleLabel.font = [UIFont systemFontOfSize:15];
-        [btn_login setFrame:CGRectMake(ele_x, height - 200, ele_width, 50)];
+        [btn_login setFrame:CGRectMake(ele_x, height - 250, ele_width, 50)];
         [btn_login addTarget:self action:@selector(onClickBtnLogin) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btn_login];
         [btn_login release];
@@ -49,7 +49,7 @@
         UIButton *btn_reg = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [btn_reg setTitle:@"Bind New Account" forState:UIControlStateNormal];
         btn_reg.titleLabel.font = [UIFont systemFontOfSize:15];
-        [btn_reg setFrame:CGRectMake(ele_x, height - 250, ele_width, 50)];
+        [btn_reg setFrame:CGRectMake(ele_x, height - 200, ele_width, 50)];
         [btn_reg addTarget:self action:@selector(onClickBtnReg) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btn_reg];
         [btn_reg release];
