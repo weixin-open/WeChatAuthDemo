@@ -35,6 +35,18 @@ NSString * const SUBINFO_WECHAT_KEY =@"wechatinfo";
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     self.userInfo = [NSMutableDictionary dictionaryWithDictionary:[userDefaults dictionaryForKey:INFO_KEY]];
+    // mock account info
+    // [self setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"BOSHAO", @"username", nil] forKey:SUBINFO_ACCT_KEY];
+    // mock wechat info
+    // if (NO)
+    {
+        [self setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                          @"OPENID", @"openid",
+                          @"NICKNAME", @"nickname",
+                          @"http://wx.qlogo.cn/mmopeng3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0", @"headimgurl",
+                          @"o6_bmasdasdsad6_2sgVt7hMZOPfL", @"unionid",
+                          nil] forKey:SUBINFO_WECHAT_KEY];
+    }
 }
 
 - (void)delInfo

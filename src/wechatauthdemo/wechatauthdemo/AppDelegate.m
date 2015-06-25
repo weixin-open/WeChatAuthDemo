@@ -54,6 +54,10 @@
 
 - (void) presentHomeView
 {
+    if ([self.infoMgr isInfoExist]) {
+        [self presentAcctView];
+        return;
+    }
     if (self.homeViewController == nil) {
         self.homeViewController = [[[HomeViewController alloc] init] autorelease];
     }
@@ -64,6 +68,10 @@
 
 - (void) presentAcctView
 {
+    if (![self.infoMgr isInfoExist]) {
+        [self presentHomeView];
+        return;
+    }
     if (self.acctViewController == nil) {
         self.acctViewController = [[[AcctViewController alloc] init] autorelease];
     }
@@ -96,7 +104,6 @@
 {
     self.infoMgr = [[[InfoManager alloc] init] autorelease];
     [self.infoMgr readInfo];
-    //[self.infoMgr setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"BOSHAO", @"username", nil] forKey:SUBINFO_ACCT_KEY];
     [self.infoMgr saveInfo];
 }
 
