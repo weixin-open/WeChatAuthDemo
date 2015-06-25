@@ -16,11 +16,16 @@
 
 - (id)init {
     self = [super init];
+    
     self.homeViewController = nil;
     self.loginViewController = nil;
     self.acctViewController = nil;
     self.regViewController = nil;
+    
     self.infoMgr = nil;
+    self.wxAuthMgr = nil;
+    self.networkMgr = nil;
+    
     return self;
 }
 
@@ -32,7 +37,7 @@
     [self initInfoManager];
     [self presentHomeView];
     //向微信注册
-    [WXApi registerApp:@"wxd930ea5d5a258f4f" withDescription:@"wechatauthdemo 0.1.0"];
+    [WXApi registerApp:@"wx9bb52a653a60a1d3" withDescription:@"wechatauthdemo 0.1.0"];
     
     return YES;
 }
@@ -101,59 +106,20 @@
     return self.infoMgr;
 }
 
-- (void)sendAuthRequest
+- (WXAuthManager*) getWXAuthManager
 {
-    SendAuthReq* req =[[[SendAuthReq alloc] init] autorelease];
-    req.scope = @"snsapi_userinfo" ;
-    req.state = @"123" ;
-    [WXApi sendReq:req];
-}
-
--(void)onReq:(BaseReq*)req
-{
-    // just leave it here, wechat will not call our app
-}
-
--(void)onResp:(BaseResp*)resp
-{
-    if([resp isKindOfClass:[SendAuthResp class]])
-    {
-        SendAuthResp* authResp = (SendAuthResp*)resp;
-        NSString *code = authResp.code;
-        NSString *state = authResp.state;
-        NSLog(@"RESP:code:%@,state:%@\n", code, state);
-        // TODO: send code to our app server and get wechat info async
-        [self getWeChatInfoByCode:code];
+    if (self.wxAuthMgr == nil) {
+        self.wxAuthMgr = [[[WXAuthManager alloc] init] autorelease];
     }
+    return self.wxAuthMgr;
 }
 
-- (BOOL)getWeChatInfoByCode:(NSString*)code
+- (NetworkManager*) getNetworkManager
 {
-    NSURL *url = [NSURL URLWithString:[[@"http://urltoserver?code=" stringByAppendingString:code]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    [request setHTTPMethod:@"GET"];
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (data == nil) {
-            [self getWeChatInfoByCodeError:connectionError];
-        } else {
-            [self getWeChatInfoByCodeDone:data];
-        }
-    }];
-    return true;
-}
-
-- (void)getWeChatInfoByCodeError:(NSError*)error
-{
-    NSLog(@"ERR:%@", error);
-}
-
-- (void)getWeChatInfoByCodeDone:(NSData*)data
-{
-    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"WECHAT_INFO:%@", str);
-    // TODO: jump to account view
-    [self presentAcctView];
+    if (self.networkMgr == nil) {
+        self.networkMgr = [[[NetworkManager alloc] init] autorelease];
+    }
+    return self.networkMgr;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

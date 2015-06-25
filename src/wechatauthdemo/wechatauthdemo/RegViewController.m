@@ -78,44 +78,6 @@
     [btn_cancel release];
 }
 
-- (void)regAcct:(NSString*)username withPwd:(NSString*)password
-{
-    NSDictionary *jsonObject = [NSDictionary dictionaryWithObjectsAndKeys:username, @"username", password, @"password", nil];
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:jsonObject options:0 error:nil];
-    // NSData *postData = [[NSString stringWithFormat:@"username=%@&password=%@", username, password] dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
-    
-    NSURL *url = [NSURL URLWithString:[@"https://urltoserver" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:postData];
-    
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (data == nil) {
-            [self regError:connectionError];
-        } else {
-            [self regDone:data];
-        }
-    }];
-}
-
-- (void)regError:(NSError*)error
-{
-    NSLog(@"ERR:%@", error);
-}
-
-- (void)regDone:(NSData*)data
-{
-    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"ACCT_INFO:%@", str);
-    // TODO: jump to account view
-    [self.delegate presentAcctView];
-}
-
 - (void)onClickBtnConfirm
 {
     NSString* username = [self.tf_username text];
@@ -123,7 +85,16 @@
     NSString* confirm_pwd = [self.tf_confirm text];
     if ( (![username isEqualToString:@""]) && (![password isEqualToString:@""])
             && [confirm_pwd isEqualToString:password]) {
-        [self regAcct:username withPwd:password];
+        [[self.delegate getNetworkManager] regAcct:username withPwd:password completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            if (data == nil) {
+                NSLog(@"ERR:%@", connectionError);
+            } else {
+                NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSLog(@"ACCT_INFO:%@", str);
+                // TODO: save account info
+                [self.delegate presentAcctView];
+            }
+        }];
     }
 }
 

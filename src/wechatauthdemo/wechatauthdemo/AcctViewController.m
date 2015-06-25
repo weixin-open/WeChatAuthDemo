@@ -74,7 +74,32 @@
 
 - (void)onClickBtnAuth
 {
-    [self.delegate sendAuthRequest];
+    [[self.delegate getWXAuthManager] setDelegate:self];
+    [[self.delegate getWXAuthManager] sendAuthRequest];
+}
+
+- (void)wxAuthSucceed:(NSString*)code
+{
+    [[self.delegate getNetworkManager] getWeChatInfoByCode:code completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (data == nil) {
+            NSLog(@"ERR:%@", connectionError);
+        } else {
+            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"WECHAT_INFO:%@", str);
+            // TODO: save wechat info
+            [self.delegate presentAcctView];
+        }
+    }];
+}
+
+- (void)wxAuthDenied
+{
+    
+}
+
+- (void)wxAuthCancel
+{
+    
 }
 
 - (void)onClickBtnLogout

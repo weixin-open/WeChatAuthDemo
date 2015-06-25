@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "InfoManager.h"
+#import "NetworkManager.h"
 
 @protocol LoginViewDelegate <NSObject>
 - (void) presentHomeView;
 - (void) presentAcctView;
 - (InfoManager*) getInfoManager;
+- (NetworkManager*) getNetworkManager;
 @end
 
 @interface LoginViewController : UIViewController

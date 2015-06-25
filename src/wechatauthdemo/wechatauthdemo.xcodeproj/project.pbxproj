@@ -15,6 +15,8 @@
 		730FE4A81B3AD9120072FD36 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730FE4A71B3AD9120072FD36 /* libWeChatSDK.a */; };
 		730FE4AA1B3AD9C50072FD36 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 730FE4A91B3AD9C50072FD36 /* libc++.dylib */; };
 		7372C68D1B3BD67900FCF335 /* InfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7372C68C1B3BD67900FCF335 /* InfoManager.m */; };
+		7372C6911B3BEB1700FCF335 /* WXAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7372C6901B3BEB1700FCF335 /* WXAuthManager.m */; };
+		7372C6941B3BF76F00FCF335 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7372C6931B3BF76F00FCF335 /* NetworkManager.m */; };
 		73BED5ED1B3AA48600CA4C4D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 73BED5EC1B3AA48600CA4C4D /* main.m */; };
 		73BED5F01B3AA48600CA4C4D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73BED5EF1B3AA48600CA4C4D /* AppDelegate.m */; };
 		73BED5F31B3AA48600CA4C4D /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73BED5F21B3AA48600CA4C4D /* HomeViewController.m */; };
@@ -39,6 +41,10 @@
 		730FE4A91B3AD9C50072FD36 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		7372C68C1B3BD67900FCF335 /* InfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoManager.m; sourceTree = "<group>"; };
 		7372C68E1B3BD69600FCF335 /* InfoManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfoManager.h; sourceTree = "<group>"; };
+		7372C68F1B3BEB0000FCF335 /* WXAuthManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WXAuthManager.h; sourceTree = "<group>"; };
+		7372C6901B3BEB1700FCF335 /* WXAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXAuthManager.m; sourceTree = "<group>"; };
+		7372C6921B3BF76F00FCF335 /* NetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
+		7372C6931B3BF76F00FCF335 /* NetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
 		73BED5E71B3AA48600CA4C4D /* wechatauthdemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wechatauthdemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		73BED5EB1B3AA48600CA4C4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73BED5EC1B3AA48600CA4C4D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -107,6 +113,10 @@
 				730FE49E1B3AAE2A0072FD36 /* AcctViewController.m */,
 				7372C68E1B3BD69600FCF335 /* InfoManager.h */,
 				7372C68C1B3BD67900FCF335 /* InfoManager.m */,
+				7372C68F1B3BEB0000FCF335 /* WXAuthManager.h */,
+				7372C6901B3BEB1700FCF335 /* WXAuthManager.m */,
+				7372C6921B3BF76F00FCF335 /* NetworkManager.h */,
+				7372C6931B3BF76F00FCF335 /* NetworkManager.m */,
 				73BED5F71B3AA48600CA4C4D /* Images.xcassets */,
 				73BED5EA1B3AA48600CA4C4D /* Supporting Files */,
 			);
@@ -223,6 +233,8 @@
 				73BED5F01B3AA48600CA4C4D /* AppDelegate.m in Sources */,
 				730FE49F1B3AAE2A0072FD36 /* AcctViewController.m in Sources */,
 				730FE49C1B3AAE160072FD36 /* RegViewController.m in Sources */,
+				7372C6911B3BEB1700FCF335 /* WXAuthManager.m in Sources */,
+				7372C6941B3BF76F00FCF335 /* NetworkManager.m in Sources */,
 				73BED5ED1B3AA48600CA4C4D /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

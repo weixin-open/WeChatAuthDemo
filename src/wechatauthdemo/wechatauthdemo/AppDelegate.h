@@ -13,6 +13,8 @@
 #import "RegViewController.h"
 #import "AcctViewController.h"
 #import "InfoManager.h"
+#import "WXAuthManager.h"
+#import "NetworkManager.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, WXApiDelegate,
     HomeViewDelegate, LoginViewDelegate, RegViewDelegate, AcctViewDelegate>
@@ -24,6 +26,8 @@
 @property (strong, nonatomic) AcctViewController *acctViewController;
 
 @property (strong, nonatomic) InfoManager *infoMgr;
+@property (strong, nonatomic) WXAuthManager *wxAuthMgr;
+@property (strong, nonatomic) NetworkManager *networkMgr;
 
 @end
 

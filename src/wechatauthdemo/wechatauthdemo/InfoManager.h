@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 boshao. All rights reserved.
 //
 
-#ifndef wechatauthdemo_InfoManager_h
-#define wechatauthdemo_InfoManager_h
-
 #import <Foundation/Foundation.h>
 
 extern NSString * const INFO_KEY;
@@ -27,5 +24,3 @@ extern NSString * const SUBINFO_WECHAT_KEY;
 - (void)setSubInfo:(NSDictionary*)subInfo forKey:(NSString*)key;
 
 @end
-
-#endif

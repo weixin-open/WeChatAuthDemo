@@ -67,48 +67,29 @@
     
 }
 
-- (void) loginAcct:(NSString*)username byPwd:(NSString*)password
-{
-    NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://urltoserver?username=%@&password=%@", username, password] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
-    [request setHTTPMethod:@"GET"];
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (data == nil) {
-            [self loginError:connectionError];
-        } else {
-            [self loginDone:data];
-        }
-    }];
-}
-
-- (void)loginError:(NSError*)error
-{
-    NSLog(@"ERR:%@", error);
-}
-
-- (void)loginDone:(NSData*)data
-{
-    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"ACCT_INFO:%@", str);
-    // TODO: jump to account view
-    [self.delegate presentAcctView];
-}
-
-- (void)onClickBtnCancel
-{
-    [self.delegate presentHomeView];
-}
-
 - (void)onClickBtnConfirm
 {
     NSString* username = [self.tf_username text];
     NSString* password = [self.tf_password text];
     if ( (![username isEqualToString:@""]) && (![password isEqualToString:@""]) ) {
-        [self loginAcct:username byPwd:password];
+        [[self.delegate getNetworkManager] loginAcct:username byPwd:password completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            if (data == nil) {
+                NSLog(@"ERR:%@", connectionError);
+            } else {
+                NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSLog(@"ACCT_INFO:%@", str);
+                // TODO: save account info
+                [self.delegate presentAcctView];
+            }
+        }];
     } else {
         // TODO: add alert, username and password cannot be empty
     }
+}
+
+- (void)onClickBtnCancel
+{
+    [self.delegate presentHomeView];
 }
 
 - (void)didReceiveMemoryWarning

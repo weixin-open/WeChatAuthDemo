@@ -19,6 +19,11 @@ NSString * const SUBINFO_WECHAT_KEY =@"wechatinfo";
 
 @implementation InfoManager
 
+- (BOOL)isInfoExist
+{
+    return self.userInfo != nil;
+}
+
 - (void)saveInfo
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
