@@ -10,10 +10,12 @@
 
 @implementation NetworkManager
 
+const static NSString *YOUR_SERVER_ADDR = @"10.1.1.1";
+
 - (void)getWeChatInfoByCode:(NSString*)code
           completionHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *connectionError))handler
 {
-    NSURL *url = [NSURL URLWithString:[[@"http://urltoserver?code=" stringByAppendingString:code]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"https://%@?code=%@", YOUR_SERVER_ADDR, code]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     [request setHTTPMethod:@"GET"];
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -26,7 +28,7 @@
 - (void)loginAcct:(NSString*)username byPwd:(NSString*)password
           completionHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *connectionError))handler
 {
-    NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://urltoserver?username=%@&password=%@", username, password] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"https://%@?username=%@&password=%@", YOUR_SERVER_ADDR, username, password] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     [request setHTTPMethod:@"GET"];
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -43,7 +45,7 @@
     NSData *postData = [NSJSONSerialization dataWithJSONObject:jsonObject options:0 error:nil];
     NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
     
-    NSURL *url = [NSURL URLWithString:[@"https://urltoserver" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"https://%@", YOUR_SERVER_ADDR] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     [request setHTTPMethod:@"POST"];

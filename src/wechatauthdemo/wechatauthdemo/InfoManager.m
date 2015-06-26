@@ -21,7 +21,7 @@ NSString * const SUBINFO_WECHAT_KEY =@"wechatinfo";
 
 - (id)init
 {
-    [super init];
+    self = [super init];
     if (self) {
         _userInfo = nil;
     }

@@ -16,7 +16,7 @@
 @implementation RegViewController
 
 - (id)init {
-    [super init];
+    self = [super init];
     if (self) {
         _tfUserName = nil;
         _tfPassword = nil;
