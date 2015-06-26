@@ -81,15 +81,36 @@
 
 - (void)wxAuthSucceed:(NSString*)code
 {
-    [[AppDelegate appDelegate].networkMgr getWeChatInfoByCode:code completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (data == nil) {
-            NSLog(@"ERR:%@", connectionError);
+    AppDelegate* app = [AppDelegate appDelegate];
+    [app.networkMgr wxLogin:code completionHandler:^(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname, BOOL hasBindApp) {
+        if (error) {
+            NSLog(@"ERR:%@", error);
         } else {
-            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"WECHAT_INFO:%@", str);
-            [str release];
-            // TODO: save wechat info
-            [[AppDelegate appDelegate] presentAcctView];
+            app.infoMgr.uid = uid;
+            app.infoMgr.userTicket = userticket;
+            [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:TRUE
+                        completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
+                if (error) {
+                    NSLog(@"ERR:%@", error);
+                } else {
+                    [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
+                    app.infoMgr.userTicket = userticket;
+                    if (hasBindApp) {
+                        [app.networkMgr getAppUserInfo:uid userticket:userticket realtime:TRUE
+                                     completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
+                            if (error) {
+                                NSLog(@"ERR:%@", error);
+                            } else {
+                                [app.infoMgr setSubInfo:info forKey:SUBINFO_ACCT_KEY];
+                                app.infoMgr.userTicket = userticket;
+                                [app presentAcctView];
+                            }
+                        }];
+                    } else {
+                        [app presentAcctView];
+                    }
+                }
+            }];
         }
     }];
 }

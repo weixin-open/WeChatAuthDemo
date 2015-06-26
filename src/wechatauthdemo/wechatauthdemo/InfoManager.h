@@ -10,16 +10,20 @@
 
 extern NSString * const INFO_KEY;
 extern NSString * const SUBINFO_ACCT_KEY;
-extern NSString * const SUBINFO_WECHAT_KEY;
+extern NSString * const SUBINFO_WX_KEY;
 
 @interface InfoManager : NSObject
 
 @property (nonatomic, retain) NSMutableDictionary *userInfo;
+@property (nonatomic, retain) NSNumber* uid;
+@property (nonatomic, retain) NSString* userTicket;
 
 - (BOOL)isInfoExist;
 - (void)saveInfo;
 - (void)loadInfo;
 - (void)delInfo;
+
+- (BOOL)isSubInfoExist:(NSString*)key;
 - (NSDictionary*)getSubInfo:(NSString*)key;
 - (void)delSubInfo:(NSString*)key;
 - (void)setSubInfo:(NSDictionary*)subInfo forKey:(NSString*)key;

@@ -18,7 +18,7 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _tfUserName = nil;
+        _tfMail = nil;
         _tfPassword = nil;
     }
     return self;
@@ -26,7 +26,7 @@
 
 - (void)dealloc
 {
-    [_tfUserName release];
+    [_tfMail release];
     [_tfPassword release];
     [super dealloc];
 }
@@ -42,17 +42,17 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UITextField *tfUserName = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 140, wEle, 40)];
-    tfUserName.borderStyle = UITextBorderStyleRoundedRect;
-    tfUserName.font = [UIFont systemFontOfSize:15];
-    tfUserName.placeholder = @"username";
-    tfUserName.keyboardType = UIKeyboardTypeDefault;
-    tfUserName.returnKeyType = UIReturnKeyDone;
-    tfUserName.clearButtonMode = UITextFieldViewModeWhileEditing;
-    tfUserName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    [self.view addSubview:tfUserName];
-    self.tfUserName = tfUserName;
-    [tfUserName release];
+    UITextField *tfMail = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 140, wEle, 40)];
+    tfMail.borderStyle = UITextBorderStyleRoundedRect;
+    tfMail.font = [UIFont systemFontOfSize:15];
+    tfMail.placeholder = @"mail";
+    tfMail.keyboardType = UIKeyboardTypeDefault;
+    tfMail.returnKeyType = UIReturnKeyDone;
+    tfMail.clearButtonMode = UITextFieldViewModeWhileEditing;
+    tfMail.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [self.view addSubview:tfMail];
+    self.tfMail = tfMail;
+    [tfMail release];
     
     UITextField *tfPassword = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 200, wEle, 40)];
     tfPassword.borderStyle = UITextBorderStyleRoundedRect;
@@ -83,22 +83,45 @@
 
 - (void)onClickBtnConfirm
 {
-    NSString* username = [self.tfUserName text];
+    NSString* mail = [self.tfMail text];
     NSString* password = [self.tfPassword text];
-    if ( (![username isEqualToString:@""]) && (![password isEqualToString:@""]) ) {
-        [[AppDelegate appDelegate].networkMgr loginAcct:username byPwd:password completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            if (data == nil) {
-                NSLog(@"ERR:%@", connectionError);
-            } else {
-                NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                NSLog(@"ACCT_INFO:%@", str);
-                [str release];
-                // TODO: save account info
-                [[AppDelegate appDelegate] presentAcctView];
-            }
-        }];
+    if ( (![mail isEqualToString:@""]) && (![password isEqualToString:@""]) ) {
+        AppDelegate* app = [AppDelegate appDelegate];
+        if ([app.infoMgr isSubInfoExist:SUBINFO_WX_KEY]) {
+            [app.networkMgr wxBindApp:app.infoMgr.uid userticket:app.infoMgr.userTicket mail:mail password:password completionHandler:^(NSString *error, NSNumber *uid, NSString *userticket, NSString *nickname) {
+                if (error) {
+                    NSLog(@"ERR:%@", error);
+                } else {
+                    [app.infoMgr setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:mail, @"mail", nickname, @"nickname", nil] forKey:SUBINFO_ACCT_KEY];
+                    [[AppDelegate appDelegate] presentAcctView];
+                }
+            }];
+        } else {
+            [app.networkMgr appLogin:mail password:password completionHandler:^(NSString *error, NSNumber* uid, NSString *userticket, NSString *nickname, BOOL hasBindWx) {
+                if (error) {
+                    NSLog(@"ERR:%@", error);
+                } else {
+                    [app.infoMgr setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:mail, @"mail", nickname, @"nickname", nil] forKey:SUBINFO_ACCT_KEY];
+                    if (hasBindWx) {
+                        [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:TRUE
+                                     completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
+                            if (error) {
+                                NSLog(@"ERR:%@", error);
+                            } else {
+                                [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
+                                app.infoMgr.userTicket = userticket;
+                                [app presentAcctView];
+                            }
+                        }];
+                    } else {
+                        [app presentAcctView];
+                    }
+                }
+            }];
+        }
+        
     } else {
-        // TODO: add alert, username and password cannot be empty
+        // TODO: add alert, mail and password cannot be empty
     }
 }
 

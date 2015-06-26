@@ -26,8 +26,11 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    NSDictionary* acctInfo = [[AppDelegate appDelegate].infoMgr getSubInfo:SUBINFO_ACCT_KEY];
-    NSDictionary* wechatInfo = [[AppDelegate appDelegate].infoMgr getSubInfo:SUBINFO_WECHAT_KEY];
+    AppDelegate* app = [AppDelegate appDelegate];
+    NSNumber* uid = app.infoMgr.uid;
+    NSString* userticket = app.infoMgr.userTicket;
+    NSDictionary* acctInfo = [app.infoMgr getSubInfo:SUBINFO_ACCT_KEY];
+    NSDictionary* wechatInfo = [app.infoMgr getSubInfo:SUBINFO_WX_KEY];
     
     UITextView *tvInfo = [[UITextView alloc] initWithFrame:CGRectMake(30, 30, w-2*30, h-300)];
     tvInfo.scrollEnabled = YES;
@@ -35,6 +38,10 @@
     tvInfo.font = [UIFont systemFontOfSize:15];
     
     NSMutableString *strBuf = [[NSMutableString alloc] init];
+    if (uid != nil) {
+        [strBuf appendString:@"--------- GLOBAL INFO ---------\n"];
+        [strBuf appendFormat:@"%@\n", [NSDictionary dictionaryWithObjectsAndKeys:uid, @"uid", userticket, @"userticket", nil]];
+    }
     if (acctInfo != nil) {
         [strBuf appendString:@"--------- ACCOUNT INFO ---------\n"];
         [strBuf appendFormat:@"%@\n", acctInfo];
@@ -99,15 +106,23 @@
 
 - (void)wxAuthSucceed:(NSString*)code
 {
-    [[AppDelegate appDelegate].networkMgr getWeChatInfoByCode:code completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (data == nil) {
-            NSLog(@"ERR:%@", connectionError);
+    AppDelegate* app = [AppDelegate appDelegate];
+    [app.networkMgr appBindWx:app.infoMgr.uid userticket:app.infoMgr.userTicket code:code completionHandler:^(NSString *error, NSNumber *uid, NSString *userticket) {
+        if (error) {
+            NSLog(@"ERR:%@", error);
         } else {
-            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"WECHAT_INFO:%@", str);
-            [str release];
-            // TODO: save wechat info
-            [[AppDelegate appDelegate] presentAcctView];
+            app.infoMgr.uid = uid;
+            app.infoMgr.userTicket = userticket;
+            [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:TRUE
+                        completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info){
+                if (error) {
+                    NSLog(@"ERR:%@", error);
+                } else {
+                    [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
+                    app.infoMgr.userTicket = userticket;
+                    [app presentAcctView];
+                }
+            }];
         }
     }];
 }

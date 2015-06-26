@@ -18,7 +18,8 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _tfUserName = nil;
+        _tfMail = nil;
+        _tfNickName = nil;
         _tfPassword = nil;
         _tfConfirm = nil;
     }
@@ -27,7 +28,8 @@
 
 - (void)dealloc
 {
-    [_tfUserName release];
+    [_tfMail release];
+    [_tfNickName release];
     [_tfPassword release];
     [_tfConfirm release];
     [super dealloc];
@@ -44,19 +46,31 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UITextField *tfUserName = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 140, wEle, 40)];
-    tfUserName.borderStyle = UITextBorderStyleRoundedRect;
-    tfUserName.font = [UIFont systemFontOfSize:15];
-    tfUserName.placeholder = @"username";
-    tfUserName.keyboardType = UIKeyboardTypeDefault;
-    tfUserName.returnKeyType = UIReturnKeyDone;
-    tfUserName.clearButtonMode = UITextFieldViewModeWhileEditing;
-    tfUserName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    [self.view addSubview:tfUserName];
-    self.tfUserName = tfUserName;
-    [tfUserName release];
+    UITextField *tfMail = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 120, wEle, 40)];
+    tfMail.borderStyle = UITextBorderStyleRoundedRect;
+    tfMail.font = [UIFont systemFontOfSize:15];
+    tfMail.placeholder = @"mail address";
+    tfMail.keyboardType = UIKeyboardTypeDefault;
+    tfMail.returnKeyType = UIReturnKeyDone;
+    tfMail.clearButtonMode = UITextFieldViewModeWhileEditing;
+    tfMail.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [self.view addSubview:tfMail];
+    self.tfMail = tfMail;
+    [tfMail release];
     
-    UITextField *tfPassword = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 200, wEle, 40)];
+    UITextField *tfNickName = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 180, wEle, 40)];
+    tfNickName.borderStyle = UITextBorderStyleRoundedRect;
+    tfNickName.font = [UIFont systemFontOfSize:15];
+    tfNickName.placeholder = @"nickname";
+    tfNickName.keyboardType = UIKeyboardTypeDefault;
+    tfNickName.returnKeyType = UIReturnKeyDone;
+    tfNickName.clearButtonMode = UITextFieldViewModeWhileEditing;
+    tfNickName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [self.view addSubview:tfNickName];
+    self.tfNickName = tfNickName;
+    [tfNickName release];
+    
+    UITextField *tfPassword = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 240, wEle, 40)];
     tfPassword.borderStyle = UITextBorderStyleRoundedRect;
     tfPassword.font = [UIFont systemFontOfSize:15];
     tfPassword.placeholder = @"password";
@@ -68,7 +82,7 @@
     self.tfPassword = tfPassword;
     [tfPassword release];
     
-    UITextField *tfConfirm = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 260, wEle, 40)];
+    UITextField *tfConfirm = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 300, wEle, 40)];
     tfConfirm.borderStyle = UITextBorderStyleRoundedRect;
     tfConfirm.font = [UIFont systemFontOfSize:15];
     tfConfirm.placeholder = @"confirm password";
@@ -83,7 +97,7 @@
     UIButton *btnConfirm = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [btnConfirm setTitle:@"Confirm" forState:UIControlStateNormal];
     btnConfirm.titleLabel.font = [UIFont systemFontOfSize:15];
-    [btnConfirm setFrame:CGRectMake(xEle, 320, wEle, 40)];
+    [btnConfirm setFrame:CGRectMake(xEle, 360, wEle, 40)];
     [btnConfirm addTarget:self action:@selector(onClickBtnConfirm) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnConfirm];
     
@@ -97,22 +111,41 @@
 
 - (void)onClickBtnConfirm
 {
-    NSString* username = [self.tfUserName text];
+    NSString* mail = [self.tfMail text];
+    NSString* nickname = [self.tfNickName text];
     NSString* password = [self.tfPassword text];
     NSString* confirm_pwd = [self.tfConfirm text];
-    if ( (![username isEqualToString:@""]) && (![password isEqualToString:@""])
-            && [confirm_pwd isEqualToString:password]) {
-        [[AppDelegate appDelegate].networkMgr regAcct:username withPwd:password completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            if (data == nil) {
-                NSLog(@"ERR:%@", connectionError);
+    
+    if ( (![mail isEqualToString:@""]) && (![nickname isEqualToString:@""]) && (![password isEqualToString:@""]) && [confirm_pwd isEqualToString:password])
+    {
+        AppDelegate* app = [AppDelegate appDelegate];
+        
+        [[AppDelegate appDelegate].networkMgr appRegAcct:mail password:password nickname:nickname completionHandler:^(NSString *error, NSNumber* uid, NSString *userticket) {
+            if (error) {
+                NSLog(@"ERR:%@", error);
             } else {
-                NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                NSLog(@"ACCT_INFO:%@", str);
-                [str release];
-                // TODO: save account info
-                [[AppDelegate appDelegate] presentAcctView];
+                [app.infoMgr setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:mail, @"mail", nickname, @"nickname", nil] forKey:SUBINFO_ACCT_KEY];
+                if ([app.infoMgr isSubInfoExist:SUBINFO_WX_KEY]) {
+                    [app.networkMgr wxBindApp:app.infoMgr.uid userticket:app.infoMgr.userTicket mail:mail password:password completionHandler:^(NSString *error, NSNumber *uid, NSString *userticket, NSString *nickname) {
+                        if (error) {
+                            NSLog(@"ERR:%@", error);
+                        } else {
+                            [[AppDelegate appDelegate] presentAcctView];
+                        }
+                    }];
+                } else {
+                    [[AppDelegate appDelegate] presentAcctView];
+                }
             }
         }];
+        
+    } else {
+        // TODO: add alert, mail and password cannot be empty
+    }
+    
+    if ( (![mail isEqualToString:@""]) && (![nickname isEqualToString:@""]) && (![password isEqualToString:@""])
+            && [confirm_pwd isEqualToString:password]) {
+        
     }
 }
 
