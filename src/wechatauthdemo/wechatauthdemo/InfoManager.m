@@ -19,6 +19,21 @@ NSString * const SUBINFO_WECHAT_KEY =@"wechatinfo";
 
 @implementation InfoManager
 
+- (id)init
+{
+    [super init];
+    if (self) {
+        _userInfo = nil;
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [_userInfo release];
+    [super dealloc];
+}
+
 - (BOOL)isInfoExist
 {
     return self.userInfo != nil;

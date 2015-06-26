@@ -14,19 +14,34 @@
 
 @implementation AppDelegate
 
-- (id)init {
-    self = [super init];
-    
-    self.homeViewController = nil;
-    self.loginViewController = nil;
-    self.acctViewController = nil;
-    self.regViewController = nil;
-    
-    self.infoMgr = nil;
-    self.wxAuthMgr = nil;
-    self.networkMgr = nil;
-    
+- (id)init
+{
+    self = [super init];    
+    if (self) {
+        _homeViewController = nil;
+        _loginViewController = nil;
+        _acctViewController = nil;
+        _regViewController = nil;
+        
+        _infoMgr = nil;
+        _wxAuthMgr = nil;
+        _networkMgr = nil;
+    }
     return self;
+}
+
+- (void)dealloc
+{
+    [_homeViewController release];
+    [_loginViewController release];
+    [_acctViewController release];
+    [_regViewController release];
+    
+    [_infoMgr release];
+    [_wxAuthMgr release];
+    [_networkMgr release];
+    
+    [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

@@ -18,15 +18,15 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) HomeViewController *homeViewController;
-@property (strong, nonatomic) LoginViewController *loginViewController;
-@property (strong, nonatomic) RegViewController *regViewController;
-@property (strong, nonatomic) AcctViewController *acctViewController;
+@property (nonatomic, retain) UIWindow *window;
+@property (nonatomic, retain) HomeViewController *homeViewController;
+@property (nonatomic, retain) LoginViewController *loginViewController;
+@property (nonatomic, retain) RegViewController *regViewController;
+@property (nonatomic, retain) AcctViewController *acctViewController;
 
-@property (strong, nonatomic) InfoManager *infoMgr;
-@property (strong, nonatomic) WXAuthManager *wxAuthMgr;
-@property (strong, nonatomic) NetworkManager *networkMgr;
+@property (nonatomic, retain) InfoManager *infoMgr;
+@property (nonatomic, retain) WXAuthManager *wxAuthMgr;
+@property (nonatomic, retain) NetworkManager *networkMgr;
 
 - (void) presentHomeView;
 - (void) presentAcctView;

@@ -12,7 +12,7 @@
 
 @interface LoginViewController : UIViewController
 
-@property (nonatomic, strong) UITextField* tfUserName;
-@property (nonatomic, strong) UITextField* tfPassword;
+@property (nonatomic, retain) UITextField* tfUserName;
+@property (nonatomic, retain) UITextField* tfPassword;
 
 @end

@@ -12,8 +12,8 @@
 
 @interface RegViewController : UIViewController
 
-@property (nonatomic, strong) UITextField* tfUserName;
-@property (nonatomic, strong) UITextField* tfPassword;
-@property (nonatomic, strong) UITextField* tfConfirm;
+@property (nonatomic, retain) UITextField* tfUserName;
+@property (nonatomic, retain) UITextField* tfPassword;
+@property (nonatomic, retain) UITextField* tfConfirm;
 
 @end

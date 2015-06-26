@@ -14,7 +14,7 @@ extern NSString * const SUBINFO_WECHAT_KEY;
 
 @interface InfoManager : NSObject
 
-@property (strong, nonatomic) NSMutableDictionary *userInfo;
+@property (nonatomic, retain) NSMutableDictionary *userInfo;
 
 - (BOOL)isInfoExist;
 - (void)saveInfo;

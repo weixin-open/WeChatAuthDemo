@@ -29,12 +29,12 @@
     NSDictionary* acctInfo = [[AppDelegate appDelegate].infoMgr getSubInfo:SUBINFO_ACCT_KEY];
     NSDictionary* wechatInfo = [[AppDelegate appDelegate].infoMgr getSubInfo:SUBINFO_WECHAT_KEY];
     
-    UITextView *tvInfo = [[[UITextView alloc] initWithFrame:CGRectMake(30, 30, w-2*30, h-300)] autorelease];
+    UITextView *tvInfo = [[UITextView alloc] initWithFrame:CGRectMake(30, 30, w-2*30, h-300)];
     tvInfo.scrollEnabled = YES;
     tvInfo.editable = NO;
     tvInfo.font = [UIFont systemFontOfSize:15];
     
-    NSMutableString *strBuf = [[[NSMutableString alloc] init] autorelease];
+    NSMutableString *strBuf = [[NSMutableString alloc] init];
     if (acctInfo != nil) {
         [strBuf appendString:@"--------- ACCOUNT INFO ---------\n"];
         [strBuf appendFormat:@"%@\n", acctInfo];
@@ -45,7 +45,6 @@
         [btnLogin setFrame:CGRectMake(xEle, h - 250, wEle, 50)];
         [btnLogin addTarget:self action:@selector(onClickBtnLogin) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnLogin];
-        [btnLogin release];
         
         UIButton *btnReg = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [btnReg setTitle:@"Bind New Account" forState:UIControlStateNormal];
@@ -53,7 +52,6 @@
         [btnReg setFrame:CGRectMake(xEle, h - 200, wEle, 50)];
         [btnReg addTarget:self action:@selector(onClickBtnReg) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnReg];
-        [btnReg release];
     }
     [strBuf appendString:@"\n"];
     
@@ -67,11 +65,13 @@
         [btnAuth setFrame:CGRectMake(xEle, h - 200, wEle, 50)];
         [btnAuth addTarget:self action:@selector(onClickBtnAuth) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnAuth];
-        [btnAuth release];
     }
     
     [tvInfo setText:strBuf];
+    [strBuf release];
+    
     [self.view addSubview:tvInfo];
+    [tvInfo release];
     
     UIButton *btnLogout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [btnLogout setTitle:@"Logout" forState:UIControlStateNormal];
@@ -79,7 +79,6 @@
     [btnLogout setFrame:CGRectMake(xEle, h - 120, wEle, 50)];
     [btnLogout addTarget:self action:@selector(onClickBtnLogout) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnLogout];
-    [btnLogout release];
 }
 
 - (void)onClickBtnLogin
@@ -94,7 +93,7 @@
 
 - (void)onClickBtnAuth
 {
-    [[AppDelegate appDelegate].wxAuthMgr setDelegate:self];
+    [AppDelegate appDelegate].wxAuthMgr.delegate = self;
     [[AppDelegate appDelegate].wxAuthMgr sendAuthRequest];
 }
 
@@ -104,8 +103,9 @@
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
         } else {
-            NSString *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"WECHAT_INFO:%@", str);
+            [str release];
             // TODO: save wechat info
             [[AppDelegate appDelegate] presentAcctView];
         }

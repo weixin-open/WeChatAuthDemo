@@ -20,7 +20,7 @@
 
 @interface WXAuthManager : NSObject <WXApiDelegate>
 
-@property (strong, nonatomic) id<WXAuthDelegate, NSObject> delegate;
+@property (nonatomic, assign) id<WXAuthDelegate, NSObject> delegate;
 
 - (void)sendAuthRequest;
 

@@ -27,7 +27,7 @@
 
 - (void)onClickBtnAuth
 {
-    [[AppDelegate appDelegate].wxAuthMgr setDelegate:self];
+    [AppDelegate appDelegate].wxAuthMgr.delegate = self;
     [[AppDelegate appDelegate].wxAuthMgr sendAuthRequest];
 }
 
@@ -51,7 +51,6 @@
     [btnLogin setFrame:CGRectMake(xBtn, yCenter - yGap, wBtn, hBtn)];
     [btnLogin addTarget:self action:@selector(onClickBtnLogin) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnLogin];
-    [btnLogin release];
     
     UIButton *btnReg = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [btnReg setTitle:@"Register" forState:UIControlStateNormal];
@@ -59,7 +58,6 @@
     [btnReg setFrame:CGRectMake(xBtn, yCenter, wBtn, hBtn)];
     [btnReg addTarget:self action:@selector(onClickBtnReg) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnReg];
-    [btnReg release];
     
     UIButton *btnAuth = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [btnAuth setTitle:@"WeChat Auth" forState:UIControlStateNormal];
@@ -67,7 +65,6 @@
     [btnAuth setFrame:CGRectMake(xBtn, yCenter + yGap, wBtn, hBtn)];
     [btnAuth addTarget:self action:@selector(onClickBtnAuth) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnAuth];
-    [btnAuth release];
     
     UIButton *btnAcct = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [btnAcct setTitle:@"temp to account" forState:UIControlStateNormal];
@@ -75,7 +72,6 @@
     [btnAcct setFrame:CGRectMake(xBtn, h - 100, wBtn, hBtn)];
     [btnAcct addTarget:[AppDelegate appDelegate] action:@selector(presentAcctView) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnAcct];
-    [btnAcct release];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,8 +85,9 @@
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
         } else {
-            NSString *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"WECHAT_INFO:%@", str);
+            [str release];
             // TODO: save wechat info
             [[AppDelegate appDelegate] presentAcctView];
         }

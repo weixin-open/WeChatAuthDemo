@@ -14,13 +14,23 @@
 
 @implementation WXAuthManager
 
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _delegate = nil;
+    }
+    return self;
+}
+
 - (void)sendAuthRequest
 {
-    SendAuthReq* req =[[[SendAuthReq alloc] init] autorelease];
+    SendAuthReq* req = [[SendAuthReq alloc] init];
     req.scope = @"snsapi_userinfo" ;
     // TODO: random number here
     req.state = @"123" ;
     [WXApi sendReq:req];
+    [req release];
 }
 
 -(void)onReq:(BaseReq*)req
@@ -30,6 +40,9 @@
 
 -(void)onResp:(BaseResp*)resp
 {
+    if (self.delegate == nil) {
+        return;
+    }
     if([resp isKindOfClass:[SendAuthResp class]])
     {
         SendAuthResp* authResp = (SendAuthResp*)resp;

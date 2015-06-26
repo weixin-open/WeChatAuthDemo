@@ -14,20 +14,26 @@
           completionHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *connectionError))handler
 {
     NSURL *url = [NSURL URLWithString:[[@"http://urltoserver?code=" stringByAppendingString:code]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10] autorelease];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     [request setHTTPMethod:@"GET"];
-    NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:handler];
+    
+    [request release];
+    [queue release];
 }
 
 - (void)loginAcct:(NSString*)username byPwd:(NSString*)password
           completionHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *connectionError))handler
 {
     NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://urltoserver?username=%@&password=%@", username, password] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10] autorelease];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     [request setHTTPMethod:@"GET"];
-    NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:handler];
+    
+    [request release];
+    [queue release];
 }
 
 - (void)regAcct:(NSString*)username withPwd:(NSString*)password
@@ -39,14 +45,17 @@
     
     NSURL *url = [NSURL URLWithString:[@"https://urltoserver" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
-    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10] autorelease];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:10];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
     
-    NSOperationQueue *queue = [[[NSOperationQueue alloc] init] autorelease];
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:handler];
+    
+    [request release];
+    [queue release];
 }
 
 
