@@ -10,17 +10,9 @@
 #import "InfoManager.h"
 #import "NetworkManager.h"
 
-@protocol LoginViewDelegate <NSObject>
-- (void) presentHomeView;
-- (void) presentAcctView;
-- (InfoManager*) getInfoManager;
-- (NetworkManager*) getNetworkManager;
-@end
-
 @interface LoginViewController : UIViewController
 
-@property (nonatomic, strong) UITextField* tf_username;
-@property (nonatomic, strong) UITextField* tf_password;
-@property (nonatomic, assign) id<LoginViewDelegate, NSObject> delegate;
+@property (nonatomic, strong) UITextField* tfUserName;
+@property (nonatomic, strong) UITextField* tfPassword;
 
 @end

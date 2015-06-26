@@ -7,6 +7,7 @@
 //
 
 #import "RegViewController.h"
+#import "AppDelegate.h"
 
 @interface RegViewController ()
 
@@ -17,82 +18,87 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    int width = [[UIScreen mainScreen] bounds].size.width;
-    int height = [[UIScreen mainScreen] bounds].size.height;
+    int w = [[UIScreen mainScreen] bounds].size.width;
+    int h = [[UIScreen mainScreen] bounds].size.height;
     
-    int ele_width = 200;
-    int ele_x = (width - ele_width)/2;
+    int wEle = 200;
+    int xEle = (w - wEle)/2;
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UITextField *tf_username = [[UITextField alloc] initWithFrame:CGRectMake(ele_x, 140, ele_width, 40)];
-    tf_username.borderStyle = UITextBorderStyleRoundedRect;
-    tf_username.font = [UIFont systemFontOfSize:15];
-    tf_username.placeholder = @"username";
-    tf_username.keyboardType = UIKeyboardTypeDefault;
-    tf_username.returnKeyType = UIReturnKeyDone;
-    tf_username.clearButtonMode = UITextFieldViewModeWhileEditing;
-    tf_username.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    [self.view addSubview:tf_username];
-    self.tf_username = tf_username;
-    [tf_username release];
+    UITextField *tfUserName = [[[UITextField alloc] initWithFrame:CGRectMake(xEle, 140, wEle, 40)] autorelease];
+    tfUserName.borderStyle = UITextBorderStyleRoundedRect;
+    tfUserName.font = [UIFont systemFontOfSize:15];
+    tfUserName.placeholder = @"username";
+    tfUserName.keyboardType = UIKeyboardTypeDefault;
+    tfUserName.returnKeyType = UIReturnKeyDone;
+    tfUserName.clearButtonMode = UITextFieldViewModeWhileEditing;
+    tfUserName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [self.view addSubview:tfUserName];
+    self.tfUserName = tfUserName;
     
-    UITextField *tf_password = [[UITextField alloc] initWithFrame:CGRectMake(ele_x, 200, ele_width, 40)];
-    tf_password.borderStyle = UITextBorderStyleRoundedRect;
-    tf_password.font = [UIFont systemFontOfSize:15];
-    tf_password.placeholder = @"password";
-    tf_password.keyboardType = UIKeyboardTypeDefault;
-    tf_password.returnKeyType = UIReturnKeyDone;
-    tf_password.clearButtonMode = UITextFieldViewModeWhileEditing;
-    tf_password.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    [self.view addSubview:tf_password];
-    self.tf_password = tf_password;
-    [tf_password release];
+    UITextField *tfPassword = [[[UITextField alloc] initWithFrame:CGRectMake(xEle, 200, wEle, 40)] autorelease];
+    tfPassword.borderStyle = UITextBorderStyleRoundedRect;
+    tfPassword.font = [UIFont systemFontOfSize:15];
+    tfPassword.placeholder = @"password";
+    tfPassword.keyboardType = UIKeyboardTypeDefault;
+    tfPassword.returnKeyType = UIReturnKeyDone;
+    tfPassword.clearButtonMode = UITextFieldViewModeWhileEditing;
+    tfPassword.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [self.view addSubview:tfPassword];
+    self.tfPassword = tfPassword;
     
-    UITextField *tf_confirm = [[UITextField alloc] initWithFrame:CGRectMake(ele_x, 260, ele_width, 40)];
-    tf_confirm.borderStyle = UITextBorderStyleRoundedRect;
-    tf_confirm.font = [UIFont systemFontOfSize:15];
-    tf_confirm.placeholder = @"confirm password";
-    tf_confirm.keyboardType = UIKeyboardTypeDefault;
-    tf_confirm.returnKeyType = UIReturnKeyDone;
-    tf_confirm.clearButtonMode = UITextFieldViewModeWhileEditing;
-    tf_confirm.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    [self.view addSubview:tf_confirm];
-    self.tf_confirm = tf_confirm;
-    [tf_confirm release];
+    UITextField *tfConfirm = [[[UITextField alloc] initWithFrame:CGRectMake(xEle, 260, wEle, 40)] autorelease];
+    tfConfirm.borderStyle = UITextBorderStyleRoundedRect;
+    tfConfirm.font = [UIFont systemFontOfSize:15];
+    tfConfirm.placeholder = @"confirm password";
+    tfConfirm.keyboardType = UIKeyboardTypeDefault;
+    tfConfirm.returnKeyType = UIReturnKeyDone;
+    tfConfirm.clearButtonMode = UITextFieldViewModeWhileEditing;
+    tfConfirm.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    [self.view addSubview:tfConfirm];
+    self.tfConfirm = tfConfirm;
     
-    UIButton *btn_confirm = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [btn_confirm setTitle:@"Confirm" forState:UIControlStateNormal];
-    btn_confirm.titleLabel.font = [UIFont systemFontOfSize:15];
-    [btn_confirm setFrame:CGRectMake(ele_x, 320, ele_width, 40)];
-    [btn_confirm addTarget:self action:@selector(onClickBtnConfirm) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btn_confirm];
-    [btn_confirm release];
+    UIButton *btnConfirm = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [btnConfirm setTitle:@"Confirm" forState:UIControlStateNormal];
+    btnConfirm.titleLabel.font = [UIFont systemFontOfSize:15];
+    [btnConfirm setFrame:CGRectMake(xEle, 320, wEle, 40)];
+    [btnConfirm addTarget:self action:@selector(onClickBtnConfirm) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnConfirm];
+    [btnConfirm release];
     
-    UIButton *btn_cancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [btn_cancel setTitle:@"Cancel" forState:UIControlStateNormal];
-    btn_cancel.titleLabel.font = [UIFont systemFontOfSize:15];
-    [btn_cancel setFrame:CGRectMake(ele_x, height - 120, ele_width, 80)];
-    [btn_cancel addTarget:self action:@selector(onClickBtnCancel) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btn_cancel];
-    [btn_cancel release];
+    UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [btnCancel setTitle:@"Cancel" forState:UIControlStateNormal];
+    btnCancel.titleLabel.font = [UIFont systemFontOfSize:15];
+    [btnCancel setFrame:CGRectMake(xEle, h - 120, wEle, 80)];
+    [btnCancel addTarget:self action:@selector(onClickBtnCancel) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnCancel];
+    [btnCancel release];
+}
+
+- (void)dealloc
+{
+    [self.tfUserName release];
+    [self.tfPassword release];
+    [self.tfConfirm release];
+    [super dealloc];
 }
 
 - (void)onClickBtnConfirm
 {
-    NSString* username = [self.tf_username text];
-    NSString* password = [self.tf_password text];
-    NSString* confirm_pwd = [self.tf_confirm text];
+    NSString* username = [self.tfUserName text];
+    NSString* password = [self.tfPassword text];
+    NSString* confirm_pwd = [self.tfConfirm text];
     if ( (![username isEqualToString:@""]) && (![password isEqualToString:@""])
             && [confirm_pwd isEqualToString:password]) {
-        [[self.delegate getNetworkManager] regAcct:username withPwd:password completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        [[AppDelegate appDelegate].networkMgr regAcct:username withPwd:password completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             if (data == nil) {
                 NSLog(@"ERR:%@", connectionError);
             } else {
-                NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                NSString *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
                 NSLog(@"ACCT_INFO:%@", str);
                 // TODO: save account info
-                [self.delegate presentAcctView];
+                [[AppDelegate appDelegate] presentAcctView];
             }
         }];
     }
@@ -100,7 +106,7 @@
 
 - (void)onClickBtnCancel
 {
-    [self.delegate presentHomeView];
+    [[AppDelegate appDelegate] presentHomeView];
 }
 
 - (void)didReceiveMemoryWarning {

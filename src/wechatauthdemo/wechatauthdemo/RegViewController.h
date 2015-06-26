@@ -10,19 +10,10 @@
 #import "InfoManager.h"
 #import "NetworkManager.h"
 
-@protocol RegViewDelegate <NSObject>
-- (void) presentHomeView;
-- (void) presentAcctView;
-- (InfoManager*) getInfoManager;
-- (NetworkManager*) getNetworkManager;
-@end
-
-
 @interface RegViewController : UIViewController
 
-@property (nonatomic, strong) UITextField* tf_username;
-@property (nonatomic, strong) UITextField* tf_password;
-@property (nonatomic, strong) UITextField* tf_confirm;
-@property (nonatomic, assign) id<RegViewDelegate, NSObject> delegate;
+@property (nonatomic, strong) UITextField* tfUserName;
+@property (nonatomic, strong) UITextField* tfPassword;
+@property (nonatomic, strong) UITextField* tfConfirm;
 
 @end

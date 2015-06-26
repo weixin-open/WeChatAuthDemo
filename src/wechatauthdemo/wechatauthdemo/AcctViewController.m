@@ -7,6 +7,7 @@
 //
 
 #import "AcctViewController.h"
+#import "AppDelegate.h"
 
 @interface AcctViewController ()
 
@@ -17,42 +18,42 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    int width = [[UIScreen mainScreen] bounds].size.width;
-    int height = [[UIScreen mainScreen] bounds].size.height;
+    int w = [[UIScreen mainScreen] bounds].size.width;
+    int h = [[UIScreen mainScreen] bounds].size.height;
     
-    int ele_width = 200;
-    int ele_x = (width - ele_width)/2;
+    int wEle = 200;
+    int xEle = (w - wEle)/2;
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    NSDictionary* acctInfo = [[self.delegate getInfoManager] getSubInfo:SUBINFO_ACCT_KEY];
-    NSDictionary* wechatInfo = [[self.delegate getInfoManager] getSubInfo:SUBINFO_WECHAT_KEY];
+    NSDictionary* acctInfo = [[AppDelegate appDelegate].infoMgr getSubInfo:SUBINFO_ACCT_KEY];
+    NSDictionary* wechatInfo = [[AppDelegate appDelegate].infoMgr getSubInfo:SUBINFO_WECHAT_KEY];
     
-    UITextView *tv_info = [[UITextView alloc] initWithFrame:CGRectMake(30, 30, width-2*30, height-300)];
-    tv_info.scrollEnabled = YES;
-    tv_info.editable = NO;
-    tv_info.font = [UIFont systemFontOfSize:15];
+    UITextView *tvInfo = [[[UITextView alloc] initWithFrame:CGRectMake(30, 30, w-2*30, h-300)] autorelease];
+    tvInfo.scrollEnabled = YES;
+    tvInfo.editable = NO;
+    tvInfo.font = [UIFont systemFontOfSize:15];
     
     NSMutableString *strBuf = [[[NSMutableString alloc] init] autorelease];
     if (acctInfo != nil) {
         [strBuf appendString:@"--------- ACCOUNT INFO ---------\n"];
         [strBuf appendFormat:@"%@\n", acctInfo];
     } else {
-        UIButton *btn_login = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btn_login setTitle:@"Bind Existed Account" forState:UIControlStateNormal];
-        btn_login.titleLabel.font = [UIFont systemFontOfSize:15];
-        [btn_login setFrame:CGRectMake(ele_x, height - 250, ele_width, 50)];
-        [btn_login addTarget:self action:@selector(onClickBtnLogin) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:btn_login];
-        [btn_login release];
+        UIButton *btnLogin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnLogin setTitle:@"Bind Existed Account" forState:UIControlStateNormal];
+        btnLogin.titleLabel.font = [UIFont systemFontOfSize:15];
+        [btnLogin setFrame:CGRectMake(xEle, h - 250, wEle, 50)];
+        [btnLogin addTarget:self action:@selector(onClickBtnLogin) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnLogin];
+        [btnLogin release];
         
-        UIButton *btn_reg = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btn_reg setTitle:@"Bind New Account" forState:UIControlStateNormal];
-        btn_reg.titleLabel.font = [UIFont systemFontOfSize:15];
-        [btn_reg setFrame:CGRectMake(ele_x, height - 200, ele_width, 50)];
-        [btn_reg addTarget:self action:@selector(onClickBtnReg) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:btn_reg];
-        [btn_reg release];
+        UIButton *btnReg = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnReg setTitle:@"Bind New Account" forState:UIControlStateNormal];
+        btnReg.titleLabel.font = [UIFont systemFontOfSize:15];
+        [btnReg setFrame:CGRectMake(xEle, h - 200, wEle, 50)];
+        [btnReg addTarget:self action:@selector(onClickBtnReg) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnReg];
+        [btnReg release];
     }
     [strBuf appendString:@"\n"];
     
@@ -60,54 +61,53 @@
         [strBuf appendString:@"--------- WECHAT INFO ---------\n"];
         [strBuf appendFormat:@"%@\n", wechatInfo];
     } else {
-        UIButton *btn_auth = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btn_auth setTitle:@"WeChat Bind" forState:UIControlStateNormal];
-        btn_auth.titleLabel.font = [UIFont systemFontOfSize:15];
-        [btn_auth setFrame:CGRectMake(ele_x, height - 200, ele_width, 50)];
-        [btn_auth addTarget:self action:@selector(onClickBtnAuth) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:btn_auth];
-        [btn_auth release];
+        UIButton *btnAuth = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnAuth setTitle:@"WeChat Bind" forState:UIControlStateNormal];
+        btnAuth.titleLabel.font = [UIFont systemFontOfSize:15];
+        [btnAuth setFrame:CGRectMake(xEle, h - 200, wEle, 50)];
+        [btnAuth addTarget:self action:@selector(onClickBtnAuth) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnAuth];
+        [btnAuth release];
     }
     
-    [tv_info setText:strBuf];
-    [self.view addSubview:tv_info];
-    [tv_info release];
+    [tvInfo setText:strBuf];
+    [self.view addSubview:tvInfo];
     
-    UIButton *btn_logout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [btn_logout setTitle:@"Logout" forState:UIControlStateNormal];
-    btn_logout.titleLabel.font = [UIFont systemFontOfSize:15];
-    [btn_logout setFrame:CGRectMake(ele_x, height - 120, ele_width, 50)];
-    [btn_logout addTarget:self action:@selector(onClickBtnLogout) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btn_logout];
-    [btn_logout release];
+    UIButton *btnLogout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [btnLogout setTitle:@"Logout" forState:UIControlStateNormal];
+    btnLogout.titleLabel.font = [UIFont systemFontOfSize:15];
+    [btnLogout setFrame:CGRectMake(xEle, h - 120, wEle, 50)];
+    [btnLogout addTarget:self action:@selector(onClickBtnLogout) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnLogout];
+    [btnLogout release];
 }
 
 - (void)onClickBtnLogin
 {
-    [self.delegate presentLoginView];
+    [[AppDelegate appDelegate] presentLoginView];
 }
 
 - (void)onClickBtnReg
 {
-    [self.delegate presentRegView];
+    [[AppDelegate appDelegate] presentRegView];
 }
 
 - (void)onClickBtnAuth
 {
-    [[self.delegate getWXAuthManager] setDelegate:self];
-    [[self.delegate getWXAuthManager] sendAuthRequest];
+    [[AppDelegate appDelegate].wxAuthMgr setDelegate:self];
+    [[AppDelegate appDelegate].wxAuthMgr sendAuthRequest];
 }
 
 - (void)wxAuthSucceed:(NSString*)code
 {
-    [[self.delegate getNetworkManager] getWeChatInfoByCode:code completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+    [[AppDelegate appDelegate].networkMgr getWeChatInfoByCode:code completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
         } else {
-            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSString *str = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
             NSLog(@"WECHAT_INFO:%@", str);
             // TODO: save wechat info
-            [self.delegate presentAcctView];
+            [[AppDelegate appDelegate] presentAcctView];
         }
     }];
 }
@@ -124,8 +124,8 @@
 
 - (void)onClickBtnLogout
 {
-    [[self.delegate getInfoManager] delInfo];
-    [self.delegate presentHomeView];
+    [[AppDelegate appDelegate].infoMgr delInfo];
+    [[AppDelegate appDelegate] presentHomeView];
 }
 
 - (void)didReceiveMemoryWarning {

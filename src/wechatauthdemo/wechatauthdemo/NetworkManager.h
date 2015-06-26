@@ -12,8 +12,9 @@
 
 - (void)getWeChatInfoByCode:(NSString*)code
           completionHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *connectionError))handler;
-- (void) loginAcct:(NSString*)username byPwd:(NSString*)password
+- (void)loginAcct:(NSString*)username byPwd:(NSString*)password
           completionHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *connectionError))handler;
 - (void)regAcct:(NSString*)username withPwd:(NSString*)password
           completionHandler:(void (^)(NSURLResponse *response, NSData *data, NSError *connectionError))handler;
+
 @end

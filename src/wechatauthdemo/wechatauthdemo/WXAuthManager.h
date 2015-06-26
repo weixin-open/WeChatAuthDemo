@@ -11,12 +11,14 @@
 #import "WXApi.h"
 
 @protocol WXAuthDelegate <NSObject>
+
 - (void)wxAuthSucceed:(NSString*)code;
 - (void)wxAuthDenied;
 - (void)wxAuthCancel;
+
 @end
 
-@interface WXAuthManager : NSObject
+@interface WXAuthManager : NSObject <WXApiDelegate>
 
 @property (strong, nonatomic) id<WXAuthDelegate, NSObject> delegate;
 

@@ -31,7 +31,7 @@ NSString * const SUBINFO_WECHAT_KEY =@"wechatinfo";
     [userDefaults synchronize];
 }
 
-- (void)readInfo
+- (void)loadInfo
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     self.userInfo = [NSMutableDictionary dictionaryWithDictionary:[userDefaults dictionaryForKey:INFO_KEY]];

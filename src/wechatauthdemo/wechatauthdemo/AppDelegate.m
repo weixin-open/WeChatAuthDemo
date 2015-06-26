@@ -33,26 +33,25 @@
 {
     // Override point for customization after application launch.
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // load user info
-    [self initInfoManager];
-    [self presentHomeView];
     //向微信注册
     [WXApi registerApp:@"wx9bb52a653a60a1d3" withDescription:@"wechatauthdemo 0.1.0"];
+    
+    [self presentHomeView];
     
     return YES;
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    return  [WXApi handleOpenURL:url delegate:self];
+    return  [WXApi handleOpenURL:url delegate:self.wxAuthMgr];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return  [WXApi handleOpenURL:url delegate:self];
+    return  [WXApi handleOpenURL:url delegate:self.wxAuthMgr];
 }
 
-- (void) presentHomeView
+- (void)presentHomeView
 {
     if ([self.infoMgr isInfoExist]) {
         [self presentAcctView];
@@ -61,72 +60,64 @@
     if (self.homeViewController == nil) {
         self.homeViewController = [[[HomeViewController alloc] init] autorelease];
     }
-    self.homeViewController.delegate = self;
     self.window.rootViewController = self.homeViewController;
     [self.window makeKeyAndVisible];
 }
 
-- (void) presentAcctView
+- (void)presentAcctView
 {
-    if (![self.infoMgr isInfoExist]) {
+    if (![[self infoMgr] isInfoExist]) {
         [self presentHomeView];
         return;
     }
     if (self.acctViewController == nil) {
         self.acctViewController = [[[AcctViewController alloc] init] autorelease];
     }
-    self.acctViewController.delegate = self;
     self.window.rootViewController = self.acctViewController;
     [self.window makeKeyAndVisible];
 }
 
-- (void) presentLoginView
+- (void)presentLoginView
 {
     if (self.loginViewController == nil) {
         self.loginViewController = [[[LoginViewController alloc] init] autorelease];
     }
-    self.loginViewController.delegate = self;
     self.window.rootViewController = self.loginViewController;
     [self.window makeKeyAndVisible];
 }
 
-- (void) presentRegView
+- (void)presentRegView
 {
     if (self.regViewController == nil) {
         self.regViewController = [[[RegViewController alloc] init] autorelease];
     }
-    self.regViewController.delegate = self;
     self.window.rootViewController = self.regViewController;
     [self.window makeKeyAndVisible];
 }
 
-- (void) initInfoManager
+- (InfoManager*)infoMgr
 {
-    self.infoMgr = [[[InfoManager alloc] init] autorelease];
-    [self.infoMgr readInfo];
-    [self.infoMgr saveInfo];
+    if (_infoMgr == nil) {
+        self.infoMgr = [[[InfoManager alloc] init] autorelease];
+        [_infoMgr loadInfo];
+    }
+    return _infoMgr;
 }
 
-- (InfoManager*) getInfoManager
+- (WXAuthManager*)wxAuthMgr
 {
-    [self initInfoManager];
-    return self.infoMgr;
-}
-
-- (WXAuthManager*) getWXAuthManager
-{
-    if (self.wxAuthMgr == nil) {
+    if (_wxAuthMgr == nil) {
         self.wxAuthMgr = [[[WXAuthManager alloc] init] autorelease];
     }
-    return self.wxAuthMgr;
+    return _wxAuthMgr;
 }
 
-- (NetworkManager*) getNetworkManager
+- (NetworkManager*)networkMgr
 {
-    if (self.networkMgr == nil) {
+    if (_networkMgr == nil) {
         self.networkMgr = [[[NetworkManager alloc] init] autorelease];
     }
-    return self.networkMgr;
+    return _networkMgr;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -147,6 +138,11 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+}
+
++ (AppDelegate *)appDelegate
+{
+    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
 @end

@@ -16,8 +16,7 @@
 #import "WXAuthManager.h"
 #import "NetworkManager.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, WXApiDelegate,
-    HomeViewDelegate, LoginViewDelegate, RegViewDelegate, AcctViewDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) HomeViewController *homeViewController;
@@ -28,6 +27,13 @@
 @property (strong, nonatomic) InfoManager *infoMgr;
 @property (strong, nonatomic) WXAuthManager *wxAuthMgr;
 @property (strong, nonatomic) NetworkManager *networkMgr;
+
+- (void) presentHomeView;
+- (void) presentAcctView;
+- (void) presentLoginView;
+- (void) presentRegView;
+
++ (AppDelegate *)appDelegate;
 
 @end
 

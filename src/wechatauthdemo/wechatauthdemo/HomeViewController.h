@@ -12,18 +12,7 @@
 #import "WXAuthManager.h"
 #import "NetworkManager.h"
 
-@protocol HomeViewDelegate <NSObject>
-- (void) presentLoginView;
-- (void) presentRegView;
-- (void) presentAcctView;
-- (InfoManager*) getInfoManager;
-- (WXAuthManager*) getWXAuthManager;
-- (NetworkManager*) getNetworkManager;
-@end
-
 @interface HomeViewController : UIViewController <WXAuthDelegate>
-
-@property (nonatomic, assign) id<HomeViewDelegate,NSObject> delegate;
 
 @end
 

@@ -18,7 +18,7 @@ extern NSString * const SUBINFO_WECHAT_KEY;
 
 - (BOOL)isInfoExist;
 - (void)saveInfo;
-- (void)readInfo;
+- (void)loadInfo;
 - (void)delInfo;
 - (NSDictionary*)getSubInfo:(NSString*)key;
 - (void)delSubInfo:(NSString*)key;
