@@ -10,8 +10,6 @@
 		730FE4991B3AADF60072FD36 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 730FE4981B3AADF60072FD36 /* LoginViewController.m */; };
 		730FE49C1B3AAE160072FD36 /* RegViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 730FE49B1B3AAE160072FD36 /* RegViewController.m */; };
 		730FE49F1B3AAE2A0072FD36 /* AcctViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 730FE49E1B3AAE2A0072FD36 /* AcctViewController.m */; };
-		730FE4A21B3AB05E0072FD36 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730FE4A01B3AB05E0072FD36 /* ViewController_iPad.xib */; };
-		730FE4A31B3AB05E0072FD36 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 730FE4A11B3AB05E0072FD36 /* ViewController_iPhone.xib */; };
 		730FE4A81B3AD9120072FD36 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 730FE4A71B3AD9120072FD36 /* libWeChatSDK.a */; };
 		730FE4AA1B3AD9C50072FD36 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 730FE4A91B3AD9C50072FD36 /* libc++.dylib */; };
 		7372C68D1B3BD67900FCF335 /* InfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7372C68C1B3BD67900FCF335 /* InfoManager.m */; };
@@ -35,8 +33,6 @@
 		730FE49B1B3AAE160072FD36 /* RegViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegViewController.m; sourceTree = "<group>"; };
 		730FE49D1B3AAE2A0072FD36 /* AcctViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcctViewController.h; sourceTree = "<group>"; };
 		730FE49E1B3AAE2A0072FD36 /* AcctViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcctViewController.m; sourceTree = "<group>"; };
-		730FE4A01B3AB05E0072FD36 /* ViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPad.xib; sourceTree = "<group>"; };
-		730FE4A11B3AB05E0072FD36 /* ViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPhone.xib; sourceTree = "<group>"; };
 		730FE4A71B3AD9120072FD36 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWeChatSDK.a; path = WeChatSDK/libWeChatSDK.a; sourceTree = "<group>"; };
 		730FE4A91B3AD9C50072FD36 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		7372C68C1B3BD67900FCF335 /* InfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoManager.m; sourceTree = "<group>"; };
@@ -126,8 +122,6 @@
 		73BED5EA1B3AA48600CA4C4D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				730FE4A01B3AB05E0072FD36 /* ViewController_iPad.xib */,
-				730FE4A11B3AB05E0072FD36 /* ViewController_iPhone.xib */,
 				73BED5EB1B3AA48600CA4C4D /* Info.plist */,
 				73BED5EC1B3AA48600CA4C4D /* main.m */,
 			);
@@ -214,9 +208,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				730FE4A21B3AB05E0072FD36 /* ViewController_iPad.xib in Resources */,
 				73BED5F81B3AA48600CA4C4D /* Images.xcassets in Resources */,
-				730FE4A31B3AB05E0072FD36 /* ViewController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
