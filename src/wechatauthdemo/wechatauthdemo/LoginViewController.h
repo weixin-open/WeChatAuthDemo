@@ -10,7 +10,7 @@
 #import "InfoManager.h"
 #import "NetworkManager.h"
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic, retain) UITextField* tfMail;
 @property (nonatomic, retain) UITextField* tfPassword;

@@ -54,6 +54,7 @@
     tfMail.returnKeyType = UIReturnKeyDone;
     tfMail.clearButtonMode = UITextFieldViewModeWhileEditing;
     tfMail.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    tfMail.delegate = self;
     [self.view addSubview:tfMail];
     self.tfMail = tfMail;
     [tfMail release];
@@ -66,6 +67,7 @@
     tfNickName.returnKeyType = UIReturnKeyDone;
     tfNickName.clearButtonMode = UITextFieldViewModeWhileEditing;
     tfNickName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    tfNickName.delegate = self;
     [self.view addSubview:tfNickName];
     self.tfNickName = tfNickName;
     [tfNickName release];
@@ -78,6 +80,7 @@
     tfPassword.returnKeyType = UIReturnKeyDone;
     tfPassword.clearButtonMode = UITextFieldViewModeWhileEditing;
     tfPassword.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    tfPassword.delegate = self;
     [self.view addSubview:tfPassword];
     self.tfPassword = tfPassword;
     [tfPassword release];
@@ -90,6 +93,7 @@
     tfConfirm.returnKeyType = UIReturnKeyDone;
     tfConfirm.clearButtonMode = UITextFieldViewModeWhileEditing;
     tfConfirm.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    tfConfirm.delegate = self;
     [self.view addSubview:tfConfirm];
     self.tfConfirm = tfConfirm;
     [tfConfirm release];
@@ -124,6 +128,8 @@
             if (error) {
                 NSLog(@"ERR:%@", error);
             } else {
+                app.infoMgr.uid = uid;
+                app.infoMgr.userTicket = userticket;
                 [app.infoMgr setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:mail, @"mail", nickname, @"nickname", nil] forKey:SUBINFO_ACCT_KEY];
                 if ([app.infoMgr isSubInfoExist:SUBINFO_WX_KEY]) {
                     [app.networkMgr wxBindApp:app.infoMgr.uid userticket:app.infoMgr.userTicket mail:mail password:password completionHandler:^(NSString *error, NSNumber *uid, NSString *userticket, NSString *nickname) {
@@ -152,6 +158,11 @@
 - (void)onClickBtnCancel
 {
     [[AppDelegate appDelegate] presentHomeView];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning {

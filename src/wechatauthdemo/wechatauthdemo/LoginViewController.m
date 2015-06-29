@@ -50,6 +50,7 @@
     tfMail.returnKeyType = UIReturnKeyDone;
     tfMail.clearButtonMode = UITextFieldViewModeWhileEditing;
     tfMail.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    tfMail.delegate = self;
     [self.view addSubview:tfMail];
     self.tfMail = tfMail;
     [tfMail release];
@@ -62,6 +63,7 @@
     tfPassword.returnKeyType = UIReturnKeyDone;
     tfPassword.clearButtonMode = UITextFieldViewModeWhileEditing;
     tfPassword.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    tfPassword.delegate = self;
     [self.view addSubview:tfPassword];
     self.tfPassword = tfPassword;
     [tfPassword release];
@@ -92,6 +94,8 @@
                 if (error) {
                     NSLog(@"ERR:%@", error);
                 } else {
+                    app.infoMgr.uid = uid;
+                    app.infoMgr.userTicket = userticket;
                     [app.infoMgr setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:mail, @"mail", nickname, @"nickname", nil] forKey:SUBINFO_ACCT_KEY];
                     [[AppDelegate appDelegate] presentAcctView];
                 }
@@ -101,9 +105,11 @@
                 if (error) {
                     NSLog(@"ERR:%@", error);
                 } else {
+                    app.infoMgr.uid = uid;
+                    app.infoMgr.userTicket = userticket;
                     [app.infoMgr setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:mail, @"mail", nickname, @"nickname", nil] forKey:SUBINFO_ACCT_KEY];
                     if (hasBindWx) {
-                        [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:TRUE
+                        [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:YES 
                                      completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
                             if (error) {
                                 NSLog(@"ERR:%@", error);
@@ -128,6 +134,11 @@
 - (void)onClickBtnCancel
 {
     [[AppDelegate appDelegate] presentHomeView];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning

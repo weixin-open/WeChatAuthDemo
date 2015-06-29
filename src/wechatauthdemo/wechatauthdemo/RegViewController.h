@@ -10,7 +10,7 @@
 #import "InfoManager.h"
 #import "NetworkManager.h"
 
-@interface RegViewController : UIViewController
+@interface RegViewController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic, retain) UITextField* tfMail;
 @property (nonatomic, retain) UITextField* tfNickName;

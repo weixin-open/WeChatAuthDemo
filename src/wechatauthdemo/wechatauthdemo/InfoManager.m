@@ -57,6 +57,7 @@ NSString * const SUBINFO_WX_KEY =@"wechatinfo";
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
     self.userInfo = [NSMutableDictionary dictionaryWithDictionary:[userDefaults dictionaryForKey:INFO_KEY]];
+    
     self.uid = [userDefaults valueForKey:@"uid"];
     self.userTicket = [userDefaults valueForKey:@"userticket"];
     
@@ -85,8 +86,7 @@ NSString * const SUBINFO_WX_KEY =@"wechatinfo";
     [userDefaults removeObjectForKey:@"uid"];
     [userDefaults removeObjectForKey:@"userticket"];
     
-    [self.userInfo release];
-    _userInfo = nil;
+    [self.userInfo removeAllObjects];
     [self.uid release];
     _uid = nil;
     [self.userTicket release];

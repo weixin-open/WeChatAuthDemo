@@ -19,10 +19,6 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) HomeViewController *homeViewController;
-@property (nonatomic, retain) LoginViewController *loginViewController;
-@property (nonatomic, retain) RegViewController *regViewController;
-@property (nonatomic, retain) AcctViewController *acctViewController;
 
 @property (nonatomic, retain) InfoManager *infoMgr;
 @property (nonatomic, retain) WXAuthManager *wxAuthMgr;

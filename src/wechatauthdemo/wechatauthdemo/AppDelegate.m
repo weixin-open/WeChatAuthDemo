@@ -18,11 +18,6 @@
 {
     self = [super init];    
     if (self) {
-        _homeViewController = nil;
-        _loginViewController = nil;
-        _acctViewController = nil;
-        _regViewController = nil;
-        
         _infoMgr = nil;
         _wxAuthMgr = nil;
         _networkMgr = nil;
@@ -32,11 +27,6 @@
 
 - (void)dealloc
 {
-    [_homeViewController release];
-    [_loginViewController release];
-    [_acctViewController release];
-    [_regViewController release];
-    
     [_infoMgr release];
     [_wxAuthMgr release];
     [_networkMgr release];
@@ -68,46 +58,46 @@
 
 - (void)presentHomeView
 {
-    if ([self.infoMgr isInfoExist]) {
-        [self presentAcctView];
-        return;
-    }
-    if (self.homeViewController == nil) {
-        self.homeViewController = [[[HomeViewController alloc] init] autorelease];
-    }
-    self.window.rootViewController = self.homeViewController;
-    [self.window makeKeyAndVisible];
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    dispatch_async(queue, ^{
+        if ([self.infoMgr isInfoExist]) {
+            [self presentAcctView];
+            return;
+        }
+        self.window.rootViewController = [[[HomeViewController alloc] init] autorelease];
+        [self.window makeKeyAndVisible];
+    });
 }
 
 - (void)presentAcctView
 {
-    if (![[self infoMgr] isInfoExist]) {
-        [self presentHomeView];
-        return;
-    }
-    if (self.acctViewController == nil) {
-        self.acctViewController = [[[AcctViewController alloc] init] autorelease];
-    }
-    self.window.rootViewController = self.acctViewController;
-    [self.window makeKeyAndVisible];
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    dispatch_async(queue, ^{
+        if (![[self infoMgr] isInfoExist]) {
+            [self presentHomeView];
+            return;
+        }
+        self.window.rootViewController = [[[AcctViewController alloc] init] autorelease];
+        [self.window makeKeyAndVisible];
+    });
 }
 
 - (void)presentLoginView
 {
-    if (self.loginViewController == nil) {
-        self.loginViewController = [[[LoginViewController alloc] init] autorelease];
-    }
-    self.window.rootViewController = self.loginViewController;
-    [self.window makeKeyAndVisible];
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    dispatch_async(queue, ^{
+        self.window.rootViewController = [[[LoginViewController alloc] init] autorelease];
+        [self.window makeKeyAndVisible];
+    });
 }
 
 - (void)presentRegView
 {
-    if (self.regViewController == nil) {
-        self.regViewController = [[[RegViewController alloc] init] autorelease];
-    }
-    self.window.rootViewController = self.regViewController;
-    [self.window makeKeyAndVisible];
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    dispatch_async(queue, ^{
+        self.window.rootViewController = [[[RegViewController alloc] init] autorelease];
+        [self.window makeKeyAndVisible];
+    });
 }
 
 - (InfoManager*)infoMgr
