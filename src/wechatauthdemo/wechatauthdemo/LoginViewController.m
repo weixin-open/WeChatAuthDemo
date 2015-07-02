@@ -77,19 +77,43 @@
     [btnConfirm addTarget:self action:@selector(onClickBtnConfirm) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnConfirm];
     
-    UIButton *btnReg = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [btnReg setTitle:NSLocalizedString(@"register", nil) forState:UIControlStateNormal];
-    btnReg.titleLabel.font = [UIFont systemFontOfSize:15];
-    [btnReg setFrame:CGRectMake(xEle, h-100, wEle, 40)];
-    [btnReg addTarget:self action:@selector(onClickBtnReg) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnReg];
+    if (![[AppDelegate appDelegate].infoMgr isSubInfoExist:SUBINFO_WX_KEY]) {
+        UIButton *btnReg = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnReg setTitle:NSLocalizedString(@"register", nil) forState:UIControlStateNormal];
+        btnReg.titleLabel.font = [UIFont systemFontOfSize:15];
+        [btnReg setFrame:CGRectMake(xEle, h-100, wEle, 40)];
+        [btnReg addTarget:self action:@selector(onClickBtnReg) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnReg];
+        
+        UIButton *btnAuth = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnAuth setTitle:NSLocalizedString(@"wxlogin", nil) forState:UIControlStateNormal];
+        btnAuth.titleLabel.font = [UIFont systemFontOfSize:15];
+        [btnAuth setFrame:CGRectMake(xEle, h-50, wEle, 40)];
+        [btnAuth addTarget:self action:@selector(onClickBtnAuth) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnAuth];
+    } else {
+        UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnCancel setTitle:NSLocalizedString(@"cancel", nil) forState:UIControlStateNormal];
+        btnCancel.titleLabel.font = [UIFont systemFontOfSize:15];
+        [btnCancel setFrame:CGRectMake(xEle, h - 120, wEle, 80)];
+        [btnCancel addTarget:self action:@selector(onClickBtnCancel) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnCancel];
+    }
     
-    UIButton *btnAuth = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [btnAuth setTitle:NSLocalizedString(@"wxlogin", nil) forState:UIControlStateNormal];
-    btnAuth.titleLabel.font = [UIFont systemFontOfSize:15];
-    [btnAuth setFrame:CGRectMake(xEle, h-50, wEle, 40)];
-    [btnAuth addTarget:self action:@selector(onClickBtnAuth) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnAuth];
+    UITapGestureRecognizer *tapGr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)] autorelease];
+    tapGr.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapGr];
+}
+
+-(void)viewTapped:(UITapGestureRecognizer*)tapGr
+{
+    [self.tfMail resignFirstResponder];
+    [self.tfPassword resignFirstResponder];
+}
+
+- (void)onClickBtnCancel
+{
+    [[AppDelegate appDelegate] presentAcctView];
 }
 
 - (void)onClickBtnConfirm
@@ -120,8 +144,7 @@
                     app.infoMgr.userTicket = userticket;
                     [app.infoMgr setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:mail, @"mail", nickname, @"nickname", nil] forKey:SUBINFO_ACCT_KEY];
                     if (hasBindWx) {
-                        [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:YES 
-                                     completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
+                        [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:YES completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
                             if (error) {
                                 NSLog(@"ERR:%@", error);
                                 [[AppDelegate appDelegate] presentAlert:error];
@@ -156,8 +179,18 @@
         } else {
             app.infoMgr.uid = uid;
             app.infoMgr.userTicket = userticket;
-            [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:TRUE
-                        completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
+            [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:TRUE completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
+                if (error) {
+                    NSLog(@"ERR:%@", error);
+                    [[AppDelegate appDelegate] presentAlert:error];
+                } else {
+                    if (!info) {
+                        return;
+                    }
+                    [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
+                    app.infoMgr.userTicket = userticket;
+                    if (hasBindApp) {
+                        [app.networkMgr getAppUserInfo:uid userticket:userticket realtime:TRUE completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
                             if (error) {
                                 NSLog(@"ERR:%@", error);
                                 [[AppDelegate appDelegate] presentAlert:error];
@@ -165,28 +198,17 @@
                                 if (!info) {
                                     return;
                                 }
-                                [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
+                                [app.infoMgr setSubInfo:info forKey:SUBINFO_ACCT_KEY];
                                 app.infoMgr.userTicket = userticket;
-                                if (hasBindApp) {
-                                    [app.networkMgr getAppUserInfo:uid userticket:userticket realtime:TRUE
-                                                 completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
-                                                     if (error) {
-                                                         NSLog(@"ERR:%@", error);
-                                                         [[AppDelegate appDelegate] presentAlert:error];
-                                                     } else {
-                                                         if (!info) {
-                                                             return;
-                                                         }
-                                                         [app.infoMgr setSubInfo:info forKey:SUBINFO_ACCT_KEY];
-                                                         app.infoMgr.userTicket = userticket;
-                                                         [app presentAcctView];
-                                                     }
-                                                 }];
-                                } else {
-                                    [app presentAcctView];
-                                }
+                                [app presentAcctView];
                             }
+                            
                         }];
+                    } else {
+                        [app presentAcctView];
+                    }
+                }                
+            }];
         }
     }];
 }

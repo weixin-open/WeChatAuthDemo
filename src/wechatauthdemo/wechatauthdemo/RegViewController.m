@@ -60,18 +60,22 @@
     self.tfMail = tfMail;
     [tfMail release];
     
-    UITextField *tfNickName = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 100, wEle, 40)];
-    tfNickName.borderStyle = UITextBorderStyleRoundedRect;
-    tfNickName.font = [UIFont systemFontOfSize:15];
-    tfNickName.placeholder = NSLocalizedString(@"nickname", nil);
-    tfNickName.keyboardType = UIKeyboardTypeDefault;
-    tfNickName.returnKeyType = UIReturnKeyDone;
-    tfNickName.clearButtonMode = UITextFieldViewModeWhileEditing;
-    tfNickName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    tfNickName.delegate = self;
-    [self.view addSubview:tfNickName];
-    self.tfNickName = tfNickName;
-    [tfNickName release];
+    if (![[AppDelegate appDelegate].infoMgr isSubInfoExist:SUBINFO_WX_KEY]) {
+        UITextField *tfNickName = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 100, wEle, 40)];
+        tfNickName.borderStyle = UITextBorderStyleRoundedRect;
+        tfNickName.font = [UIFont systemFontOfSize:15];
+        tfNickName.placeholder = NSLocalizedString(@"nickname", nil);
+        tfNickName.keyboardType = UIKeyboardTypeDefault;
+        tfNickName.returnKeyType = UIReturnKeyDone;
+        tfNickName.clearButtonMode = UITextFieldViewModeWhileEditing;
+        tfNickName.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        tfNickName.delegate = self;
+        [self.view addSubview:tfNickName];
+        self.tfNickName = tfNickName;
+        [tfNickName release];
+    } else {
+        [self.tfMail setFrame:CGRectMake(xEle, 100, wEle, 40)];
+    }
     
     UITextField *tfPassword = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 150, wEle, 40)];
     tfPassword.borderStyle = UITextBorderStyleRoundedRect;
@@ -114,12 +118,30 @@
     [btnCancel setFrame:CGRectMake(xEle, h - 120, wEle, 80)];
     [btnCancel addTarget:self action:@selector(onClickBtnCancel) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnCancel];
+    
+    UITapGestureRecognizer *tapGr = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)] autorelease];
+    tapGr.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapGr];
+}
+
+-(void)viewTapped:(UITapGestureRecognizer*)tapGr
+{
+    [self.tfMail resignFirstResponder];
+    if (self.tfNickName) {
+        [self.tfNickName resignFirstResponder];
+    }
+    [self.tfPassword resignFirstResponder];
+    [self.tfConfirm resignFirstResponder];
 }
 
 - (void)onClickBtnConfirm
 {
     NSString* mail = [self.tfMail text];
-    NSString* nickname = [self.tfNickName text];
+    NSString* nickname = nil;
+    if (self.tfNickName) {
+        nickname = [self.tfNickName text];
+    }
+    [self.tfNickName text];
     NSString* password = [self.tfPassword text];
     NSString* confirm_pwd = [self.tfConfirm text];
     
@@ -136,7 +158,7 @@
         
         if ([app.infoMgr isSubInfoExist:SUBINFO_WX_KEY])
         {
-            [[AppDelegate appDelegate].networkMgr wxBindNewApp:app.infoMgr.uid userticket:app.infoMgr.userTicket mail:mail nickname:nickname password:password completionHandler:^(NSString *error, NSNumber *uid, NSString *userticket, NSString *nickname)
+            [[AppDelegate appDelegate].networkMgr wxBindNewApp:app.infoMgr.uid userticket:app.infoMgr.userTicket mail:mail password:password completionHandler:^(NSString *error, NSNumber *uid, NSString *userticket, NSString *nickname)
             {
                 if (error) {
                     NSLog(@"ERR:%@", error);
@@ -208,7 +230,7 @@
 
 - (void)onClickBtnCancel
 {
-    [[AppDelegate appDelegate] presentLoginView];
+    [[AppDelegate appDelegate] presentLoginView:NO];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

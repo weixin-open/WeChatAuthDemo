@@ -24,7 +24,7 @@
 @property (nonatomic, retain) NetworkManager *networkMgr;
 
 - (void) presentAcctView;
-- (void) presentLoginView;
+- (void) presentLoginView:(BOOL)toBind;
 - (void) presentRegView;
 - (void) presentAlert:(NSObject*)error;
 

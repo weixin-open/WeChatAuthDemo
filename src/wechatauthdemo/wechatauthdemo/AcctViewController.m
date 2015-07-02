@@ -24,6 +24,8 @@
     int wEle = 200;
     int xEle = (w - wEle)/2;
     
+    int hAcctInfo = 0;
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     AppDelegate* app = [AppDelegate appDelegate];
@@ -53,6 +55,8 @@
         [self.view addSubview:tvAcct];
         [tvAcct release];
         
+        hAcctInfo = 100;
+        
     } else {
         UIButton *btnLogin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [btnLogin setTitle:NSLocalizedString(@"bind existed account", nil) forState:UIControlStateNormal];
@@ -78,7 +82,7 @@
         [strBuf appendFormat:@"%@ : %@\n", NSLocalizedString(@"sex", nil), sexStr];
         [strBuf appendFormat:@"%@ : \n", NSLocalizedString(@"weixin head image", nil)];
         
-        UILabel *lbWx = [[UILabel alloc]initWithFrame:CGRectMake(0, 140, w, 30)];
+        UILabel *lbWx = [[UILabel alloc]initWithFrame:CGRectMake(0, 40+hAcctInfo, w, 30)];
         lbWx.text = NSLocalizedString(@"wx info", nil);
         lbWx.font = [UIFont systemFontOfSize:19];
         lbWx.numberOfLines = 1;
@@ -87,7 +91,7 @@
         lbWx.textAlignment = NSTextAlignmentCenter;
         [self.view addSubview:lbWx];
         
-        UITextView *tvWx = [[UITextView alloc] initWithFrame:CGRectMake(30, 180, w-2*30, 120)];
+        UITextView *tvWx = [[UITextView alloc] initWithFrame:CGRectMake(30, 80+hAcctInfo, w-2*30, 120)];
         tvWx.scrollEnabled = YES;
         tvWx.editable = NO;
         tvWx.font = [UIFont systemFontOfSize:15];
@@ -95,7 +99,7 @@
         [self.view addSubview:tvWx];
         [tvWx release];
         
-        UIImageView *imageView=[[[UIImageView alloc] initWithFrame:CGRectMake(w/2-40, 270, 80, 80)] autorelease];
+        UIImageView *imageView=[[[UIImageView alloc] initWithFrame:CGRectMake(w/2-40, 170+hAcctInfo, 80, 80)] autorelease];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSString *imgUrl = [NSString stringWithFormat:@"%@", [wechatInfo valueForKey:@"headimgurl"]];
@@ -136,7 +140,7 @@
 
 - (void)onClickBtnLogin
 {
-    [[AppDelegate appDelegate] presentLoginView];
+    [[AppDelegate appDelegate] presentLoginView:YES];
 }
 
 - (void)onClickBtnReg
@@ -159,8 +163,15 @@
         } else {
             app.infoMgr.uid = uid;
             app.infoMgr.userTicket = userticket;
-            [[AppDelegate appDelegate].infoMgr delInfo];
-            [[AppDelegate appDelegate] presentLoginView];
+            [app.infoMgr delSubInfo:SUBINFO_WX_KEY];
+            dispatch_queue_t queue = dispatch_get_main_queue();
+            dispatch_async(queue, ^{
+                NSArray *viewsToRemove = [self.view subviews];
+                for (UIView *v in viewsToRemove) {
+                    [v removeFromSuperview];
+                }
+                [self viewDidLoad];
+            });
         }
     }];
 }
@@ -207,7 +218,7 @@
 - (void)onClickBtnLogout
 {
     [[AppDelegate appDelegate].infoMgr delInfo];
-    [[AppDelegate appDelegate] presentLoginView];
+    [[AppDelegate appDelegate] presentLoginView:NO];
 }
 
 - (void)didReceiveMemoryWarning {

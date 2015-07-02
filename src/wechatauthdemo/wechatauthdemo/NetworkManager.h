@@ -22,7 +22,7 @@
 
 - (void)wxBindApp:(NSNumber*)uid userticket:(NSString*)userticket mail:(NSString*)mail password:(NSString*)password completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname))handler;
 
-- (void)wxBindNewApp:(NSNumber*)uid userticket:(NSString*)userticket mail:(NSString*)mail nickname:(NSString*)nickname password:(NSString*)password completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname))handler;
+- (void)wxBindNewApp:(NSNumber*)uid userticket:(NSString*)userticket mail:(NSString*)mail password:(NSString*)password completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname))handler;
 
 - (void)appBindWx:(NSNumber*)uid userticket:(NSString*)userticket code:(NSString*)code completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket))handler;
 

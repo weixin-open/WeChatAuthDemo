@@ -45,7 +45,7 @@
     [WXApi registerApp:@"wx17ef1eaef46752cb" withDescription:@"demo 2.0"];
     // [WXApi registerApp:@"wxd930ea5d5a258f4f" withDescription:@"wechatauthdemo 0.1.0"];
     
-    [self presentLoginView];
+    [self presentLoginView:NO];
     
     return YES;
 }
@@ -60,11 +60,11 @@
     return  [WXApi handleOpenURL:url delegate:self.wxAuthMgr];
 }
 
-- (void)presentLoginView
+- (void)presentLoginView:(BOOL)toBind
 {
     dispatch_queue_t queue = dispatch_get_main_queue();
     dispatch_async(queue, ^{
-        if ([self.infoMgr isInfoExist]) {
+        if (!toBind && [self.infoMgr isInfoExist]) {
             [self presentAcctView];
             return;
         }
@@ -78,7 +78,7 @@
     dispatch_queue_t queue = dispatch_get_main_queue();
     dispatch_async(queue, ^{
         if (![[self infoMgr] isInfoExist]) {
-            [self presentLoginView];
+            [self presentLoginView:NO];
             return;
         }
         self.window.rootViewController = [[[AcctViewController alloc] init] autorelease];

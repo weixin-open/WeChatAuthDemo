@@ -73,7 +73,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
           completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname))handler
 {
     NSDictionary *jsonObject = [NSDictionary dictionaryWithObjectsAndKeys:
-                                uid, @"uid", userticket, @"userticket", mail, @"mail", password, @"pwd", nil];
+                                uid, @"uid", userticket, @"userticket", mail, @"mail", password, @"pwd", [NSNumber numberWithBool:NO], @"to_create", nil];
     NSString *url = [NSString stringWithFormat:@"%@/wx/bindapp", YOUR_SERVER_ADDR];
     
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
@@ -87,11 +87,11 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
     }];
 }
 
-- (void)wxBindNewApp:(NSNumber*)uid userticket:(NSString*)userticket mail:(NSString*)mail nickname:(NSString*)nickname password:(NSString*)password completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname))handler
+- (void)wxBindNewApp:(NSNumber*)uid userticket:(NSString*)userticket mail:(NSString*)mail password:(NSString*)password completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname))handler
 {
     NSDictionary *jsonObject = [NSDictionary dictionaryWithObjectsAndKeys:
-                                uid, @"uid", userticket, @"userticket", mail, @"mail", nickname, @"nickname", password, @"pwd", nil];
-    NSString *url = [NSString stringWithFormat:@"%@/wx/bindnewapp", YOUR_SERVER_ADDR];
+                                uid, @"uid", userticket, @"userticket", mail, @"mail", password, @"pwd", [NSNumber numberWithBool:YES], @"to_create", nil];
+    NSString *url = [NSString stringWithFormat:@"%@/wx/bindapp", YOUR_SERVER_ADDR];
     
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
