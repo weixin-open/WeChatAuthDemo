@@ -24,6 +24,7 @@
 "female" = "女";
 "acct info" = "第三方App账号信息";
 "wx info" = "微信账号信息";
+"weixin head image" = "微信头像";
 "bind existed account" = "绑定已有账号";
 "bind new account" = "绑定新账号";
 "bind weixin" = "绑定微信";

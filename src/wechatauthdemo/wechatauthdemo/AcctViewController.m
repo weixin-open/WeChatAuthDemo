@@ -76,6 +76,7 @@
         [strBuf appendFormat:@"%@ : %@\n", NSLocalizedString(@"city", nil), [wechatInfo valueForKey:@"city"]];
         NSString* sexStr = [[NSString stringWithFormat:@"%@", [wechatInfo valueForKey:@"sex"]] isEqualToString:@"1"] ? NSLocalizedString(@"male", nil) : NSLocalizedString(@"female", nil);
         [strBuf appendFormat:@"%@ : %@\n", NSLocalizedString(@"sex", nil), sexStr];
+        [strBuf appendFormat:@"%@ : \n", NSLocalizedString(@"weixin head image", nil)];
         
         UILabel *lbWx = [[UILabel alloc]initWithFrame:CGRectMake(0, 140, w, 30)];
         lbWx.text = NSLocalizedString(@"wx info", nil);
@@ -94,7 +95,7 @@
         [self.view addSubview:tvWx];
         [tvWx release];
         
-        UIImageView *imageView=[[[UIImageView alloc] initWithFrame:CGRectMake(w/2-40, 280, 80, 80)] autorelease];
+        UIImageView *imageView=[[[UIImageView alloc] initWithFrame:CGRectMake(w/2-40, 270, 80, 80)] autorelease];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSString *imgUrl = [NSString stringWithFormat:@"%@", [wechatInfo valueForKey:@"headimgurl"]];
@@ -181,6 +182,9 @@
                     NSLog(@"ERR:%@", error);
                     [[AppDelegate appDelegate] presentAlert:error];
                 } else {
+                    if (!info) {
+                        return;
+                    }
                     [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
                     app.infoMgr.userTicket = userticket;
                     [app presentAcctView];

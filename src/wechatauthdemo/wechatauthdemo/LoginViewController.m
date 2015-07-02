@@ -126,6 +126,9 @@
                                 NSLog(@"ERR:%@", error);
                                 [[AppDelegate appDelegate] presentAlert:error];
                             } else {
+                                if (!info) {
+                                    return;
+                                }
                                 [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
                                 app.infoMgr.userTicket = userticket;
                                 [app presentAcctView];
@@ -159,6 +162,9 @@
                                 NSLog(@"ERR:%@", error);
                                 [[AppDelegate appDelegate] presentAlert:error];
                             } else {
+                                if (!info) {
+                                    return;
+                                }
                                 [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
                                 app.infoMgr.userTicket = userticket;
                                 if (hasBindApp) {
@@ -168,6 +174,9 @@
                                                          NSLog(@"ERR:%@", error);
                                                          [[AppDelegate appDelegate] presentAlert:error];
                                                      } else {
+                                                         if (!info) {
+                                                             return;
+                                                         }
                                                          [app.infoMgr setSubInfo:info forKey:SUBINFO_ACCT_KEY];
                                                          app.infoMgr.userTicket = userticket;
                                                          [app presentAcctView];
