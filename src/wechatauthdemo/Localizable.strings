@@ -1,0 +1,42 @@
+/* 
+  Localizable.strings
+  wechatauthdemo
+
+  Created by Chuang Chen on 7/2/15.
+  Copyright (c) 2015 boshao. All rights reserved.
+*/
+
+"error" = "错误";
+"mail" = "邮箱";
+"nickname" = "昵称";
+"password" = "密码";
+"confirm password" = "确认密码";
+"confirm" = "确认";
+"login" = "登录";
+"register" = "注册";
+"wxlogin" = "微信登录";
+"ok" = "知道了";
+"cancel" = "取消";
+"logout" = "退出";
+"city" = "城市";
+"sex" = "性别";
+"male" = "男";
+"female" = "女";
+"acct info" = "第三方App账号信息";
+"wx info" = "微信账号信息";
+"bind existed account" = "绑定已有账号";
+"bind new account" = "绑定新账号";
+"bind weixin" = "绑定微信";
+"unbind weixin" = "解绑微信";
+"mail and password cannot be empty" = "邮箱和密码不能为空";
+"mail cannot be empty" = "邮箱不能为空";
+"nickname cannot be empty" = "昵称不能为空";
+"password cannot be empty" = "密码不能为空";
+"password confirm error" = "两次输入的密码不一致";
+"mail already exists" = "邮箱已被注册";
+"mail not exists" = "邮箱未被注册";
+"password incorrect" = "密码错误";
+"app already binded to another weixin" = "账号已经绑定其他微信";
+"uid not exists" = "UID不存在";
+"userticket incorrect" = "userticket不正确";
+"weixin already binded to another app" = "微信已经绑定其他账号";

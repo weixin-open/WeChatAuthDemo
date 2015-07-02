@@ -23,14 +23,15 @@
     return self;
 }
 
-- (void)sendAuthRequest
+- (void)sendAuthRequestWithController:(UIViewController*)viewController delegate:(id<WXAuthDelegate>)delegate
 {
-    SendAuthReq* req = [[SendAuthReq alloc] init];
+    SendAuthReq* req = [[[SendAuthReq alloc] init] autorelease];
     req.scope = @"snsapi_userinfo" ;
     // TODO: random number here
     req.state = @"123" ;
-    [WXApi sendReq:req];
-    [req release];
+    self.delegate = delegate;
+    [WXApi sendAuthReq:req viewController:viewController delegate:self];
+    // [req release];
 }
 
 -(void)onReq:(BaseReq*)req

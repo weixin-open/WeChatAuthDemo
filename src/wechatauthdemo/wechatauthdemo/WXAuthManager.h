@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "WXApi.h"
+#import "WXApiObject.h"
 
 @protocol WXAuthDelegate <NSObject>
 
@@ -22,6 +23,6 @@
 
 @property (nonatomic, assign) id<WXAuthDelegate, NSObject> delegate;
 
-- (void)sendAuthRequest;
+- (void)sendAuthRequestWithController:(UIViewController*)viewController delegate:(id<WXAuthDelegate>)delegate;
 
 @end

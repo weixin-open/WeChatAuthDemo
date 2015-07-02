@@ -27,61 +27,106 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     AppDelegate* app = [AppDelegate appDelegate];
-    NSNumber* uid = app.infoMgr.uid;
-    NSString* userticket = app.infoMgr.userTicket;
     NSDictionary* acctInfo = [app.infoMgr getSubInfo:SUBINFO_ACCT_KEY];
     NSDictionary* wechatInfo = [app.infoMgr getSubInfo:SUBINFO_WX_KEY];
     
-    UITextView *tvInfo = [[UITextView alloc] initWithFrame:CGRectMake(30, 30, w-2*30, h-300)];
-    tvInfo.scrollEnabled = YES;
-    tvInfo.editable = NO;
-    tvInfo.font = [UIFont systemFontOfSize:15];
-    
     NSMutableString *strBuf = [[NSMutableString alloc] init];
-    if (uid != nil) {
-        [strBuf appendString:@"--------- GLOBAL INFO ---------\n"];
-        [strBuf appendFormat:@"%@\n", [NSDictionary dictionaryWithObjectsAndKeys:uid, @"uid", userticket, @"userticket", nil]];
-    }
     if (acctInfo != nil) {
-        [strBuf appendString:@"--------- ACCOUNT INFO ---------\n"];
-        [strBuf appendFormat:@"%@\n", acctInfo];
+        // [strBuf appendString:@"--------- ACCOUNT INFO ---------\n"];
+        [strBuf appendFormat:@"%@ : %@\n", NSLocalizedString(@"mail", nil), [acctInfo valueForKey:@"mail"]];
+        [strBuf appendFormat:@"%@ : %@\n", NSLocalizedString(@"nickname", nil), [acctInfo valueForKey:@"nickname"]];
+        
+        UILabel *lbAcct = [[UILabel alloc]initWithFrame:CGRectMake(0, 40, w, 30)];
+        lbAcct.text = NSLocalizedString(@"acct info", nil);
+        lbAcct.font = [UIFont systemFontOfSize:19];
+        lbAcct.numberOfLines = 1;
+        lbAcct.baselineAdjustment = YES;
+        lbAcct.adjustsFontSizeToFitWidth = YES;
+        lbAcct.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:lbAcct];
+        
+        UITextView *tvAcct = [[UITextView alloc] initWithFrame:CGRectMake(30, 80, w-2*30, 80)];
+        tvAcct.scrollEnabled = YES;
+        tvAcct.editable = NO;
+        tvAcct.font = [UIFont systemFontOfSize:15];
+        [tvAcct setText:strBuf];
+        [self.view addSubview:tvAcct];
+        [tvAcct release];
+        
     } else {
         UIButton *btnLogin = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btnLogin setTitle:@"Bind Existed Account" forState:UIControlStateNormal];
+        [btnLogin setTitle:NSLocalizedString(@"bind existed account", nil) forState:UIControlStateNormal];
         btnLogin.titleLabel.font = [UIFont systemFontOfSize:15];
         [btnLogin setFrame:CGRectMake(xEle, h - 250, wEle, 50)];
         [btnLogin addTarget:self action:@selector(onClickBtnLogin) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnLogin];
         
         UIButton *btnReg = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btnReg setTitle:@"Bind New Account" forState:UIControlStateNormal];
+        [btnReg setTitle:NSLocalizedString(@"bind new account", nil) forState:UIControlStateNormal];
         btnReg.titleLabel.font = [UIFont systemFontOfSize:15];
         [btnReg setFrame:CGRectMake(xEle, h - 200, wEle, 50)];
         [btnReg addTarget:self action:@selector(onClickBtnReg) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnReg];
     }
-    [strBuf appendString:@"\n"];
-    
     if (wechatInfo != nil) {
-        [strBuf appendString:@"--------- WECHAT INFO ---------\n"];
-        [strBuf appendFormat:@"%@\n", wechatInfo];
+        [strBuf setString:@""];
+        
+        // [strBuf appendString:@"--------- WECHAT INFO ---------\n"];
+        [strBuf appendFormat:@"%@ : %@\n", NSLocalizedString(@"nickname", nil), [wechatInfo valueForKey:@"nickname"]];
+        [strBuf appendFormat:@"%@ : %@\n", NSLocalizedString(@"city", nil), [wechatInfo valueForKey:@"city"]];
+        NSString* sexStr = [[NSString stringWithFormat:@"%@", [wechatInfo valueForKey:@"sex"]] isEqualToString:@"1"] ? NSLocalizedString(@"male", nil) : NSLocalizedString(@"female", nil);
+        [strBuf appendFormat:@"%@ : %@\n", NSLocalizedString(@"sex", nil), sexStr];
+        
+        UILabel *lbWx = [[UILabel alloc]initWithFrame:CGRectMake(0, 140, w, 30)];
+        lbWx.text = NSLocalizedString(@"wx info", nil);
+        lbWx.font = [UIFont systemFontOfSize:19];
+        lbWx.numberOfLines = 1;
+        lbWx.baselineAdjustment = YES;
+        lbWx.adjustsFontSizeToFitWidth = YES;
+        lbWx.textAlignment = NSTextAlignmentCenter;
+        [self.view addSubview:lbWx];
+        
+        UITextView *tvWx = [[UITextView alloc] initWithFrame:CGRectMake(30, 180, w-2*30, 120)];
+        tvWx.scrollEnabled = YES;
+        tvWx.editable = NO;
+        tvWx.font = [UIFont systemFontOfSize:15];
+        [tvWx setText:strBuf];
+        [self.view addSubview:tvWx];
+        [tvWx release];
+        
+        UIImageView *imageView=[[[UIImageView alloc] initWithFrame:CGRectMake(w/2-40, 280, 80, 80)] autorelease];
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSString *imgUrl = [NSString stringWithFormat:@"%@", [wechatInfo valueForKey:@"headimgurl"]];
+            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:imgUrl]];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [imageView setImage:[UIImage imageWithData:data]];
+                [self.view addSubview:imageView];
+            });
+        });
     } else {
         UIButton *btnAuth = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [btnAuth setTitle:@"WeChat Bind" forState:UIControlStateNormal];
+        [btnAuth setTitle:NSLocalizedString(@"bind weixin", nil) forState:UIControlStateNormal];
         btnAuth.titleLabel.font = [UIFont systemFontOfSize:15];
         [btnAuth setFrame:CGRectMake(xEle, h - 200, wEle, 50)];
         [btnAuth addTarget:self action:@selector(onClickBtnAuth) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnAuth];
     }
     
-    [tvInfo setText:strBuf];
+    if (acctInfo != nil && wechatInfo != nil) {
+        UIButton *btnUnbind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [btnUnbind setTitle:NSLocalizedString(@"unbind weixin", nil) forState:UIControlStateNormal];
+        btnUnbind.titleLabel.font = [UIFont systemFontOfSize:15];
+        [btnUnbind setFrame:CGRectMake(xEle, h - 200, wEle, 50)];
+        [btnUnbind addTarget:self action:@selector(onClickBtnUnbind) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:btnUnbind];
+    }
+
     [strBuf release];
     
-    [self.view addSubview:tvInfo];
-    [tvInfo release];
-    
     UIButton *btnLogout = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [btnLogout setTitle:@"Logout" forState:UIControlStateNormal];
+    [btnLogout setTitle:NSLocalizedString(@"logout", nil) forState:UIControlStateNormal];
     btnLogout.titleLabel.font = [UIFont systemFontOfSize:15];
     [btnLogout setFrame:CGRectMake(xEle, h - 120, wEle, 50)];
     [btnLogout addTarget:self action:@selector(onClickBtnLogout) forControlEvents:UIControlEventTouchUpInside];
@@ -100,9 +145,25 @@
 
 - (void)onClickBtnAuth
 {
-    [AppDelegate appDelegate].wxAuthMgr.delegate = self;
-    [[AppDelegate appDelegate].wxAuthMgr sendAuthRequest];
+    [[AppDelegate appDelegate].wxAuthMgr sendAuthRequestWithController:self delegate:self];
 }
+
+- (void)onClickBtnUnbind
+{
+    AppDelegate* app = [AppDelegate appDelegate];
+    [app.networkMgr appUnbindWx:app.infoMgr.uid userticket:app.infoMgr.userTicket completionHandler:^(NSString* error, NSNumber* uid, NSString* userticket) {
+        if (error) {
+            NSLog(@"ERR:%@", error);
+            [[AppDelegate appDelegate] presentAlert:error];
+        } else {
+            app.infoMgr.uid = uid;
+            app.infoMgr.userTicket = userticket;
+            [[AppDelegate appDelegate].infoMgr delInfo];
+            [[AppDelegate appDelegate] presentLoginView];
+        }
+    }];
+}
+
 
 - (void)wxAuthSucceed:(NSString*)code
 {
@@ -110,6 +171,7 @@
     [app.networkMgr appBindWx:app.infoMgr.uid userticket:app.infoMgr.userTicket code:code completionHandler:^(NSString *error, NSNumber *uid, NSString *userticket) {
         if (error) {
             NSLog(@"ERR:%@", error);
+            [[AppDelegate appDelegate] presentAlert:error];
         } else {
             app.infoMgr.uid = uid;
             app.infoMgr.userTicket = userticket;
@@ -117,6 +179,7 @@
                         completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info){
                 if (error) {
                     NSLog(@"ERR:%@", error);
+                    [[AppDelegate appDelegate] presentAlert:error];
                 } else {
                     [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
                     app.infoMgr.userTicket = userticket;
@@ -140,7 +203,7 @@
 - (void)onClickBtnLogout
 {
     [[AppDelegate appDelegate].infoMgr delInfo];
-    [[AppDelegate appDelegate] presentHomeView];
+    [[AppDelegate appDelegate] presentLoginView];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -38,10 +38,14 @@
 {
     // Override point for customization after application launch.
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    //向微信注册
-    [WXApi registerApp:@"wx9bb52a653a60a1d3" withDescription:@"wechatauthdemo 0.1.0"];
+    // 向微信注册
+    // from dotali
+    // [WXApi registerApp:@"wx9bb52a653a60a1d3" withDescription:@"demo 2.0"];
+    // from tiinpeng
+    [WXApi registerApp:@"wx17ef1eaef46752cb" withDescription:@"demo 2.0"];
+    // [WXApi registerApp:@"wxd930ea5d5a258f4f" withDescription:@"wechatauthdemo 0.1.0"];
     
-    [self presentHomeView];
+    [self presentLoginView];
     
     return YES;
 }
@@ -56,7 +60,7 @@
     return  [WXApi handleOpenURL:url delegate:self.wxAuthMgr];
 }
 
-- (void)presentHomeView
+- (void)presentLoginView
 {
     dispatch_queue_t queue = dispatch_get_main_queue();
     dispatch_async(queue, ^{
@@ -64,7 +68,7 @@
             [self presentAcctView];
             return;
         }
-        self.window.rootViewController = [[[HomeViewController alloc] init] autorelease];
+        self.window.rootViewController = [[[LoginViewController alloc] init] autorelease];
         [self.window makeKeyAndVisible];
     });
 }
@@ -74,19 +78,10 @@
     dispatch_queue_t queue = dispatch_get_main_queue();
     dispatch_async(queue, ^{
         if (![[self infoMgr] isInfoExist]) {
-            [self presentHomeView];
+            [self presentLoginView];
             return;
         }
         self.window.rootViewController = [[[AcctViewController alloc] init] autorelease];
-        [self.window makeKeyAndVisible];
-    });
-}
-
-- (void)presentLoginView
-{
-    dispatch_queue_t queue = dispatch_get_main_queue();
-    dispatch_async(queue, ^{
-        self.window.rootViewController = [[[LoginViewController alloc] init] autorelease];
         [self.window makeKeyAndVisible];
     });
 }
@@ -97,6 +92,17 @@
     dispatch_async(queue, ^{
         self.window.rootViewController = [[[RegViewController alloc] init] autorelease];
         [self.window makeKeyAndVisible];
+    });
+}
+
+- (void)presentAlert:(NSObject*)error
+{
+    
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    dispatch_async(queue, ^{
+        NSString* errorStr = [NSString stringWithFormat:@"%@", error];
+        UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"error", nil) message:NSLocalizedString(errorStr, nil) delegate:self cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] autorelease];
+        [alert show];
     });
 }
 

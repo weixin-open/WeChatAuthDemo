@@ -7,10 +7,15 @@
 //
 
 #import "NetworkManager.h"
+#import "AppDelegate.h"
 
 @implementation NetworkManager
 
-const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
+// const static NSString *YOUR_SERVER_ADDR = @"http://10.9.177.112:5000";
+// const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
+// const static NSString *YOUR_SERVER_ADDR = @"http://120.204.202.174/demoapi";
+// const static NSString *YOUR_SERVER_ADDR = @"http://api.weixin.qq.com/demoapi";
+const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
 
 - (void)wxLogin:(NSString*)code
           completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname, BOOL hasBindApp))handler
@@ -21,6 +26,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"], [[result valueForKey:@"has_bind_app"] boolValue]);
@@ -37,6 +43,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"], [[result valueForKey:@"has_bind_wx"] boolValue]);
@@ -48,12 +55,14 @@ const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
           completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket))handler
 {
     NSDictionary *jsonObject = [NSDictionary dictionaryWithObjectsAndKeys:mail, @"mail", password, @"pwd", nickname, @"nickname", nil];
-    NSString *url = [NSString stringWithFormat:@"%@/app/createaccount", YOUR_SERVER_ADDR];
+    NSString *url = [NSString stringWithFormat:@"%@/app/create", YOUR_SERVER_ADDR];
     
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
+            NSLog(@"DATA:%@", data);
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
         }
@@ -70,6 +79,24 @@ const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
+        } else {
+            NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"]);
+        }
+    }];
+}
+
+- (void)wxBindNewApp:(NSNumber*)uid userticket:(NSString*)userticket mail:(NSString*)mail nickname:(NSString*)nickname password:(NSString*)password completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname))handler
+{
+    NSDictionary *jsonObject = [NSDictionary dictionaryWithObjectsAndKeys:
+                                uid, @"uid", userticket, @"userticket", mail, @"mail", nickname, @"nickname", password, @"pwd", nil];
+    NSString *url = [NSString stringWithFormat:@"%@/wx/bindnewapp", YOUR_SERVER_ADDR];
+    
+    [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (data == nil) {
+            NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"]);
@@ -86,12 +113,31 @@ const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
         }
     }];
 }
+
+- (void)appUnbindWx:(NSNumber*)uid userticket:(NSString*)userticket
+          completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket))handler
+{
+    NSDictionary *jsonObject = [NSDictionary dictionaryWithObjectsAndKeys:uid, @"uid", userticket, @"userticket", nil];
+    NSString *url = [NSString stringWithFormat:@"%@/app/unbindwx", YOUR_SERVER_ADDR];
+    
+    [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (data == nil) {
+            NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
+        } else {
+            NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
+        }
+    }];
+}
+
 
 - (void)getWxUserInfo:(NSNumber*)uid userticket:(NSString*)userticket realtime:(BOOL)realtime
           completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSDictionary* info))handler
@@ -102,9 +148,10 @@ const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], result);
+            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"wx_userinfo"]);
         }
     }];
 }
@@ -118,9 +165,10 @@ const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], result);
+            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"app_userinfo"]);
         }
     }];
 }
@@ -134,6 +182,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
             NSLog(@"ERR:%@", connectionError);
+            [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
             handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);

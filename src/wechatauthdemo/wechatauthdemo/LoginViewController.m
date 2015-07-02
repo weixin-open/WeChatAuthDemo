@@ -45,11 +45,12 @@
     UITextField *tfMail = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 140, wEle, 40)];
     tfMail.borderStyle = UITextBorderStyleRoundedRect;
     tfMail.font = [UIFont systemFontOfSize:15];
-    tfMail.placeholder = @"mail";
+    tfMail.placeholder = NSLocalizedString(@"mail", nil);
     tfMail.keyboardType = UIKeyboardTypeDefault;
     tfMail.returnKeyType = UIReturnKeyDone;
     tfMail.clearButtonMode = UITextFieldViewModeWhileEditing;
     tfMail.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    tfMail.keyboardType = UIKeyboardTypeEmailAddress;
     tfMail.delegate = self;
     [self.view addSubview:tfMail];
     self.tfMail = tfMail;
@@ -58,29 +59,37 @@
     UITextField *tfPassword = [[UITextField alloc] initWithFrame:CGRectMake(xEle, 200, wEle, 40)];
     tfPassword.borderStyle = UITextBorderStyleRoundedRect;
     tfPassword.font = [UIFont systemFontOfSize:15];
-    tfPassword.placeholder = @"password";
+    tfPassword.placeholder = NSLocalizedString(@"password", nil);
     tfPassword.keyboardType = UIKeyboardTypeDefault;
     tfPassword.returnKeyType = UIReturnKeyDone;
     tfPassword.clearButtonMode = UITextFieldViewModeWhileEditing;
     tfPassword.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    tfPassword.secureTextEntry = YES;
     tfPassword.delegate = self;
     [self.view addSubview:tfPassword];
     self.tfPassword = tfPassword;
     [tfPassword release];
     
     UIButton *btnConfirm = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [btnConfirm setTitle:@"Confirm" forState:UIControlStateNormal];
+    [btnConfirm setTitle:NSLocalizedString(@"login", nil) forState:UIControlStateNormal];
     btnConfirm.titleLabel.font = [UIFont systemFontOfSize:15];
     [btnConfirm setFrame:CGRectMake(xEle, 260, wEle, 40)];
     [btnConfirm addTarget:self action:@selector(onClickBtnConfirm) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btnConfirm];
     
-    UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [btnCancel setTitle:@"Cancel" forState:UIControlStateNormal];
-    btnCancel.titleLabel.font = [UIFont systemFontOfSize:15];
-    [btnCancel setFrame:CGRectMake(xEle, h - 120, wEle, 80)];
-    [btnCancel addTarget:self action:@selector(onClickBtnCancel) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btnCancel];
+    UIButton *btnReg = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [btnReg setTitle:NSLocalizedString(@"register", nil) forState:UIControlStateNormal];
+    btnReg.titleLabel.font = [UIFont systemFontOfSize:15];
+    [btnReg setFrame:CGRectMake(xEle, h-100, wEle, 40)];
+    [btnReg addTarget:self action:@selector(onClickBtnReg) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnReg];
+    
+    UIButton *btnAuth = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [btnAuth setTitle:NSLocalizedString(@"wxlogin", nil) forState:UIControlStateNormal];
+    btnAuth.titleLabel.font = [UIFont systemFontOfSize:15];
+    [btnAuth setFrame:CGRectMake(xEle, h-50, wEle, 40)];
+    [btnAuth addTarget:self action:@selector(onClickBtnAuth) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btnAuth];
 }
 
 - (void)onClickBtnConfirm
@@ -93,6 +102,7 @@
             [app.networkMgr wxBindApp:app.infoMgr.uid userticket:app.infoMgr.userTicket mail:mail password:password completionHandler:^(NSString *error, NSNumber *uid, NSString *userticket, NSString *nickname) {
                 if (error) {
                     NSLog(@"ERR:%@", error);
+                    [[AppDelegate appDelegate] presentAlert:error];
                 } else {
                     app.infoMgr.uid = uid;
                     app.infoMgr.userTicket = userticket;
@@ -104,6 +114,7 @@
             [app.networkMgr appLogin:mail password:password completionHandler:^(NSString *error, NSNumber* uid, NSString *userticket, NSString *nickname, BOOL hasBindWx) {
                 if (error) {
                     NSLog(@"ERR:%@", error);
+                    [[AppDelegate appDelegate] presentAlert:error];
                 } else {
                     app.infoMgr.uid = uid;
                     app.infoMgr.userTicket = userticket;
@@ -113,6 +124,7 @@
                                      completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
                             if (error) {
                                 NSLog(@"ERR:%@", error);
+                                [[AppDelegate appDelegate] presentAlert:error];
                             } else {
                                 [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
                                 app.infoMgr.userTicket = userticket;
@@ -127,13 +139,67 @@
         }
         
     } else {
-        // TODO: add alert, mail and password cannot be empty
+        [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"error", nil) message:NSLocalizedString(@"mail and password cannot be empty", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] autorelease] show];
     }
 }
 
-- (void)onClickBtnCancel
+- (void)wxAuthSucceed:(NSString*)code
 {
-    [[AppDelegate appDelegate] presentHomeView];
+    AppDelegate* app = [AppDelegate appDelegate];
+    [app.networkMgr wxLogin:code completionHandler:^(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname, BOOL hasBindApp) {
+        if (error) {
+            NSLog(@"ERR:%@", error);
+            [[AppDelegate appDelegate] presentAlert:error];
+        } else {
+            app.infoMgr.uid = uid;
+            app.infoMgr.userTicket = userticket;
+            [app.networkMgr getWxUserInfo:uid userticket:userticket realtime:TRUE
+                        completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
+                            if (error) {
+                                NSLog(@"ERR:%@", error);
+                                [[AppDelegate appDelegate] presentAlert:error];
+                            } else {
+                                [app.infoMgr setSubInfo:info forKey:SUBINFO_WX_KEY];
+                                app.infoMgr.userTicket = userticket;
+                                if (hasBindApp) {
+                                    [app.networkMgr getAppUserInfo:uid userticket:userticket realtime:TRUE
+                                                 completionHandler:^(NSString *error, NSNumber* uid, NSString* userticket, NSDictionary *info) {
+                                                     if (error) {
+                                                         NSLog(@"ERR:%@", error);
+                                                         [[AppDelegate appDelegate] presentAlert:error];
+                                                     } else {
+                                                         [app.infoMgr setSubInfo:info forKey:SUBINFO_ACCT_KEY];
+                                                         app.infoMgr.userTicket = userticket;
+                                                         [app presentAcctView];
+                                                     }
+                                                 }];
+                                } else {
+                                    [app presentAcctView];
+                                }
+                            }
+                        }];
+        }
+    }];
+}
+
+- (void)wxAuthDenied
+{
+    
+}
+
+- (void)wxAuthCancel
+{
+    
+}
+
+- (void)onClickBtnReg
+{
+    [[AppDelegate appDelegate] presentRegView];
+}
+
+- (void)onClickBtnAuth
+{
+    [[AppDelegate appDelegate].wxAuthMgr sendAuthRequestWithController:self delegate:self];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

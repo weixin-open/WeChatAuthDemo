@@ -62,20 +62,18 @@ NSString * const SUBINFO_WX_KEY =@"wechatinfo";
     self.userTicket = [userDefaults valueForKey:@"userticket"];
     
     // mock
-    self.uid = [NSNumber numberWithInt:100];
-    self.userTicket = @"abcd";
+    // self.uid = [NSNumber numberWithInt:100];
+    // self.userTicket = @"abcd";
     // mock account info
     // [self setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"BOSHAO", @"nickname", @"daboshao@yeah.net", @"mail", nil] forKey:SUBINFO_ACCT_KEY];
     // mock wechat info
-    // if (NO)
-    {
-        [self setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-                          @"OPENID", @"openid",
-                          @"NICKNAME", @"nickname",
-                          @"http://wx.qlogo.cn/mmopeng3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0", @"headimgurl",
-                          @"o6_bmasdasdsad6_2sgVt7hMZOPfL", @"unionid",
-                          nil] forKey:SUBINFO_WX_KEY];
-    }
+    /*
+    [self setSubInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+                      @"OPENID", @"openid",
+                      @"NICKNAME", @"nickname",
+                      @"http://wx.qlogo.cn/mmopeng3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/0", @"headimgurl",
+                      @"o6_bmasdasdsad6_2sgVt7hMZOPfL", @"unionid",
+                      nil] forKey:SUBINFO_WX_KEY];*/
 }
 
 - (void)delInfo

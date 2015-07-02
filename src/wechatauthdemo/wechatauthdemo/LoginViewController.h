@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WXApiObject.h"
 #import "InfoManager.h"
+#import "WXAuthManager.h"
 #import "NetworkManager.h"
 
-@interface LoginViewController : UIViewController <UITextFieldDelegate>
+@interface LoginViewController : UIViewController <UITextFieldDelegate, WXAuthDelegate>
 
 @property (nonatomic, retain) UITextField* tfMail;
 @property (nonatomic, retain) UITextField* tfPassword;

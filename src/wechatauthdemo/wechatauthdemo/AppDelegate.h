@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "WXApi.h"
-#import "HomeViewController.h"
 #import "LoginViewController.h"
 #import "RegViewController.h"
 #import "AcctViewController.h"
@@ -24,10 +23,10 @@
 @property (nonatomic, retain) WXAuthManager *wxAuthMgr;
 @property (nonatomic, retain) NetworkManager *networkMgr;
 
-- (void) presentHomeView;
 - (void) presentAcctView;
 - (void) presentLoginView;
 - (void) presentRegView;
+- (void) presentAlert:(NSObject*)error;
 
 + (AppDelegate *)appDelegate;
 
