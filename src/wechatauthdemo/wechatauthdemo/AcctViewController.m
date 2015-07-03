@@ -119,6 +119,7 @@
         [self.view addSubview:btnAuth];
     }
     
+    /*
     if (acctInfo != nil && wechatInfo != nil) {
         UIButton *btnUnbind = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [btnUnbind setTitle:NSLocalizedString(@"unbind weixin", nil) forState:UIControlStateNormal];
@@ -127,6 +128,7 @@
         [btnUnbind addTarget:self action:@selector(onClickBtnUnbind) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnUnbind];
     }
+     */
 
     [strBuf release];
     

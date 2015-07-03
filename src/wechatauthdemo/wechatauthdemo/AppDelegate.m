@@ -101,7 +101,7 @@
     dispatch_queue_t queue = dispatch_get_main_queue();
     dispatch_async(queue, ^{
         NSString* errorStr = [NSString stringWithFormat:@"%@", error];
-        UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"error", nil) message:NSLocalizedString(errorStr, nil) delegate:self cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] autorelease];
+        UIAlertView* alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"errmsg", nil) message:NSLocalizedString(errorStr, nil) delegate:self cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] autorelease];
         [alert show];
     });
 }

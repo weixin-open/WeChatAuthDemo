@@ -15,7 +15,8 @@
 // const static NSString *YOUR_SERVER_ADDR = @"http://127.0.0.1:5000";
 // const static NSString *YOUR_SERVER_ADDR = @"http://120.204.202.174/demoapi";
 // const static NSString *YOUR_SERVER_ADDR = @"http://api.weixin.qq.com/demoapi";
-const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
+// const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
+const static NSString *YOUR_SERVER_ADDR = @"http://qytest.weixin.qq.com/demoapi";
 
 - (void)wxLogin:(NSString*)code
           completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSString* nickname, BOOL hasBindApp))handler
@@ -29,7 +30,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
             [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"], [[result valueForKey:@"has_bind_app"] boolValue]);
+            handler([result valueForKey:@"errmsg"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"], [[result valueForKey:@"has_bind_app"] boolValue]);
         }
     }];
 }
@@ -46,7 +47,8 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
             [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"], [[result valueForKey:@"has_bind_wx"] boolValue]);
+            
+            handler([result valueForKey:@"errmsg"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"], [[result valueForKey:@"has_bind_wx"] boolValue]);
         }
     }];
 }
@@ -64,7 +66,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
         } else {
             NSLog(@"DATA:%@", data);
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
+            handler([result valueForKey:@"errmsg"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
         }
     }];
 }
@@ -82,7 +84,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
             [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"]);
+            handler([result valueForKey:@"errmsg"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"]);
         }
     }];
 }
@@ -99,7 +101,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
             [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"]);
+            handler([result valueForKey:@"errmsg"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"nickname"]);
         }
     }];
 }
@@ -116,7 +118,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
             [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
+            handler([result valueForKey:@"errmsg"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
         }
     }];
 }
@@ -133,7 +135,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
             [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
+            handler([result valueForKey:@"errmsg"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
         }
     }];
 }
@@ -151,7 +153,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
             [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"wx_userinfo"]);
+            handler([result valueForKey:@"errmsg"], [[result valueForKey:@"base_info"] valueForKey:@"uid"], [[result valueForKey:@"base_info"] valueForKey:@"userticket"], [result valueForKey:@"user_info"]);
         }
     }];
 }
@@ -160,7 +162,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
     completionHandler:(void (^)(NSString* error, NSNumber* uid, NSString* userticket, NSDictionary* info))handler
 {
     NSDictionary *jsonObject = [NSDictionary dictionaryWithObjectsAndKeys:uid, @"uid", userticket, @"userticket", [NSNumber numberWithBool:realtime], @"realtime", nil];
-    NSString *url = [NSString stringWithFormat:@"%@/app/userinfo", YOUR_SERVER_ADDR];
+    NSString *url = [NSString stringWithFormat:@"%@/app/info", YOUR_SERVER_ADDR];
     
     [self postData:jsonObject toUrl:url completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         if (data == nil) {
@@ -168,7 +170,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
             [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"], [result valueForKey:@"app_userinfo"]);
+            handler([result valueForKey:@"errmsg"], [[result valueForKey:@"base_info"] valueForKey:@"uid"], [[result valueForKey:@"base_info"] valueForKey:@"userticket"], [result valueForKey:@"account_info"]);
         }
     }];
 }
@@ -185,7 +187,7 @@ const static NSString *YOUR_SERVER_ADDR = @"http://wxauthdemo.sinaapp.com";
             [[AppDelegate appDelegate] presentAlert:connectionError];
         } else {
             NSDictionary* result = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-            handler([result valueForKey:@"error"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
+            handler([result valueForKey:@"errmsg"], [result valueForKey:@"uid"], [result valueForKey:@"userticket"]);
         }
     }];
 }

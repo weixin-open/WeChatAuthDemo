@@ -88,7 +88,7 @@
         UIButton *btnAuth = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [btnAuth setTitle:NSLocalizedString(@"wxlogin", nil) forState:UIControlStateNormal];
         btnAuth.titleLabel.font = [UIFont systemFontOfSize:15];
-        [btnAuth setFrame:CGRectMake(xEle, h-50, wEle, 40)];
+        [btnAuth setFrame:CGRectMake(xEle, h-70, wEle, 40)];
         [btnAuth addTarget:self action:@selector(onClickBtnAuth) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:btnAuth];
     } else {
@@ -165,7 +165,7 @@
         }
         
     } else {
-        [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"error", nil) message:NSLocalizedString(@"mail and password cannot be empty", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] autorelease] show];
+        [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"errmsg", nil) message:NSLocalizedString(@"mail and password cannot be empty", nil) delegate:self cancelButtonTitle:NSLocalizedString(@"ok", nil) otherButtonTitles:nil] autorelease] show];
     }
 }
 
@@ -207,7 +207,7 @@
                     } else {
                         [app presentAcctView];
                     }
-                }                
+                }
             }];
         }
     }];

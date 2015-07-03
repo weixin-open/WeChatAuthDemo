@@ -224,7 +224,7 @@
             }
         }];
     } else {
-        [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"error", nil) message:NSLocalizedString(@"mail or password error", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+        [[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"errmsg", nil) message:NSLocalizedString(@"mail or password error", nil) delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
     }*/
 }
 
