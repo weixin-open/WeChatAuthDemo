@@ -1,0 +1,27 @@
+//
+//  ADNetworkConfigItem.h
+//
+//  Created by Jeason  on 20/08/2015
+//  Copyright (c) 2015 Tencent. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+extern NSString *const kEncryptWholePacketParaKey;
+extern NSString *const kDecryptWholePacketRespKey;
+
+@interface ADNetworkConfigItem : NSObject <NSCoding, NSCopying>
+
+@property (nonatomic, strong) NSString *cgiName;
+@property (nonatomic, strong) NSString *encryptKeyPath;
+@property (nonatomic, assign) EncryptAlgorithm encryptAlgorithm;
+@property (nonatomic, assign) EncryptAlgorithm decryptAlgorithm;
+@property (nonatomic, strong) NSString *requestPath;
+@property (nonatomic, strong) NSString *decryptKeyPath;
+@property (nonatomic, strong) NSString *httpMethod;
+
++ (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
+- (instancetype)initWithDictionary:(NSDictionary *)dict;
+- (NSDictionary *)dictionaryRepresentation;
+
+@end
