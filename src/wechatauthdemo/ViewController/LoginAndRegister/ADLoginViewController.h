@@ -10,4 +10,6 @@
 
 @interface ADLoginViewController : UIViewController
 
+@property (nonatomic, assign) BOOL isUsedForBindApp;
+
 @end

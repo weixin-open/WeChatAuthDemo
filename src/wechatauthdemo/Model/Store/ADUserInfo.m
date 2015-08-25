@@ -16,6 +16,8 @@ NSString *const kADUserInfoPwdH1 = @"pwd_h1";
 NSString *const kADUserInfoLoginTicket = @"login_ticket";
 NSString *const kADUserInfoUnionid = @"unionid";
 NSString *const kADUserInfoAuthCode = @"auth_code";
+NSString *const kADUserInfoHeadimgurl = @"headimgurl";
+NSString *const kADUserInfoSex = @"sex";
 
 @interface ADUserInfo ()
 
@@ -33,6 +35,8 @@ NSString *const kADUserInfoAuthCode = @"auth_code";
 @synthesize loginTicket = _loginTicket;
 @synthesize unionid = _unionid;
 @synthesize authCode = _authCode;
+@synthesize headimgurl = _headimgurl;
+@synthesize sex = _sex;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
@@ -54,6 +58,8 @@ NSString *const kADUserInfoAuthCode = @"auth_code";
             self.loginTicket = [self objectOrNilForKey:kADUserInfoLoginTicket fromDictionary:dict];
             self.unionid = [self objectOrNilForKey:kADUserInfoUnionid fromDictionary:dict];
             self.authCode = [self objectOrNilForKey:kADUserInfoAuthCode fromDictionary:dict];
+            self.headimgurl = [self objectOrNilForKey:kADUserInfoHeadimgurl fromDictionary:dict];
+            self.sex = [[self objectOrNilForKey:kADUserInfoSex fromDictionary:dict] intValue];
     }
     
     return self;
@@ -68,6 +74,22 @@ static ADUserInfo *currentUser_ = nil;
     return currentUser_;
 }
 
+- (BOOL)save {
+    [[NSUserDefaults standardUserDefaults] setObject:@(self.uin)
+                                              forKey:kADUserInfoUin];
+    [[NSUserDefaults standardUserDefaults] setObject:self.loginTicket
+                                              forKey:kADUserInfoLoginTicket];
+    return [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (BOOL)load {
+    self.uin = [[self objectOrNilForKey:kADUserInfoUin
+                        fromUserDefault:[NSUserDefaults standardUserDefaults]] intValue];
+    self.loginTicket = [self objectOrNilForKey:kADUserInfoLoginTicket
+                               fromUserDefault:[NSUserDefaults standardUserDefaults]];
+    return self.uin != 0 && self.loginTicket != nil;
+}
+
 - (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
@@ -79,6 +101,8 @@ static ADUserInfo *currentUser_ = nil;
     [mutableDict setValue:self.loginTicket forKey:kADUserInfoLoginTicket];
     [mutableDict setValue:self.unionid forKey:kADUserInfoUnionid];
     [mutableDict setValue:self.authCode forKey:kADUserInfoAuthCode];
+    [mutableDict setValue:self.headimgurl forKey:kADUserInfoHeadimgurl];
+    [mutableDict setValue:@(self.sex) forKey:kADUserInfoSex];
     
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -91,6 +115,11 @@ static ADUserInfo *currentUser_ = nil;
 #pragma mark - Helper Method
 - (id)objectOrNilForKey:(id)aKey fromDictionary:(NSDictionary *)dict
 {
+    id object = [dict objectForKey:aKey];
+    return [object isEqual:[NSNull null]] ? nil : object;
+}
+
+- (id)objectOrNilForKey:(id)aKey fromUserDefault:(NSUserDefaults *)dict {
     id object = [dict objectForKey:aKey];
     return [object isEqual:[NSNull null]] ? nil : object;
 }
@@ -110,6 +139,8 @@ static ADUserInfo *currentUser_ = nil;
     self.loginTicket = [aDecoder decodeObjectForKey:kADUserInfoLoginTicket];
     self.unionid = [aDecoder decodeObjectForKey:kADUserInfoUnionid];
     self.authCode = [aDecoder decodeObjectForKey:kADUserInfoAuthCode];
+    self.headimgurl = [aDecoder decodeObjectForKey:kADUserInfoHeadimgurl];
+    self.sex = [aDecoder decodeIntForKey:kADUserInfoSex];
     
     return self;
 }
@@ -125,6 +156,8 @@ static ADUserInfo *currentUser_ = nil;
     [aCoder encodeObject:_loginTicket forKey:kADUserInfoLoginTicket];
     [aCoder encodeObject:_unionid forKey:kADUserInfoUnionid];
     [aCoder encodeObject:_authCode forKey:kADUserInfoAuthCode];
+    [aCoder encodeObject:_headimgurl forKey:kADUserInfoHeadimgurl];
+    [aCoder encodeInt:_sex forKey:kADUserInfoSex];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -141,6 +174,8 @@ static ADUserInfo *currentUser_ = nil;
         copy.loginTicket = [self.loginTicket copyWithZone:zone];
         copy.unionid = [self.unionid copyWithZone:zone];
         copy.authCode = [self.authCode copyWithZone:zone];
+        copy.headimgurl = [self.headimgurl copyWithZone:zone];
+        copy.sex = self.sex;
     }
     
     return copy;

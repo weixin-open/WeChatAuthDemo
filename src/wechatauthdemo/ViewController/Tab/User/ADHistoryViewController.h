@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ADHistoryViewController : UIViewController
+@interface ADHistoryViewController : UITableViewController
 
+- (instancetype)initWithStyle:(UITableViewStyle)style
+                   AccessLogs:(NSArray *)accessLogArray;
 @end

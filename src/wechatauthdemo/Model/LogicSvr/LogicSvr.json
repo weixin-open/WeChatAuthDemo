@@ -44,6 +44,7 @@
             "errmsg" : "1234"
         },
         "unionid" : "",
+        "sex":1,
         "refresh_token_expire_time" : 12345,
         "access_token_expire_time" : 12345,
         "access_log" : [

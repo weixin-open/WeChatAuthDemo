@@ -115,7 +115,7 @@ typedef enum {
             Password:(NSString *)pwd
       WithCompletion:(LoginCallBack)completion {
     NSParameterAssert(mail);
-//    NSAssert(self.state != ADNetworkEngineStateHaveConnected, @"You Can Not Login With Account Until You Have Connected");
+//    NSAssert(self.state == ADNetworkEngineStateHaveConnected, @"You Can Not Login With Account Until You Have Connected");
     
     [[self.session JSONTaskForHost:self.host
                               Para:@{
@@ -135,7 +135,7 @@ typedef enum {
 - (void)wxLoginForAuthCode:(NSString *)code
             WithCompletion:(WXLoginCallBack)completion {
     NSParameterAssert(code);
-//    NSAssert(self.state != ADNetworkEngineStateHaveConnected, @"You Can Not Login With WeChat Until You Have Connected");
+//    NSAssert(self.state == ADNetworkEngineStateHaveConnected, @"You Can Not Login With WeChat Until You Have Connected");
     
     [[self.session JSONTaskForHost:self.host
                               Para:@{
@@ -155,7 +155,7 @@ typedef enum {
              LoginTicket:(NSString *)loginTicket
           WithCompletion:(CheckLoginCallBack)completion {
     NSParameterAssert(loginTicket);
-//    NSAssert(self.state != ADNetworkEngineStateHaveWXLogin || self.state != ADNetworkEngineStateHaveLoginAPP,
+//    NSAssert(self.state == ADNetworkEngineStateHaveWXLogin || self.state != ADNetworkEngineStateHaveLoginAPP,
 //             @"You Should CheckLogin ONLY After You Have Login With Account Or Login With WeChat");
     
     [[self.session JSONTaskForHost:self.host
@@ -214,6 +214,7 @@ typedef enum {
                               Para:@{
                                      @"uin": @(uin),
                                      @"req_buffer": @{
+                                             @"uin": @(uin),
                                              @"login_ticket": loginTicket,
                                              @"mail": mail,
                                              @"pwd_h1": pwd,
@@ -242,6 +243,7 @@ typedef enum {
                               Para:@{
                                      @"uin": @(uin),
                                      @"req_buffer": @{
+                                             @"uin": @(uin),
                                              @"login_ticket": loginTicket,
                                              @"code": code
                                              }
@@ -253,12 +255,17 @@ typedef enum {
                     }] resume];
 }
 
+- (void)disConnect {
+//    NSAssert(self.state & ADNetworkEngineStateHaveCheckLogin, @"You Can Logout Until You Have Logined");
+    self.session = nil;
+}
+
 #pragma mark - Lazy Initializer
 - (NSURLSession *)session {
     if (_session == nil) {
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         _session = [NSURLSession sessionWithConfiguration:config];
-        _session.sessionKey = @"31323334353637383930313233343536";
+        _session.sessionKey = [NSString randomKey];
         _session.publicKey = self.RSAKey;
     }
     return _session;

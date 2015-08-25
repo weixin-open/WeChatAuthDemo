@@ -17,7 +17,6 @@
 @class ADAPPBindWXResp;
 @class ADWXLoginResp;
 
-typedef void(^GenericCallBack)(id resp);
 typedef void(^ConnectCallBack)(ADConnectResp *resp);
 typedef void(^RegisterCallBack)(ADRegisterResp *resp);
 typedef void(^CheckLoginCallBack)(ADCheckLoginResp *resp);
@@ -70,5 +69,7 @@ typedef void(^WXLoginCallBack)(ADWXLoginResp *resp);
             LoginTicket:(NSString *)loginTicket
                AuthCode:(NSString *)code
          WithCompletion:(AppBindWXCallBack)completion;
+
+- (void)disConnect;
 
 @end

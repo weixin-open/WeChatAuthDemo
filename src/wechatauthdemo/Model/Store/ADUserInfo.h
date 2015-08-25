@@ -19,11 +19,15 @@
 @property (nonatomic, strong) NSString *loginTicket;
 @property (nonatomic, strong) NSString *unionid;
 @property (nonatomic, strong) NSString *authCode;
+@property (nonatomic, strong) NSString *headimgurl;
+@property (nonatomic, assign) ADSexType sex;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
 - (NSDictionary *)dictionaryRepresentation;
 
 + (instancetype)currentUser;
+- (BOOL)save;
+- (BOOL)load;
 
 @end

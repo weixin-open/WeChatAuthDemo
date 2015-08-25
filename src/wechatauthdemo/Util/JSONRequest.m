@@ -6,26 +6,57 @@
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
+#import <objc/runtime.h>
 #import "JSONRequest.h"
 #import "AES.h"
 #import "RSA.h"
 #import "ADNetworkConfigManager.h"
 #import "ADNetworkConfigItem.h"
 
-@implementation NSURLSession (JSONRequest)
+static char publicKeyId;
+static char sessionKeyId;
+
+/**
+ *  iOS7里给NSURL Session增加Category会导致unrecognized selectors exception，
+ *  可以看到iOS7里的NSURLSession在Runtime其实是__NSCFURLSession，
+ *  所以说这个NSURLSession只是一个alias.这里耍个手段在NSObject上添加Category.
+ */
+@implementation NSObject (SessionKey)
+
+- (NSString *)sessionKey {
+    return objc_getAssociatedObject(self, &sessionKeyId);
+}
+
+- (void)setSessionKey:(NSString *)sessionKey {
+    objc_setAssociatedObject(self, &sessionKeyId, sessionKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSString *)publicKey {
+    return objc_getAssociatedObject(self, &publicKeyId);
+}
+
+- (void)setPublicKey:(NSString *)publicKey {
+    objc_setAssociatedObject(self, &publicKeyId, publicKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+@end
+
+@implementation NSObject (JSONRequest)
 
 - (NSURLSessionDataTask *)JSONTaskForHost:(NSString *)host
                                      Para:(NSDictionary *)para
                             ConfigKeyPath:(NSString *)configKeyPath
                            WithCompletion:(JSONCallBack)handler {
+    __weak NSURLSession *selfSession = (NSURLSession *)self;
+    
     ADNetworkConfigItem *config = [[ADNetworkConfigManager sharedManager] getConfigForKeyPath:configKeyPath];
     /* Encrypt Data */
-    NSData *encryptedData = [self encryptJSONObject:para
-                                         ForKeyPath:config.encryptKeyPath
-                                     UsingAlgorithm:config.encryptAlgorithm];
+    NSData *encryptedData = [selfSession encryptJSONObject:para
+                                                ForKeyPath:config.encryptKeyPath
+                                            UsingAlgorithm:config.encryptAlgorithm];
     
     /* 异步请求，在这里备份一份SessionKey，防止返回前SessionKey被修改。*/
-    NSString *preSessionKey = self.sessionKey;
+    NSString *preSessionKey = selfSession.sessionKey;
     
     /* Setup Request */
     NSURL *url = [NSURL URLWithString:[host stringByAppendingString:config.requestPath]];
@@ -35,72 +66,70 @@
     [request setHTTPBody:encryptedData];
     
     /* Setup DataTask */
-    return  [self dataTaskWithRequest:request
-                    completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                        /* Process Network Error */
-                        if (error) {
-                            NSLog(@"NetWork Error: %@", error);
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                handler (nil, error);
-                            });
-                            return;
-                        }
-                        
-                        /* Process Response Error */
-                        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-                        if (httpResponse.statusCode != 200) {
-                            NSLog(@"HTTP Bad Response: %ld", httpResponse.statusCode);
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                NSError *httpError = [NSError errorWithDomain:@"Http Response Error"
-                                                                         code:httpResponse.statusCode
-                                                                     userInfo:nil];
-                                handler (nil, httpError);
-                            });
-                            return;
-                        }
-                        
-                        /* Process JSON Error */
-                        NSError *jsonError = nil;
-                        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
-                                                                             options:NSJSONReadingAllowFragments
-                                                                               error:&jsonError];
-                        if (jsonError) {
-                            NSString *jsonString = [[NSString alloc] initWithData:data
-                                                                         encoding:NSUTF8StringEncoding];
-                            NSLog(@"JSON Error: %@ While Serialize %@", jsonError, jsonString);
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                handler (nil, jsonError);
-                            });
-                            return;
-                        }
-                        
-                        /* Decrypt Dict */
-                        dict = [self decryptJSONObject:dict
-                                            ForKeyPath:config.decryptKeyPath
-                                        UsingAlgorithm:config.decryptAlgorithm
-                                        WithSessionKey:preSessionKey];
-                        
-                        /* Get Response Buffer */
-                        NSString *respString = dict[config.decryptKeyPath];
-                        data = [respString dataUsingEncoding:NSUTF8StringEncoding];
-                        
-                        /* Get Response JSON */
-                        dict = [NSJSONSerialization JSONObjectWithData:data
-                                                               options:NSJSONReadingAllowFragments
-                                                                 error:&jsonError];
-                        if (jsonError) {
-                            NSLog(@"JSON Error: %@ While Serialize %@", jsonError, respString);
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                handler (nil, jsonError);
-                            });
-                            return;
-                        }
-                        
-                        /* Ok, Return */
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            handler (dict, nil);
-                        });
-                    }];
+    return  [selfSession dataTaskWithRequest:request
+                           completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                               /* Process Network Error */
+                               if (error) {
+                                   NSLog(@"NetWork Error: %@", error);
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       handler (nil, error);
+                                   });
+                                   return;
+                               }
+                               /* Process Response Error */
+                               NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                               if (httpResponse.statusCode != 200) {
+                                   NSLog(@"HTTP Bad Response: %ld", (long)httpResponse.statusCode);
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       NSError *httpError = [NSError errorWithDomain:@"Http Response Error"
+                                                                                code:httpResponse.statusCode
+                                                                            userInfo:nil];
+                                       handler (nil, httpError);
+                                   });
+                                   return;
+                               }
+                               /* Process JSON Error */
+                               NSError *jsonError = nil;
+                               NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
+                                                                                    options:NSJSONReadingAllowFragments
+                                                                                      error:&jsonError];
+                               if (jsonError) {
+                                   NSString *jsonString = [[NSString alloc] initWithData:data
+                                                                                encoding:NSUTF8StringEncoding];
+                                   NSLog(@"JSON Error: %@ While Serialize %@", jsonError, jsonString);
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       handler (nil, jsonError);
+                                   });
+                                   return;
+                               }
+                               
+                               /* Decrypt Dict */
+                               dict = [selfSession decryptJSONObject:dict
+                                                          ForKeyPath:config.decryptKeyPath
+                                                      UsingAlgorithm:config.decryptAlgorithm
+                                                      WithSessionKey:preSessionKey];
+                               
+                               /* Get Response Buffer */
+                               NSString *respString = dict[config.decryptKeyPath];
+                               data = [respString dataUsingEncoding:NSUTF8StringEncoding];
+                               
+                               /* Get Response JSON */
+                               dict = [NSJSONSerialization JSONObjectWithData:data
+                                                                      options:NSJSONReadingAllowFragments
+                                                                        error:&jsonError];
+                               if (jsonError) {
+                                   NSLog(@"JSON Error: %@ While Serialize %@", jsonError, respString);
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       handler (nil, jsonError);
+                                   });
+                                   return;
+                               }
+                               
+                               /* Ok, Return */
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   handler (dict, nil);
+                               });
+                           }];
 }
 
 - (NSData *)encryptJSONObject:(NSDictionary *)dict
@@ -127,13 +156,13 @@
         toEncryptData = [numberString dataUsingEncoding:NSASCIIStringEncoding];
     }
     /* Encrypt NSData */
-    if (algorithm & EncryptAlgorithmRSA) {
+    if (algorithm & EncryptAlgorithmRSA) {  /* RSA */
         toEncryptData = [toEncryptData RSAEncryptWithPublicKey:self.publicKey];
     }
-    if (algorithm & EncryptAlgorithmAES) {
+    if (algorithm & EncryptAlgorithmAES) {  /* AES */
         toEncryptData = [toEncryptData AES256EncryptWithKey:self.sessionKey];
     }
-    if (algorithm & EncryptAlgorithmBase64) {
+    if (algorithm & EncryptAlgorithmBase64) {   /* Base64 */
         toEncryptData = [toEncryptData base64EncodedDataWithOptions:0];
     }
     
@@ -203,27 +232,5 @@
                                                  encoding:NSASCIIStringEncoding]
                     forKey:keyPath];
     return [NSDictionary dictionaryWithDictionary:mutableDict];
-}
-@end
-
-static NSString *_sessionKey = nil;
-static NSString *_publicKey = nil;
-
-@implementation NSURLSession (SessionKey)
-
-- (NSString *)sessionKey {
-    return _sessionKey;
-}
-
-- (void)setSessionKey:(NSString *)sessionKey {
-    _sessionKey = sessionKey;
-}
-
-- (void)setPublicKey:(NSString *)publicKey {
-    _publicKey = publicKey;
-}
-
-- (NSString *)publicKey {
-    return _publicKey;
 }
 @end

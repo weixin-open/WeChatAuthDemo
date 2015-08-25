@@ -35,6 +35,8 @@ typedef enum {
     EncryptAlgorithmBase64 = 1 << 2,  /* Base64 Encode/Decode */
 } EncryptAlgorithm;
 
+typedef void(^ButtonCallBack)(id sender);
+
 //A better version of NSLog
 #define NSLog(format, ...) do {                                                                          \
     fprintf(stderr, "<%s : %d> %s\n",                                           \

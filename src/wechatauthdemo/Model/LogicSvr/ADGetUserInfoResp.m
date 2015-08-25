@@ -1,7 +1,7 @@
 //
 //  ADGetUserInfoResp.m
 //
-//  Created by Jeason  on 14/08/2015
+//  Created by Jeason  on 24/08/2015
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
@@ -14,11 +14,13 @@ NSString *const kADGetUserInfoRespMail = @"mail";
 NSString *const kADGetUserInfoRespOpenid = @"openid";
 NSString *const kADGetUserInfoRespNickname = @"nickname";
 NSString *const kADGetUserInfoRespBaseResp = @"base_resp";
+NSString *const kADGetUserInfoRespHeadimgurl = @"headimgurl";
 NSString *const kADGetUserInfoRespUnionid = @"unionid";
 NSString *const kADGetUserInfoRespRefreshTokenExpireTime = @"refresh_token_expire_time";
+NSString *const kADGetUserInfoRespSex = @"sex";
 NSString *const kADGetUserInfoRespAccessTokenExpireTime = @"access_token_expire_time";
 NSString *const kADGetUserInfoRespAccessLog = @"access_log";
-NSString *const kADGetUserInfoRespHeadImgUrl = @"headimgurl";
+
 
 @interface ADGetUserInfoResp ()
 
@@ -32,11 +34,13 @@ NSString *const kADGetUserInfoRespHeadImgUrl = @"headimgurl";
 @synthesize openid = _openid;
 @synthesize nickname = _nickname;
 @synthesize baseResp = _baseResp;
+@synthesize headimgurl = _headimgurl;
 @synthesize unionid = _unionid;
 @synthesize refreshTokenExpireTime = _refreshTokenExpireTime;
+@synthesize sex = _sex;
 @synthesize accessTokenExpireTime = _accessTokenExpireTime;
 @synthesize accessLog = _accessLog;
-@synthesize headimgurl = _headimgurl;
+
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
@@ -54,10 +58,11 @@ NSString *const kADGetUserInfoRespHeadImgUrl = @"headimgurl";
             self.openid = [self objectOrNilForKey:kADGetUserInfoRespOpenid fromDictionary:dict];
             self.nickname = [self objectOrNilForKey:kADGetUserInfoRespNickname fromDictionary:dict];
             self.baseResp = [ADBaseResp modelObjectWithDictionary:[dict objectForKey:kADGetUserInfoRespBaseResp]];
+            self.headimgurl = [self objectOrNilForKey:kADGetUserInfoRespHeadimgurl fromDictionary:dict];
             self.unionid = [self objectOrNilForKey:kADGetUserInfoRespUnionid fromDictionary:dict];
             self.refreshTokenExpireTime = [[self objectOrNilForKey:kADGetUserInfoRespRefreshTokenExpireTime fromDictionary:dict] doubleValue];
+            self.sex = [[self objectOrNilForKey:kADGetUserInfoRespSex fromDictionary:dict] doubleValue];
             self.accessTokenExpireTime = [[self objectOrNilForKey:kADGetUserInfoRespAccessTokenExpireTime fromDictionary:dict] doubleValue];
-            self.headimgurl = [self objectOrNilForKey:kADGetUserInfoRespHeadImgUrl fromDictionary:dict];
     NSObject *receivedADAccessLog = [dict objectForKey:kADGetUserInfoRespAccessLog];
     NSMutableArray *parsedADAccessLog = [NSMutableArray array];
     if ([receivedADAccessLog isKindOfClass:[NSArray class]]) {
@@ -85,10 +90,11 @@ NSString *const kADGetUserInfoRespHeadImgUrl = @"headimgurl";
     [mutableDict setValue:self.openid forKey:kADGetUserInfoRespOpenid];
     [mutableDict setValue:self.nickname forKey:kADGetUserInfoRespNickname];
     [mutableDict setValue:[self.baseResp dictionaryRepresentation] forKey:kADGetUserInfoRespBaseResp];
+    [mutableDict setValue:self.headimgurl forKey:kADGetUserInfoRespHeadimgurl];
     [mutableDict setValue:self.unionid forKey:kADGetUserInfoRespUnionid];
     [mutableDict setValue:[NSNumber numberWithDouble:self.refreshTokenExpireTime] forKey:kADGetUserInfoRespRefreshTokenExpireTime];
+    [mutableDict setValue:[NSNumber numberWithDouble:self.sex] forKey:kADGetUserInfoRespSex];
     [mutableDict setValue:[NSNumber numberWithDouble:self.accessTokenExpireTime] forKey:kADGetUserInfoRespAccessTokenExpireTime];
-    [mutableDict setValue:self.headimgurl forKey:kADGetUserInfoRespHeadImgUrl];
     NSMutableArray *tempArrayForAccessLog = [NSMutableArray array];
     for (NSObject *subArrayObject in self.accessLog) {
         if([subArrayObject respondsToSelector:@selector(dictionaryRepresentation)]) {
@@ -127,9 +133,10 @@ NSString *const kADGetUserInfoRespHeadImgUrl = @"headimgurl";
     self.openid = [aDecoder decodeObjectForKey:kADGetUserInfoRespOpenid];
     self.nickname = [aDecoder decodeObjectForKey:kADGetUserInfoRespNickname];
     self.baseResp = [aDecoder decodeObjectForKey:kADGetUserInfoRespBaseResp];
+    self.headimgurl = [aDecoder decodeObjectForKey:kADGetUserInfoRespHeadimgurl];
     self.unionid = [aDecoder decodeObjectForKey:kADGetUserInfoRespUnionid];
-    self.headimgurl = [aDecoder decodeObjectForKey:kADGetUserInfoRespHeadImgUrl];
     self.refreshTokenExpireTime = [aDecoder decodeDoubleForKey:kADGetUserInfoRespRefreshTokenExpireTime];
+    self.sex = [aDecoder decodeDoubleForKey:kADGetUserInfoRespSex];
     self.accessTokenExpireTime = [aDecoder decodeDoubleForKey:kADGetUserInfoRespAccessTokenExpireTime];
     self.accessLog = [aDecoder decodeObjectForKey:kADGetUserInfoRespAccessLog];
     return self;
@@ -142,11 +149,12 @@ NSString *const kADGetUserInfoRespHeadImgUrl = @"headimgurl";
     [aCoder encodeObject:_openid forKey:kADGetUserInfoRespOpenid];
     [aCoder encodeObject:_nickname forKey:kADGetUserInfoRespNickname];
     [aCoder encodeObject:_baseResp forKey:kADGetUserInfoRespBaseResp];
+    [aCoder encodeObject:_headimgurl forKey:kADGetUserInfoRespHeadimgurl];
     [aCoder encodeObject:_unionid forKey:kADGetUserInfoRespUnionid];
     [aCoder encodeDouble:_refreshTokenExpireTime forKey:kADGetUserInfoRespRefreshTokenExpireTime];
+    [aCoder encodeDouble:_sex forKey:kADGetUserInfoRespSex];
     [aCoder encodeDouble:_accessTokenExpireTime forKey:kADGetUserInfoRespAccessTokenExpireTime];
     [aCoder encodeObject:_accessLog forKey:kADGetUserInfoRespAccessLog];
-    [aCoder encodeObject:_headimgurl forKey:kADGetUserInfoRespHeadImgUrl];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -159,9 +167,10 @@ NSString *const kADGetUserInfoRespHeadImgUrl = @"headimgurl";
         copy.openid = [self.openid copyWithZone:zone];
         copy.nickname = [self.nickname copyWithZone:zone];
         copy.baseResp = [self.baseResp copyWithZone:zone];
-        copy.unionid = [self.unionid copyWithZone:zone];
         copy.headimgurl = [self.headimgurl copyWithZone:zone];
+        copy.unionid = [self.unionid copyWithZone:zone];
         copy.refreshTokenExpireTime = self.refreshTokenExpireTime;
+        copy.sex = self.sex;
         copy.accessTokenExpireTime = self.accessTokenExpireTime;
         copy.accessLog = [self.accessLog copyWithZone:zone];
     }

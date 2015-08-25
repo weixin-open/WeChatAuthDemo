@@ -21,10 +21,7 @@ typedef void (^JSONCallBack)(NSDictionary *dict, NSError *error);
 
 @interface NSURLSession (SessionKey)
 
-- (void)setSessionKey:(NSString *)sessionKey;
-- (NSString *)sessionKey;
-
-- (void)setPublicKey:(NSString *)publicKey;
-- (NSString *)publicKey;
+@property (nonatomic, retain) NSString *sessionKey;
+@property (nonatomic, retain) NSString *publicKey;
 
 @end

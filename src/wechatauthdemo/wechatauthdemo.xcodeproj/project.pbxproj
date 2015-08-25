@@ -22,6 +22,12 @@
 		7A3FFB3B1B82DE7B0009EE71 /* Store.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FFB3A1B82DE7B0009EE71 /* Store.json */; };
 		7A3FFB401B82DFA30009EE71 /* LogicSvr.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FFB3F1B82DFA30009EE71 /* LogicSvr.json */; };
 		7A3FFB431B82E0DB0009EE71 /* ADUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FFB421B82E0DB0009EE71 /* ADUserInfo.m */; };
+		7A58F3581B8B40BB00F3E241 /* ADGetUserInfoResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A58F3571B8B40BB00F3E241 /* ADGetUserInfoResp.m */; };
+		7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */; };
+		7A89F6A81B8B1CAC0007ACA7 /* InputWithPickerBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A89F6A71B8B1CAC0007ACA7 /* InputWithPickerBar.m */; };
+		7A89F6AA1B8B1CBF0007ACA7 /* InputWithPickerBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A89F6A91B8B1CBF0007ACA7 /* InputWithPickerBar.xib */; };
+		7A89F6AF1B8B206F0007ACA7 /* UserInfoHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A89F6AE1B8B206F0007ACA7 /* UserInfoHeaderView.xib */; };
+		7A89F6B21B8B20BF0007ACA7 /* UserInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A89F6B11B8B20BF0007ACA7 /* UserInfoHeaderView.m */; };
 		7AA163481B85A90E00E54AAC /* ADNetworkConfigManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AA163471B85A90E00E54AAC /* ADNetworkConfigManager.m */; };
 		7AA1634B1B85AAD200E54AAC /* ADNetworkConfigItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1634A1B85AAD200E54AAC /* ADNetworkConfigItem.m */; };
 		7AA1635C1B85D49700E54AAC /* InputWithTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1635A1B85D49700E54AAC /* InputWithTextFieldCell.m */; };
@@ -41,7 +47,6 @@
 		7AD8269D1B8200BD008CA90C /* ADAPPBindWXResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8268B1B8200BD008CA90C /* ADAPPBindWXResp.m */; };
 		7AD8269E1B8200BD008CA90C /* ADCheckLoginResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8268D1B8200BD008CA90C /* ADCheckLoginResp.m */; };
 		7AD8269F1B8200BD008CA90C /* ADConnectResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8268F1B8200BD008CA90C /* ADConnectResp.m */; };
-		7AD826A01B8200BD008CA90C /* ADGetUserInfoResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826911B8200BD008CA90C /* ADGetUserInfoResp.m */; };
 		7AD826A11B8200BD008CA90C /* ADLoginResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826931B8200BD008CA90C /* ADLoginResp.m */; };
 		7AD826A21B8200BD008CA90C /* ADRegisterResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826951B8200BD008CA90C /* ADRegisterResp.m */; };
 		7AD826A31B8200BD008CA90C /* ADWXBindAPPResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826971B8200BD008CA90C /* ADWXBindAPPResp.m */; };
@@ -80,6 +85,16 @@
 		7A3FFB3F1B82DFA30009EE71 /* LogicSvr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LogicSvr.json; sourceTree = "<group>"; };
 		7A3FFB411B82E0DB0009EE71 /* ADUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADUserInfo.h; sourceTree = "<group>"; };
 		7A3FFB421B82E0DB0009EE71 /* ADUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADUserInfo.m; sourceTree = "<group>"; };
+		7A58F3561B8B40BB00F3E241 /* ADGetUserInfoResp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADGetUserInfoResp.h; sourceTree = "<group>"; };
+		7A58F3571B8B40BB00F3E241 /* ADGetUserInfoResp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADGetUserInfoResp.m; sourceTree = "<group>"; };
+		7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonColor.h; sourceTree = "<group>"; };
+		7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonColor.m; sourceTree = "<group>"; };
+		7A89F6A61B8B1CAC0007ACA7 /* InputWithPickerBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputWithPickerBar.h; sourceTree = "<group>"; };
+		7A89F6A71B8B1CAC0007ACA7 /* InputWithPickerBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputWithPickerBar.m; sourceTree = "<group>"; };
+		7A89F6A91B8B1CBF0007ACA7 /* InputWithPickerBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputWithPickerBar.xib; sourceTree = "<group>"; };
+		7A89F6AE1B8B206F0007ACA7 /* UserInfoHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserInfoHeaderView.xib; sourceTree = "<group>"; };
+		7A89F6B01B8B20BF0007ACA7 /* UserInfoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoHeaderView.h; sourceTree = "<group>"; };
+		7A89F6B11B8B20BF0007ACA7 /* UserInfoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoHeaderView.m; sourceTree = "<group>"; };
 		7AA163461B85A90E00E54AAC /* ADNetworkConfigManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADNetworkConfigManager.h; sourceTree = "<group>"; };
 		7AA163471B85A90E00E54AAC /* ADNetworkConfigManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADNetworkConfigManager.m; sourceTree = "<group>"; };
 		7AA163491B85AAD200E54AAC /* ADNetworkConfigItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADNetworkConfigItem.h; sourceTree = "<group>"; };
@@ -115,8 +130,6 @@
 		7AD8268D1B8200BD008CA90C /* ADCheckLoginResp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADCheckLoginResp.m; sourceTree = "<group>"; };
 		7AD8268E1B8200BD008CA90C /* ADConnectResp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADConnectResp.h; sourceTree = "<group>"; };
 		7AD8268F1B8200BD008CA90C /* ADConnectResp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADConnectResp.m; sourceTree = "<group>"; };
-		7AD826901B8200BD008CA90C /* ADGetUserInfoResp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADGetUserInfoResp.h; sourceTree = "<group>"; };
-		7AD826911B8200BD008CA90C /* ADGetUserInfoResp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADGetUserInfoResp.m; sourceTree = "<group>"; };
 		7AD826921B8200BD008CA90C /* ADLoginResp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADLoginResp.h; sourceTree = "<group>"; };
 		7AD826931B8200BD008CA90C /* ADLoginResp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADLoginResp.m; sourceTree = "<group>"; };
 		7AD826941B8200BD008CA90C /* ADRegisterResp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADRegisterResp.h; sourceTree = "<group>"; };
@@ -273,6 +286,8 @@
 				7AD8263D1B81FDF9008CA90C /* EmailFormatValidate.m */,
 				7AD8263E1B81FDF9008CA90C /* JSONRequest.h */,
 				7AD8263F1B81FDF9008CA90C /* JSONRequest.m */,
+				7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */,
+				7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -286,6 +301,12 @@
 				7AA1635E1B85DA9A00E54AAC /* UserInfoDisplayCell.h */,
 				7AA1635F1B85DA9A00E54AAC /* UserInfoDisplayCell.m */,
 				7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */,
+				7A89F6A61B8B1CAC0007ACA7 /* InputWithPickerBar.h */,
+				7A89F6A71B8B1CAC0007ACA7 /* InputWithPickerBar.m */,
+				7A89F6A91B8B1CBF0007ACA7 /* InputWithPickerBar.xib */,
+				7A89F6B01B8B20BF0007ACA7 /* UserInfoHeaderView.h */,
+				7A89F6B11B8B20BF0007ACA7 /* UserInfoHeaderView.m */,
+				7A89F6AE1B8B206F0007ACA7 /* UserInfoHeaderView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -318,14 +339,14 @@
 			isa = PBXGroup;
 			children = (
 				7A3FFB3F1B82DFA30009EE71 /* LogicSvr.json */,
+				7A58F3561B8B40BB00F3E241 /* ADGetUserInfoResp.h */,
+				7A58F3571B8B40BB00F3E241 /* ADGetUserInfoResp.m */,
 				7AD8268A1B8200BD008CA90C /* ADAPPBindWXResp.h */,
 				7AD8268B1B8200BD008CA90C /* ADAPPBindWXResp.m */,
 				7AD8268C1B8200BD008CA90C /* ADCheckLoginResp.h */,
 				7AD8268D1B8200BD008CA90C /* ADCheckLoginResp.m */,
 				7AD8268E1B8200BD008CA90C /* ADConnectResp.h */,
 				7AD8268F1B8200BD008CA90C /* ADConnectResp.m */,
-				7AD826901B8200BD008CA90C /* ADGetUserInfoResp.h */,
-				7AD826911B8200BD008CA90C /* ADGetUserInfoResp.m */,
 				7AD826921B8200BD008CA90C /* ADLoginResp.h */,
 				7AD826931B8200BD008CA90C /* ADLoginResp.m */,
 				7AD826941B8200BD008CA90C /* ADRegisterResp.h */,
@@ -478,10 +499,12 @@
 			files = (
 				7AA1635D1B85D49700E54AAC /* InputWithTextFieldCell.xib in Resources */,
 				7AD8269C1B8200BD008CA90C /* Common.json in Resources */,
+				7A89F6AF1B8B206F0007ACA7 /* UserInfoHeaderView.xib in Resources */,
 				7355607A1B45202D00B3EE93 /* Localizable.strings in Resources */,
 				7A3FFB401B82DFA30009EE71 /* LogicSvr.json in Resources */,
 				7AD826651B81FDF9008CA90C /* Images.xcassets in Resources */,
 				7AA163621B85DA9A00E54AAC /* UserInfoDisplayCell.xib in Resources */,
+				7A89F6AA1B8B1CBF0007ACA7 /* InputWithPickerBar.xib in Resources */,
 				7A3FFB3B1B82DE7B0009EE71 /* Store.json in Resources */,
 				7A00ADC21B8333650013A0B2 /* Default-568h@2x.png in Resources */,
 				7A00ADC41B83369B0013A0B2 /* rsa_public.key in Resources */,
@@ -542,6 +565,7 @@
 				7AD826A31B8200BD008CA90C /* ADWXBindAPPResp.m in Sources */,
 				7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */,
 				7AD826A21B8200BD008CA90C /* ADRegisterResp.m in Sources */,
+				7A89F6A81B8B1CAC0007ACA7 /* InputWithPickerBar.m in Sources */,
 				7AD826D61B820170008CA90C /* ADAboutViewController.m in Sources */,
 				7AD826691B81FDF9008CA90C /* EmailFormatValidate.m in Sources */,
 				7AD826AF1B820107008CA90C /* AES.m in Sources */,
@@ -549,9 +573,10 @@
 				7AD826D41B820170008CA90C /* WXLoginViewController.m in Sources */,
 				7AD826D51B820170008CA90C /* ADGameViewController.m in Sources */,
 				7AD8269D1B8200BD008CA90C /* ADAPPBindWXResp.m in Sources */,
-				7AD826A01B8200BD008CA90C /* ADGetUserInfoResp.m in Sources */,
 				7AD826D81B820170008CA90C /* ADUserInfoViewController.m in Sources */,
 				7AA1635C1B85D49700E54AAC /* InputWithTextFieldCell.m in Sources */,
+				7A89F6B21B8B20BF0007ACA7 /* UserInfoHeaderView.m in Sources */,
+				7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */,
 				7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */,
 				7AD8266A1B81FDF9008CA90C /* JSONRequest.m in Sources */,
 				7AD826621B81FDF9008CA90C /* WXAuthManager.m in Sources */,
@@ -559,6 +584,7 @@
 				7AD826B11B820107008CA90C /* RSA.m in Sources */,
 				7AD826671B81FDF9008CA90C /* main.m in Sources */,
 				7AD8269F1B8200BD008CA90C /* ADConnectResp.m in Sources */,
+				7A58F3581B8B40BB00F3E241 /* ADGetUserInfoResp.m in Sources */,
 				7A3FFB431B82E0DB0009EE71 /* ADUserInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

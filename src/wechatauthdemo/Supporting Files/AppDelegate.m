@@ -8,14 +8,12 @@
 
 #import "AppDelegate.h"
 #import "WXLoginViewController.h"
-#import "ADGameViewController.h"
 #import "ADUserInfoViewController.h"
 #import "WXApi.h"
 #import "WXAuthManager.h"
 #import "ADNetworkEngine.h"
 #import "ADNetworkConfigManager.h"
 #import "ADUserInfo.h"
-#import "ADConnectResp.h"
 
 @interface AppDelegate ()
 
@@ -28,39 +26,33 @@ static NSString *YourAppIdInWeChat = @"wx17ef1eaef46752cb";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    
-    ADGameViewController *gameView = [[ADGameViewController alloc] init];
     ADUserInfoViewController *userInfoView = [[ADUserInfoViewController alloc] init];
-    UINavigationController *subNav = [[UINavigationController alloc] initWithRootViewController:userInfoView];
-    
-    UITabBarController *tabBarController = [[UITabBarController alloc] init];
-    tabBarController.viewControllers = @[gameView, subNav];
-    tabBarController.selectedIndex = 1;
-    
     WXLoginViewController *wxLoginView = [[WXLoginViewController alloc] init];
-    UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:tabBarController];
-    [rootNav pushViewController:wxLoginView animated:NO];
-    
-    self.window.rootViewController = rootNav;
-    [self.window makeKeyAndVisible];
+    UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:userInfoView];
+    rootNav.navigationBar.hidden = YES;
+    /* Setup NavigationBar */
+    rootNav.navigationBar.tintColor = [UIColor blackColor];
+    UIFont *barFont = [UIFont fontWithName:kTitleLabelFont
+                                      size:16];
+    NSDictionary *barAttributes = @{
+                                    NSFontAttributeName: barFont
+                                    };
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:barAttributes
+                                                                                            forState:UIControlStateNormal];
+    [[UINavigationBar appearance] setTitleTextAttributes:barAttributes];
 
-//    if (![WXApi isWXAppInstalled]]) {
-//        //...
-//    }
     /* Register For WeChat */
     [WXApi registerApp:YourAppIdInWeChat
        withDescription:@"Auth Demo 2.0"];
     
     /* Setup Network */
     [[ADNetworkConfigManager sharedManager] setup];
-    [[ADNetworkEngine sharedEngine] connectToServerWithCompletion:^(ADConnectResp *resp) {
-        if (resp) {
-            [ADUserInfo currentUser].uin = resp.tempUin;
-            NSLog(@"Connect Success");
-        } else {
-            NSLog(@"Connect Failed");
-        }
-    }];
+    
+    if (![[ADUserInfo currentUser] load]) {
+        [rootNav pushViewController:wxLoginView animated:NO];
+    }
+    self.window.rootViewController = rootNav;
+    [self.window makeKeyAndVisible];
     
     return YES;
 }

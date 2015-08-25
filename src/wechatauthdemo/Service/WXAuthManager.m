@@ -7,6 +7,7 @@
 //
 
 #import "WXAuthManager.h"
+#import "RandomKey.h"
 
 @implementation WXAuthManager
 
@@ -41,8 +42,7 @@
                              delegate:(id<WXAuthDelegate>)delegate {
     SendAuthReq* req = [[SendAuthReq alloc] init];
     req.scope = @"snsapi_userinfo" ;
-    // TODO: random number here
-    req.state = @"123";
+    req.state = [NSString randomKey];
     self.delegate = delegate;
     [WXApi sendAuthReq:req viewController:viewController delegate:self];
 }
