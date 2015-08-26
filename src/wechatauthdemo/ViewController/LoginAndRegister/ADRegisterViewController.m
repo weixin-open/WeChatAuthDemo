@@ -162,10 +162,8 @@ static const int kPickerHeight = 168;
     [self.confirmPswTextField resignFirstResponder];
 }
 
-#pragma mark - Notification: Moving Content That Is Located Under the Keyboard
+#pragma mark - Notification
 // Called when the UIKeyboardDidShowNotification is sent.
-// Taken from Apple's Document:
-// https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/KeyboardManagement/KeyboardManagement.html#//apple_ref/doc/uid/TP40009542-CH5-SW7
 - (void)keyboardWasShown:(NSNotification*)aNotification {
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
@@ -175,7 +173,6 @@ static const int kPickerHeight = 168;
     self.registerTable.scrollIndicatorInsets = contentInsets;
     
     // If active text field is hidden by keyboard, scroll it so it's visible
-    // Your app might not need or want this behavior.
     CGRect aRect = self.view.frame;
     aRect.size.height -= kbSize.height;
     if (!CGRectContainsPoint(aRect, self.activeField.frame.origin) ) {

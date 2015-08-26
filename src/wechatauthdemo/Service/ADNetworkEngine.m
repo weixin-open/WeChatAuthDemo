@@ -27,7 +27,7 @@ typedef enum {
 } ADNetworkEngineState;
 
 /**
- *  Two Flow Chart for State Conversion
+ *  Two Flow Chart for State Machine
  *  1.   Stop----->Connected------------------>WXLogin--------->CheckLogin
  *  CGI: NoneCGI-->Register/WXLogin/LoginApp-->CheckLogin------>WXBindApp,GetUserInfo
  *

@@ -42,16 +42,16 @@ typedef void(^DownloadImageCallBack)(UIImage *image);
                     Sex:(ADSexType)sex
          WithCompletion:(RegisterCallBack)completion;
 
-- (void)checkLoginForUin:(UInt32)uin
-             LoginTicket:(NSString *)loginTicket
-          WithCompletion:(CheckLoginCallBack)completion;
-
 - (void)loginForMail:(NSString *)mail
             Password:(NSString *)pwd
       WithCompletion:(LoginCallBack)completion;
 
 - (void)wxLoginForAuthCode:(NSString *)code
             WithCompletion:(WXLoginCallBack)completion;
+
+- (void)checkLoginForUin:(UInt32)uin
+             LoginTicket:(NSString *)loginTicket
+          WithCompletion:(CheckLoginCallBack)completion;
 
 - (void)getUserInfoForUin:(UInt32)uin
               LoginTicket:(NSString *)loginTicket
