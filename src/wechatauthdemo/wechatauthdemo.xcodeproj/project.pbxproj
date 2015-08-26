@@ -34,6 +34,10 @@
 		7AA1635D1B85D49700E54AAC /* InputWithTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AA1635B1B85D49700E54AAC /* InputWithTextFieldCell.xib */; };
 		7AA163611B85DA9A00E54AAC /* UserInfoDisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1635F1B85DA9A00E54AAC /* UserInfoDisplayCell.m */; };
 		7AA163621B85DA9A00E54AAC /* UserInfoDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */; };
+		7AD6CE641B8DA1BA001EFB40 /* RegisterHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6CE631B8DA1BA001EFB40 /* RegisterHeaderView.m */; };
+		7AD6CE661B8DA1E4001EFB40 /* RegisterHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD6CE651B8DA1E4001EFB40 /* RegisterHeaderView.xib */; };
+		7AD6CE691B8DBAFB001EFB40 /* ErrorTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6CE681B8DBAFB001EFB40 /* ErrorTitle.m */; };
+		7AD6CE6D1B8DD75C001EFB40 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6CE6C1B8DD75C001EFB40 /* ImageCache.m */; };
 		7AD826611B81FDF9008CA90C /* ADNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */; };
 		7AD826621B81FDF9008CA90C /* WXAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8262E1B81FDF9008CA90C /* WXAuthManager.m */; };
 		7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826311B81FDF9008CA90C /* AppDelegate.m */; };
@@ -57,7 +61,7 @@
 		7AD826D21B820170008CA90C /* ADLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826C21B820170008CA90C /* ADLoginViewController.m */; };
 		7AD826D31B820170008CA90C /* ADRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826C41B820170008CA90C /* ADRegisterViewController.m */; };
 		7AD826D41B820170008CA90C /* WXLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826C61B820170008CA90C /* WXLoginViewController.m */; };
-		7AD826D51B820170008CA90C /* ADGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826CA1B820170008CA90C /* ADGameViewController.m */; };
+		7AD826D51B820170008CA90C /* ADShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826CA1B820170008CA90C /* ADShareViewController.m */; };
 		7AD826D61B820170008CA90C /* ADAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826CD1B820170008CA90C /* ADAboutViewController.m */; };
 		7AD826D71B820170008CA90C /* ADHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826CF1B820170008CA90C /* ADHistoryViewController.m */; };
 		7AD826D81B820170008CA90C /* ADUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826D11B820170008CA90C /* ADUserInfoViewController.m */; };
@@ -105,6 +109,13 @@
 		7AA1635E1B85DA9A00E54AAC /* UserInfoDisplayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoDisplayCell.h; sourceTree = "<group>"; };
 		7AA1635F1B85DA9A00E54AAC /* UserInfoDisplayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoDisplayCell.m; sourceTree = "<group>"; };
 		7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserInfoDisplayCell.xib; sourceTree = "<group>"; };
+		7AD6CE621B8DA1BA001EFB40 /* RegisterHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterHeaderView.h; sourceTree = "<group>"; };
+		7AD6CE631B8DA1BA001EFB40 /* RegisterHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterHeaderView.m; sourceTree = "<group>"; };
+		7AD6CE651B8DA1E4001EFB40 /* RegisterHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterHeaderView.xib; sourceTree = "<group>"; };
+		7AD6CE671B8DBAFB001EFB40 /* ErrorTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorTitle.h; sourceTree = "<group>"; };
+		7AD6CE681B8DBAFB001EFB40 /* ErrorTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorTitle.m; sourceTree = "<group>"; };
+		7AD6CE6B1B8DD75C001EFB40 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
+		7AD6CE6C1B8DD75C001EFB40 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 		7AD8262B1B81FDF9008CA90C /* ADNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADNetworkEngine.h; sourceTree = "<group>"; };
 		7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADNetworkEngine.m; sourceTree = "<group>"; };
 		7AD8262D1B81FDF9008CA90C /* WXAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXAuthManager.h; sourceTree = "<group>"; };
@@ -152,8 +163,8 @@
 		7AD826C41B820170008CA90C /* ADRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADRegisterViewController.m; sourceTree = "<group>"; };
 		7AD826C51B820170008CA90C /* WXLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXLoginViewController.h; sourceTree = "<group>"; };
 		7AD826C61B820170008CA90C /* WXLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXLoginViewController.m; sourceTree = "<group>"; };
-		7AD826C91B820170008CA90C /* ADGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADGameViewController.h; sourceTree = "<group>"; };
-		7AD826CA1B820170008CA90C /* ADGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADGameViewController.m; sourceTree = "<group>"; };
+		7AD826C91B820170008CA90C /* ADShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADShareViewController.h; sourceTree = "<group>"; };
+		7AD826CA1B820170008CA90C /* ADShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADShareViewController.m; sourceTree = "<group>"; };
 		7AD826CC1B820170008CA90C /* ADAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADAboutViewController.h; sourceTree = "<group>"; };
 		7AD826CD1B820170008CA90C /* ADAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADAboutViewController.m; sourceTree = "<group>"; };
 		7AD826CE1B820170008CA90C /* ADHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADHistoryViewController.h; sourceTree = "<group>"; };
@@ -194,6 +205,7 @@
 		73BED5DE1B3AA48600CA4C4D = {
 			isa = PBXGroup;
 			children = (
+				7AD6CE6A1B8DCFE7001EFB40 /* App */,
 				7AD826371B81FDF9008CA90C /* Util */,
 				7AD826461B81FDF9008CA90C /* View */,
 				7AD826471B81FDF9008CA90C /* ViewController */,
@@ -239,6 +251,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7AD6CE6A1B8DCFE7001EFB40 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				7AD826301B81FDF9008CA90C /* AppDelegate.h */,
+				7AD826311B81FDF9008CA90C /* AppDelegate.m */,
+			);
+			name = App;
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		7AD826131B81FDF9008CA90C /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,8 +289,6 @@
 			children = (
 				7A00ADC11B8333650013A0B2 /* Default-568h@2x.png */,
 				735560791B45202D00B3EE93 /* Localizable.strings */,
-				7AD826301B81FDF9008CA90C /* AppDelegate.h */,
-				7AD826311B81FDF9008CA90C /* AppDelegate.m */,
 				7AD826341B81FDF9008CA90C /* Images.xcassets */,
 				7AD826351B81FDF9008CA90C /* Info.plist */,
 				7AD826361B81FDF9008CA90C /* main.m */,
@@ -288,6 +308,10 @@
 				7AD8263F1B81FDF9008CA90C /* JSONRequest.m */,
 				7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */,
 				7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */,
+				7AD6CE671B8DBAFB001EFB40 /* ErrorTitle.h */,
+				7AD6CE681B8DBAFB001EFB40 /* ErrorTitle.m */,
+				7AD6CE6B1B8DD75C001EFB40 /* ImageCache.h */,
+				7AD6CE6C1B8DD75C001EFB40 /* ImageCache.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -307,6 +331,9 @@
 				7A89F6B01B8B20BF0007ACA7 /* UserInfoHeaderView.h */,
 				7A89F6B11B8B20BF0007ACA7 /* UserInfoHeaderView.m */,
 				7A89F6AE1B8B206F0007ACA7 /* UserInfoHeaderView.xib */,
+				7AD6CE621B8DA1BA001EFB40 /* RegisterHeaderView.h */,
+				7AD6CE631B8DA1BA001EFB40 /* RegisterHeaderView.m */,
+				7AD6CE651B8DA1E4001EFB40 /* RegisterHeaderView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -408,8 +435,8 @@
 		7AD826C81B820170008CA90C /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				7AD826C91B820170008CA90C /* ADGameViewController.h */,
-				7AD826CA1B820170008CA90C /* ADGameViewController.m */,
+				7AD826C91B820170008CA90C /* ADShareViewController.h */,
+				7AD826CA1B820170008CA90C /* ADShareViewController.m */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -505,6 +532,7 @@
 				7AD826651B81FDF9008CA90C /* Images.xcassets in Resources */,
 				7AA163621B85DA9A00E54AAC /* UserInfoDisplayCell.xib in Resources */,
 				7A89F6AA1B8B1CBF0007ACA7 /* InputWithPickerBar.xib in Resources */,
+				7AD6CE661B8DA1E4001EFB40 /* RegisterHeaderView.xib in Resources */,
 				7A3FFB3B1B82DE7B0009EE71 /* Store.json in Resources */,
 				7A00ADC21B8333650013A0B2 /* Default-568h@2x.png in Resources */,
 				7A00ADC41B83369B0013A0B2 /* rsa_public.key in Resources */,
@@ -555,6 +583,7 @@
 				7AA163481B85A90E00E54AAC /* ADNetworkConfigManager.m in Sources */,
 				7AD826A11B8200BD008CA90C /* ADLoginResp.m in Sources */,
 				7AD8269A1B8200BD008CA90C /* ADAccessLog.m in Sources */,
+				7AD6CE641B8DA1BA001EFB40 /* RegisterHeaderView.m in Sources */,
 				7AD826611B81FDF9008CA90C /* ADNetworkEngine.m in Sources */,
 				7AD8269E1B8200BD008CA90C /* ADCheckLoginResp.m in Sources */,
 				7AA1634B1B85AAD200E54AAC /* ADNetworkConfigItem.m in Sources */,
@@ -565,16 +594,18 @@
 				7AD826A31B8200BD008CA90C /* ADWXBindAPPResp.m in Sources */,
 				7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */,
 				7AD826A21B8200BD008CA90C /* ADRegisterResp.m in Sources */,
+				7AD6CE691B8DBAFB001EFB40 /* ErrorTitle.m in Sources */,
 				7A89F6A81B8B1CAC0007ACA7 /* InputWithPickerBar.m in Sources */,
 				7AD826D61B820170008CA90C /* ADAboutViewController.m in Sources */,
 				7AD826691B81FDF9008CA90C /* EmailFormatValidate.m in Sources */,
 				7AD826AF1B820107008CA90C /* AES.m in Sources */,
 				7AA163611B85DA9A00E54AAC /* UserInfoDisplayCell.m in Sources */,
 				7AD826D41B820170008CA90C /* WXLoginViewController.m in Sources */,
-				7AD826D51B820170008CA90C /* ADGameViewController.m in Sources */,
+				7AD826D51B820170008CA90C /* ADShareViewController.m in Sources */,
 				7AD8269D1B8200BD008CA90C /* ADAPPBindWXResp.m in Sources */,
 				7AD826D81B820170008CA90C /* ADUserInfoViewController.m in Sources */,
 				7AA1635C1B85D49700E54AAC /* InputWithTextFieldCell.m in Sources */,
+				7AD6CE6D1B8DD75C001EFB40 /* ImageCache.m in Sources */,
 				7A89F6B21B8B20BF0007ACA7 /* UserInfoHeaderView.m in Sources */,
 				7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */,
 				7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */,

@@ -3,7 +3,7 @@
 //  AuthSDKDemo
 //
 //  Created by Jeason on 14/08/2015.
-//  Copyright (c) 2015 Jeason. All rights reserved.
+//  Copyright (c) 2015 Tencent. All rights reserved.
 //
 #import <sys/time.h>
 #import "RandomKey.h"

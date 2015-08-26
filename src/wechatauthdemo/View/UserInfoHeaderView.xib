@@ -8,11 +8,26 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="dR2-CX-wPv" customClass="UserInfoHeaderView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pic_logo_1082168b9" translatesAutoresizingMaskIntoConstraints="NO" id="clp-I3-cZn">
-                    <rect key="frame" x="75" y="8" width="44" height="44"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="大饼的测试号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0LD-ne-Qaj">
+                    <rect key="frame" x="72" y="22" width="240" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="185" id="S9H-e7-x0f"/>
+                        <constraint firstAttribute="height" constant="21" id="hqy-Xa-HId"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="S9H-e7-x0f"/>
+                        </mask>
+                    </variation>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wxLogoGreen" translatesAutoresizingMaskIntoConstraints="NO" id="clp-I3-cZn">
+                    <rect key="frame" x="20" y="11" width="44" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="44" id="DYN-Bo-NRp"/>
                         <constraint firstAttribute="height" constant="44" id="cbp-09-1tA"/>
@@ -24,42 +39,25 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </imageView>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="maq-Ry-kZh">
-                    <rect key="frame" x="45" y="64" width="231" height="29"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="231" id="0nW-db-t7N"/>
-                        <constraint firstAttribute="height" constant="28" id="IjK-TX-ELt"/>
-                    </constraints>
-                    <segments>
-                        <segment title="游戏"/>
-                        <segment title="我的资料"/>
-                    </segments>
-                    <color key="tintColor" red="0.29019607843137252" green="0.72156862745098038" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
-                </segmentedControl>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="大饼的测试号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0LD-ne-Qaj">
-                    <rect key="frame" x="127" y="19" width="185" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="185" id="S9H-e7-x0f"/>
-                        <constraint firstAttribute="height" constant="21" id="hqy-Xa-HId"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
-            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.93609845638275146" green="0.93607044219970703" blue="0.93608629703521729" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="0LD-ne-Qaj" secondAttribute="trailing" constant="8" id="7Rb-y5-aPG"/>
                 <constraint firstItem="clp-I3-cZn" firstAttribute="top" secondItem="dR2-CX-wPv" secondAttribute="top" constant="8" id="8ZS-LJ-fJa"/>
-                <constraint firstAttribute="centerX" secondItem="maq-Ry-kZh" secondAttribute="centerX" id="9J0-ZL-DBP"/>
-                <constraint firstAttribute="bottom" secondItem="maq-Ry-kZh" secondAttribute="bottom" constant="8" id="JvG-LD-Tgn"/>
-                <constraint firstItem="maq-Ry-kZh" firstAttribute="top" secondItem="0LD-ne-Qaj" secondAttribute="bottom" constant="24" id="i98-md-Hsw"/>
+                <constraint firstItem="0LD-ne-Qaj" firstAttribute="top" secondItem="dR2-CX-wPv" secondAttribute="top" constant="19" id="Xdo-Zo-pKr"/>
+                <constraint firstAttribute="centerY" secondItem="clp-I3-cZn" secondAttribute="centerY" id="Zjc-cD-ADe"/>
+                <constraint firstAttribute="centerY" secondItem="0LD-ne-Qaj" secondAttribute="centerY" id="hTa-Gj-QVh"/>
+                <constraint firstItem="clp-I3-cZn" firstAttribute="leading" secondItem="dR2-CX-wPv" secondAttribute="leading" constant="20" id="hrS-D2-pDG"/>
                 <constraint firstItem="0LD-ne-Qaj" firstAttribute="leading" secondItem="clp-I3-cZn" secondAttribute="trailing" constant="8" id="jqB-Kt-5SK"/>
-                <constraint firstItem="maq-Ry-kZh" firstAttribute="top" secondItem="clp-I3-cZn" secondAttribute="bottom" constant="12" id="rNi-iw-S24"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="8ZS-LJ-fJa"/>
+                    <exclude reference="Xdo-Zo-pKr"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="headPhotoImage" destination="clp-I3-cZn" id="4Ty-YD-R3y"/>
                 <outlet property="nickNameLabel" destination="0LD-ne-Qaj" id="eNO-Wz-mOZ"/>
@@ -68,6 +66,6 @@
         </view>
     </objects>
     <resources>
-        <image name="pic_logo_1082168b9" width="54" height="54"/>
+        <image name="wxLogoGreen" width="54" height="54"/>
     </resources>
 </document>

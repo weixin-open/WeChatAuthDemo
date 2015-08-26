@@ -7,7 +7,6 @@
 //
 
 #import <SVProgressHUD.h>
-#import "ButtonColor.h"
 #import "WXLoginViewController.h"
 #import "ADLoginViewController.h"
 #import "ADNetworkEngine.h"
@@ -26,7 +25,7 @@ static NSString *kCheckLoginErrorTitle = @"登陆失败";
 static NSString *kNotInstallWXWarning = @"您没有安装微信，将不能使用本软件";
 static NSString *kTitleLabelText = @"WeChat Sample";
 /* Font */
-static const CGFloat kTitleLabelFontSize = 20.0f;
+static const CGFloat kTitleLabelFontSize = 18.0f;
 static const CGFloat kWXLoginButtonFontSize = 16.0f;
 static const CGFloat kNormalButtonFontSize = 12.0f;
 /* Size */
@@ -68,20 +67,14 @@ static const int kNormalLoginButtonHeight = 44;
     [self.view addSubview:self.normalLoginButton];
     
     /* Setup Network */
-    if (![WXApi isWXAppInstalled]) {
-        [SVProgressHUD showErrorWithStatus:kNotInstallWXWarning];
-        self.wxLoginButton.userInteractionEnabled = NO;
-        self.normalLoginButton.userInteractionEnabled = NO;
-    } else {
-        [[ADNetworkEngine sharedEngine] connectToServerWithCompletion:^(ADConnectResp *resp) {
-            if (resp && resp.baseResp.errcode == 0) {
-                [ADUserInfo currentUser].uin = resp.tempUin;
-                NSLog(@"Connect Success");
-            } else {
-                NSLog(@"Connect Failed");
-            }
-        }];
-    }
+    [[ADNetworkEngine sharedEngine] connectToServerWithCompletion:^(ADConnectResp *resp) {
+        if (resp && resp.baseResp.errcode == 0) {
+            [ADUserInfo currentUser].uin = resp.tempUin;
+            NSLog(@"Connect Success");
+        } else {
+            NSLog(@"Connect Failed");
+        }
+    }];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -114,7 +107,6 @@ static const int kNormalLoginButtonHeight = 44;
 - (void)onClickWXLogin: (UIButton *)sender {
     if (sender != self.wxLoginButton)
         return;
-    
     [[WXAuthManager sharedManager] sendAuthRequestWithController:self
                                                         delegate:self];
 }
@@ -147,26 +139,12 @@ static const int kNormalLoginButtonHeight = 44;
         NSLog(@"WXLogin Success");
         [ADUserInfo currentUser].uin = resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
-        [[ADNetworkEngine sharedEngine] checkLoginForUin:resp.uin
-                                             LoginTicket:resp.loginTicket
-                                          WithCompletion:^(ADCheckLoginResp *resp) {
-                                              [self handleCheckLoginResponse:resp];
-                                          }];
-    } else {
-        NSLog(@"WXLogin Fail");
-        NSString *errorTitle = resp.baseResp.errmsg ? resp.baseResp.errmsg : kWXLoginErrorTitle;
-        [SVProgressHUD showErrorWithStatus:errorTitle];
-    }
-}
-
-- (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
-    if (resp && resp.sessionKey) {
-        NSLog(@"CheckLogin Success");
         [SVProgressHUD dismiss];
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
-        NSLog(@"CheckLogin Fail");
-        NSString *errorTitle = resp.baseResp.errmsg ? resp.baseResp.errmsg : kCheckLoginErrorTitle;
+        NSLog(@"WXLogin Fail");
+        NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                   defaultError:kWXLoginErrorTitle];
         [SVProgressHUD showErrorWithStatus:errorTitle];
     }
 }

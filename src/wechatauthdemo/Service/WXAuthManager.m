@@ -3,7 +3,7 @@
 //  wechatauthdemo
 //
 //  Created by Chuang Chen on 6/25/15.
-//  Copyright (c) 2015 boshao. All rights reserved.
+//  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
 #import "WXAuthManager.h"
@@ -47,15 +47,36 @@
     [WXApi sendAuthReq:req viewController:viewController delegate:self];
 }
 
+- (BOOL)sendLinkContent:(NSString *)urlString
+                  Title:(NSString *)title
+            Description:(NSString *)description
+                AtScene:(enum WXScene)scene
+               Delegate:(id<WXAuthDelegate>)delegate {
+    WXWebpageObject *ext = [WXWebpageObject object];
+    ext.webpageUrl = urlString;
+    
+    WXMediaMessage *message = [WXMediaMessage message];
+    message.title = title;
+    message.description = description;
+    message.mediaTagName = @"WECHAT_TAG_JUMP_SHOWRANK";
+    message.mediaObject = ext;
+    message.thumbData = UIImagePNGRepresentation([UIImage imageNamed:@"wxLogoGreen"]);
+
+    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+    req.message = message;
+    req.bText = NO;
+    req.scene = scene;
+    
+    self.delegate = delegate;
+    return [WXApi sendReq:req];
+}
+
 #pragma mark - WXApiDelegate
 -(void)onReq:(BaseReq*)req {
     // just leave it here, wechat will not call our app
 }
 
--(void)onResp:(BaseResp*)resp {
-    if (self.delegate == nil)
-        return;
-    
+-(void)onResp:(BaseResp*)resp {    
     if([resp isKindOfClass:[SendAuthResp class]]) {
         SendAuthResp* authResp = (SendAuthResp*)resp;
         switch (resp.errCode) {

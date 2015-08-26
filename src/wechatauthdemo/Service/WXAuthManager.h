@@ -3,7 +3,7 @@
 //  wechatauthdemo
 //
 //  Created by Chuang Chen on 6/25/15.
-//  Copyright (c) 2015 boshao. All rights reserved.
+//  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -28,5 +28,11 @@
 
 - (void)sendAuthRequestWithController:(UIViewController*)viewController
                              delegate:(id<WXAuthDelegate>)delegate;
+
+- (BOOL)sendLinkContent:(NSString *)urlString
+                  Title:(NSString *)title
+            Description:(NSString *)desc
+                AtScene:(enum WXScene)scene
+               Delegate:(id<WXAuthDelegate>)delegate;
 
 @end

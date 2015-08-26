@@ -61,7 +61,8 @@ static char sessionKeyId;
     /* Setup Request */
     NSURL *url = [NSURL URLWithString:[host stringByAppendingString:config.requestPath]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [request addValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
+    
     [request setHTTPMethod:config.httpMethod];
     [request setHTTPBody:encryptedData];
     
@@ -149,11 +150,11 @@ static char sessionKeyId;
         }
     } else if ([toEncryptObject isKindOfClass:[NSString class]]) {   /* Process String */
         NSString *stringObject = (NSString *)toEncryptObject;
-        toEncryptData = [stringObject dataUsingEncoding:NSASCIIStringEncoding];
+        toEncryptData = [stringObject dataUsingEncoding:NSUTF8StringEncoding];
     } else if ([toEncryptObject isKindOfClass:[NSNumber class]]) {   /* Process Number */
         NSNumber *numberObject = (NSNumber *)toEncryptObject;
         NSString *numberString = [numberObject stringValue];
-        toEncryptData = [numberString dataUsingEncoding:NSASCIIStringEncoding];
+        toEncryptData = [numberString dataUsingEncoding:NSUTF8StringEncoding];
     }
     /* Encrypt NSData */
     if (algorithm & EncryptAlgorithmRSA) {  /* RSA */
@@ -173,7 +174,7 @@ static char sessionKeyId;
         return nil;
     NSMutableDictionary *mutableDict = [dict mutableCopy];
     [mutableDict setObject:[[NSString alloc] initWithData:toEncryptData
-                                                 encoding:NSASCIIStringEncoding]
+                                                 encoding:NSUTF8StringEncoding]
                     forKey:keyPath];
     NSError *jsonError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mutableDict
@@ -210,11 +211,11 @@ static char sessionKeyId;
         }
     } else if ([object isKindOfClass:[NSString class]]) {
         NSString *stringObject = (NSString *)object;
-        toDecryptData = [stringObject dataUsingEncoding:NSASCIIStringEncoding];
+        toDecryptData = [stringObject dataUsingEncoding:NSUTF8StringEncoding];
     } else if ([object isKindOfClass:[NSNumber class]]) {
         NSNumber *numberObject = (NSNumber *)object;
         NSString *numberString = [numberObject stringValue];
-        toDecryptData = [numberString dataUsingEncoding:NSASCIIStringEncoding];
+        toDecryptData = [numberString dataUsingEncoding:NSUTF8StringEncoding];
     }
     
     /* Decrypt NSData */
@@ -229,7 +230,7 @@ static char sessionKeyId;
     if (toDecryptData == nil)
         return dict;
     [mutableDict setObject:[[NSString alloc] initWithData:toDecryptData
-                                                 encoding:NSASCIIStringEncoding]
+                                                 encoding:NSUTF8StringEncoding]
                     forKey:keyPath];
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }

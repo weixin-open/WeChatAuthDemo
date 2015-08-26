@@ -29,5 +29,6 @@
 + (instancetype)currentUser;
 - (BOOL)save;
 - (BOOL)load;
+- (void)clear;
 
 @end

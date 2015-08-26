@@ -13,6 +13,7 @@
 #import "MD5.h"
 #import "RandomKey.h"
 #import "DataModels.h"
+#import "ImageCache.h"
 
 static NSString *defaultHost = @"http://qytest.weixin.qq.com";
 static NSString *publickeyFileName = @"rsa_public";
@@ -89,15 +90,16 @@ typedef enum {
 - (void)registerForMail:(NSString *)mail
                Password:(NSString *)pwd
                NickName:(NSString *)nickName
+              HeadImage:(NSData *)imageData
                     Sex:(ADSexType)sex
          WithCompletion:(RegisterCallBack)completion {
-    NSParameterAssert(mail && pwd && nickName);
+    NSParameterAssert(mail && pwd && nickName && imageData);
 //    NSAssert(self.state != ADNetworkEngineStateHaveConnected, @"You Can Not Register New Account Until You Have Connected");
-    
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                      @"uin": @([ADUserInfo currentUser].uin),
                                      @"req_buffer": @{
+                                             @"headimg_buf":[imageData base64EncodedStringWithOptions:0],
                                              @"mail": mail,
                                              @"pwd_h1": pwd,
                                              @"nickname": nickName,
@@ -260,6 +262,28 @@ typedef enum {
     self.session = nil;
 }
 
+- (void)downloadImageForUrl:(NSString *)urlString
+             WithCompletion:(DownloadImageCallBack)completion {
+    if (!urlString || !completion)
+        return;
+    UIImage *cachedImage = [UIImage getCachedImageForUrl:urlString];
+    if (cachedImage) {
+        NSLog(@"Cache Hit");
+        completion (cachedImage);
+    } else {
+        NSLog(@"Cache Miss");
+        NSURL *url = [NSURL URLWithString:urlString];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSData *data = [NSData dataWithContentsOfURL:url];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIImage *image = [UIImage imageWithData:data];
+                [image cacheForUrl:urlString];
+                completion (image);
+            });
+        });
+    }
+}
+
 #pragma mark - Lazy Initializer
 - (NSURLSession *)session {
     if (_session == nil) {
@@ -275,7 +299,8 @@ typedef enum {
     if (_RSAKey == nil) {
         NSString *keyPath = [[NSBundle mainBundle] pathForResource:publickeyFileName ofType:@"key"];
         NSData *keyData = [[NSFileManager defaultManager] contentsAtPath:keyPath];
-        _RSAKey = [[NSString alloc] initWithData:keyData encoding:NSUTF8StringEncoding];
+        _RSAKey = [[NSString alloc] initWithData:keyData
+                                        encoding:NSUTF8StringEncoding];
     }
     return _RSAKey;
 }

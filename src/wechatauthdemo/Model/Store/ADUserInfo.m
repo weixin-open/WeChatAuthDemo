@@ -90,6 +90,11 @@ static ADUserInfo *currentUser_ = nil;
     return self.uin != 0 && self.loginTicket != nil;
 }
 
+- (void)clear {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kADUserInfoUin];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kADUserInfoLoginTicket];
+}
+
 - (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];

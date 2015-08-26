@@ -25,6 +25,7 @@ typedef void(^GetUserInfoCallBack)(ADGetUserInfoResp *resp);
 typedef void(^WXBindAppCallBack)(ADWXBindAPPResp *resp);
 typedef void(^AppBindWXCallBack)(ADAPPBindWXResp *resp);
 typedef void(^WXLoginCallBack)(ADWXLoginResp *resp);
+typedef void(^DownloadImageCallBack)(UIImage *image);
 
 @interface ADNetworkEngine : NSObject
 
@@ -37,6 +38,7 @@ typedef void(^WXLoginCallBack)(ADWXLoginResp *resp);
 - (void)registerForMail:(NSString *)mail
                Password:(NSString *)pwd
                NickName:(NSString *)nickName
+              HeadImage:(NSData *)imageData
                     Sex:(ADSexType)sex
          WithCompletion:(RegisterCallBack)completion;
 
@@ -71,5 +73,8 @@ typedef void(^WXLoginCallBack)(ADWXLoginResp *resp);
          WithCompletion:(AppBindWXCallBack)completion;
 
 - (void)disConnect;
+
+- (void)downloadImageForUrl:(NSString *)urlString
+             WithCompletion:(DownloadImageCallBack)completion;
 
 @end

@@ -10,4 +10,6 @@
 
 @interface ADRegisterViewController : UIViewController
 
+@property (nonatomic, assign) BOOL isUsedForBindApp;
+
 @end

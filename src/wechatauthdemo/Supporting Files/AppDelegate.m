@@ -48,7 +48,7 @@ static NSString *YourAppIdInWeChat = @"wx17ef1eaef46752cb";
     /* Setup Network */
     [[ADNetworkConfigManager sharedManager] setup];
     
-    if (![[ADUserInfo currentUser] load]) {
+    if (![[ADUserInfo currentUser] load]) { //if load fail
         [rootNav pushViewController:wxLoginView animated:NO];
     }
     self.window.rootViewController = rootNav;

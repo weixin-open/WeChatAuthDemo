@@ -17,9 +17,9 @@
 @property (nonatomic, strong) ADBaseResp *baseResp;
 @property (nonatomic, strong) NSString *headimgurl;
 @property (nonatomic, strong) NSString *unionid;
-@property (nonatomic, assign) double refreshTokenExpireTime;
+@property (nonatomic, assign) int64_t refreshTokenExpireTime;
 @property (nonatomic, assign) ADSexType sex;
-@property (nonatomic, assign) double accessTokenExpireTime;
+@property (nonatomic, assign) int64_t accessTokenExpireTime;
 @property (nonatomic, strong) NSArray *accessLog;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;

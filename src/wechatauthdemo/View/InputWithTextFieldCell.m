@@ -3,7 +3,7 @@
 //  wechatauthdemo
 //
 //  Created by Jeason on 20/08/2015.
-//  Copyright (c) 2015 boshao. All rights reserved.
+//  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
 #import "InputWithTextFieldCell.h"

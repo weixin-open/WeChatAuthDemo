@@ -10,12 +10,13 @@
 #import <SVProgressHUD.h>
 #import "MD5.h"
 #import "EmailFormatValidate.h"
-#import "ButtonColor.h"
 #import "InputWithTextFieldCell.h"
 #import "InputWithPickerBar.h"
+#import "RegisterHeaderView.h"
 #import "ADNetworkEngine.h"
 #import "ADRegisterResp.h"
 #import "ADCheckLoginResp.h"
+#import "ADWXBindAPPResp.h"
 #import "ADUserInfo.h"
 
 /* Message Text */
@@ -29,12 +30,16 @@ static NSString *kMailDescText = @"账户邮箱";
 static NSString *kPswDescText = @"密码";
 static NSString *kConfirmPswText = @"密码确认";
 static NSString *kNameWarningText = @"用户名至多20个字符";
+static NSString *kNameEmptyWarningText = @"用户名不能为空";
 static NSString *kSexWarningText = @"请选择性别";
 static NSString *kEmailWarningText = @"请输入有效邮箱账号";
 static NSString *kPasswordWarningText = @"密码至少6位";
 static NSString *kConfirmWarningText = @"两次密码应一致";
 static NSString *kRegisterButtonText = @"注册";
 static NSString *kRegisterProgressText = @"请稍候";
+static NSString *kRegisterFailText = @"注册失败";
+static NSString *kLoginFailText = @"登录失败";
+static NSString *kBindingFailText = @"绑定失败";
 /* Font */
 static const CGFloat kBackButtonFontSize = 13.0f;
 static const CGFloat kRegisterButtonFontSize = 16.0f;
@@ -50,20 +55,24 @@ static const int kMinPswLength = 6;
 static const int kPickerHeight = 168;
 
 @interface ADRegisterViewController ()<UITableViewDataSource, UITableViewDelegate,
-                                        UITextFieldDelegate,
-                                        UIPickerViewDelegate, UIPickerViewDataSource>
+                                        UITextFieldDelegate, UIActionSheetDelegate,
+                                        UIPickerViewDelegate, UIPickerViewDataSource,
+                    UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIButton *backButton;
 @property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) RegisterHeaderView *header;
 @property (nonatomic, strong) UITableView *registerTable;
 @property (nonatomic, strong) UIPickerView *sexPickerView;
 @property (nonatomic, strong) InputWithPickerBar *pickerBar;
+
 @property (nonatomic, weak) UITextField *activeField;
 @property (nonatomic, weak) UITextField *nameTextField;
 @property (nonatomic, weak) UITextField *sexTextField;
 @property (nonatomic, weak) UITextField *mailTextField;
 @property (nonatomic, weak) UITextField *pswTextField;
 @property (nonatomic, weak) UITextField *confirmPswTextField;
+@property (nonatomic, strong) UIImage *headImage;
 
 @end
 
@@ -99,7 +108,7 @@ static const int kPickerHeight = 168;
     self.backButton.frame = CGRectMake(0, 0, kBackButtonWidth, kBackButtonHeight);
     self.backButton.center = CGPointMake(backButtonCenterX, backButtonCenterY);
 
-    int titleLabelCenterY = navigationBarHeight + statusBarHeight + inset * 3;
+    int titleLabelCenterY = navigationBarHeight + statusBarHeight;
     self.titleLabel.frame = CGRectMake(0, 0, kTitleLabelWidth, kTitleLabelHeight);
     self.titleLabel.center = CGPointMake(self.view.center.x, titleLabelCenterY);
     
@@ -204,6 +213,7 @@ static const int kPickerHeight = 168;
         cell.textLabel.textColor = [UIColor whiteColor];
         cell.textLabel.font = [UIFont fontWithName:kTitleLabelFont
                                               size:kRegisterButtonFontSize];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     
@@ -284,7 +294,9 @@ static const int kPickerHeight = 168;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1 && indexPath.row == 0) {  //Register Button
-        if ([self.nameTextField.text length] > kMaxNameLength) {
+        if ([self.nameTextField.text length] == 0) {
+            [SVProgressHUD showErrorWithStatus:kNameEmptyWarningText];
+        } else if ([self.nameTextField.text length] > kMaxNameLength) {
             [SVProgressHUD showErrorWithStatus:kNameWarningText];
         } else if (![EmailFormatValidate isValidate:self.mailTextField.text]) {
             [SVProgressHUD showErrorWithStatus:kEmailWarningText];
@@ -294,12 +306,28 @@ static const int kPickerHeight = 168;
             [SVProgressHUD showErrorWithStatus:kConfirmWarningText];
         } else {
             [SVProgressHUD showWithStatus:kRegisterProgressText];
-            [[ADNetworkEngine sharedEngine] registerForMail:self.mailTextField.text
-                                                   Password:[self.pswTextField.text MD5]
-                                                   NickName:self.nameTextField.text
-                                                        Sex:[self.sexTextField.text isEqualToString:@"男"]?ADSexTypeMale:ADSexTypeFemale WithCompletion:^(ADRegisterResp *resp) {
-                                                            [self handleRegisterResp:resp];
-                                                        }];
+            if (self.isUsedForBindApp) {
+                [[ADNetworkEngine sharedEngine] wxBindAppForUin:[ADUserInfo currentUser].uin
+                                                    LoginTicket:[ADUserInfo currentUser].loginTicket
+                                                           Mail:self.mailTextField.text
+                                                       Password:[self.pswTextField.text MD5]
+                                                       NickName:self.nameTextField.text
+                                                            Sex:[self.sexTextField.text isEqualToString:@"男"]?ADSexTypeMale:ADSexTypeFemale
+                                                   HeadImageUrl:[ADUserInfo currentUser].headimgurl
+                                                     IsToCreate:YES
+                                                 WithCompletion:^(ADWXBindAPPResp *resp) {
+                                                     [self handleBindAppResp:resp];
+                                                 }];
+            } else {
+                [[ADNetworkEngine sharedEngine] registerForMail:self.mailTextField.text
+                                                       Password:[self.pswTextField.text MD5]
+                                                       NickName:self.nameTextField.text
+                                                      HeadImage:UIImageJPEGRepresentation(self.headImage, 0.7)
+                                                            Sex:[self.sexTextField.text isEqualToString:@"男"]?ADSexTypeMale:ADSexTypeFemale
+                                                 WithCompletion:^(ADRegisterResp *resp) {
+                                                                [self handleRegisterResp:resp];
+                                                            }];
+            }
         }
     }
 }
@@ -333,32 +361,59 @@ static const int kPickerHeight = 168;
     self.sexTextField.text = titleArray[row];
 }
 
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    switch (buttonIndex) {
+        case 0: //拍照上传
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            break;
+        case 1: //从相册选择
+            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            break;
+        default:
+            break;
+    }
+    picker.allowsEditing = YES;
+    picker.delegate = self;
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+#pragma mark - UIImagePickerController
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    self.headImage = [info objectForKey:UIImagePickerControllerEditedImage];
+    [self.header.headImageButton setImage:self.headImage forState:UIControlStateNormal];
+    self.header.cameraImage.hidden = YES;
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Network Handler
 - (void)handleRegisterResp:(ADRegisterResp *)resp {
     if (resp && resp.loginTicket) {
         NSLog(@"Register Success");
         [ADUserInfo currentUser].uin = resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
-        [[ADNetworkEngine sharedEngine] checkLoginForUin:resp.uin
-                                             LoginTicket:resp.loginTicket
-                                          WithCompletion:^(ADCheckLoginResp *resp) {
-                                              [self handleCheckLoginResp:resp];
-                                          }];
+        [SVProgressHUD dismiss];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         NSLog(@"Register Fail");
-        NSString *errorTitle = resp.baseResp.errmsg ? resp.baseResp.errmsg : @"注册失败";
+        NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                   defaultError:kRegisterFailText];
         [SVProgressHUD showErrorWithStatus:errorTitle];
     }
 }
 
-- (void)handleCheckLoginResp: (ADCheckLoginResp *)resp {
-    if (resp && resp.sessionKey) {
-        NSLog(@"Check Login Success");
+- (void)handleBindAppResp:(ADWXBindAPPResp *)resp {
+    if (resp && resp.loginTicket) {
+        NSLog(@"BindApp Success");
+        [ADUserInfo currentUser].uin = resp.uin;
+        [ADUserInfo currentUser].loginTicket = resp.loginTicket;
         [SVProgressHUD dismiss];
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
-        NSLog(@"Check Login Fail");
-        NSString *errorTitle = resp.baseResp.errmsg ? resp.baseResp.errmsg : @"登录失败";
+        NSLog(@"BindApp Fail");
+        NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                   defaultError:kBindingFailText];
         [SVProgressHUD showErrorWithStatus:errorTitle];
     }
 }
@@ -391,6 +446,23 @@ static const int kPickerHeight = 168;
     return _titleLabel;
 }
 
+- (RegisterHeaderView *)header {
+    if (_header == nil) {
+        _header = [[[NSBundle mainBundle] loadNibNamed:@"RegisterHeaderView"
+                                                owner:nil
+                                              options:nil] firstObject];
+        __weak typeof(self) weakSelf = self;
+        _header.headImageCallBack = ^(UIButton *sender) {
+            [[[UIActionSheet alloc] initWithTitle:@"上传头像"
+                                        delegate:weakSelf
+                               cancelButtonTitle:@"取消"
+                          destructiveButtonTitle:nil
+                               otherButtonTitles:@"拍照上传",@"从相册中选择", nil] showInView:weakSelf.view];
+        };
+    }
+    return _header;
+}
+
 - (UITableView *)registerTable {
     if (_registerTable == nil) {
         _registerTable = [[UITableView alloc] initWithFrame:CGRectZero
@@ -403,6 +475,7 @@ static const int kPickerHeight = 168;
         _registerTable.backgroundColor = [UIColor whiteColor];
         _registerTable.showsVerticalScrollIndicator = NO;
         _registerTable.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _registerTable.tableHeaderView = self.header;
         _registerTable.dataSource = self;
         _registerTable.delegate = self;
     }
@@ -423,7 +496,7 @@ static const int kPickerHeight = 168;
 - (InputWithPickerBar *)pickerBar {
     if (_pickerBar == nil) {
         _pickerBar = [[[NSBundle mainBundle] loadNibNamed:@"InputWithPickerBar" owner:nil options:nil] firstObject];
-        __weak typeof (self) weakSelf = self;
+        __weak typeof(self) weakSelf = self;
         _pickerBar.onClickDoneCallBack = ^(id sneder) {
             weakSelf.sexTextField.text = [weakSelf.sexPickerView selectedRowInComponent:0] == 0 ? @"男" : @"女";
             [weakSelf.sexTextField resignFirstResponder];
@@ -431,6 +504,13 @@ static const int kPickerHeight = 168;
         };
     }
     return _pickerBar;
+}
+
+- (UIImage *)headImage {
+    if (_headImage == nil) {
+        _headImage = [UIImage imageNamed:@"wxLogoGreen"];
+    }
+    return _headImage;
 }
 
 @end

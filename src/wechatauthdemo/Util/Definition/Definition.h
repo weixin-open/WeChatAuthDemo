@@ -14,6 +14,9 @@
 #define ScreenWidth  [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height
 
+static int64_t kRefreshTokenTimeNone = 2592000;
+static int64_t kAccessTokenTimeNone = 0;
+
 typedef enum {
     ADSexTypeUnknown,
     ADSexTypeMale,
@@ -23,6 +26,8 @@ typedef enum {
 typedef enum {
     ADErrorCodeUserExisted = 20001,
     ADErrorCodeAlreadyBind = 20002,
+    ADErrorCodeUserNotExisted = 20003,
+    ADErrorCodePasswordNotMatch = 20004,
     ADErrorCodeTicketNotMatch = 30001,
     ADErrorCodeTicketExpired = 30002,
     ADErrorCodeTokenExpired = 30003
@@ -38,7 +43,7 @@ typedef enum {
 typedef void(^ButtonCallBack)(id sender);
 
 //A better version of NSLog
-#define NSLog(format, ...) do {                                                                          \
+#define NSLog(format, ...) do {                                                 \
     fprintf(stderr, "<%s : %d> %s\n",                                           \
     [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],  \
     __LINE__, __func__);                                                        \
@@ -48,5 +53,7 @@ typedef void(^ButtonCallBack)(id sender);
 
 #import "ADBaseResp.h"
 #import "ADAccessLog.h"
+#import "ErrorTitle.h"
+#import "ButtonColor.h"
 
 #endif

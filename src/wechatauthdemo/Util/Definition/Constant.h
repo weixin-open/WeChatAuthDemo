@@ -15,6 +15,7 @@ static const int navigationBarHeight = 44;
 static const int statusBarHeight = 20;
 static const int normalHeight = 44;
 static const float kLoginButtonCornerRadius = 4.0f;
-static NSString *kTitleLabelFont = @"HelveticaNeue-Light";
+static NSString *kTitleLabelFont = @"STHeitiSC-Light";
+static NSString *kEnglishNumberFont = @"HelveticaNeue";
 
 #endif

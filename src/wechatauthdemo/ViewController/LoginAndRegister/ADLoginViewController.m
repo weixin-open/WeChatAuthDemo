@@ -9,7 +9,6 @@
 #import <SVProgressHUD.h>
 #import "EmailFormatValidate.h"
 #import "MD5.h"
-#import "ButtonColor.h"
 #import "InputWithTextFieldCell.h"
 #import "ADLoginViewController.h"
 #import "ADRegisterViewController.h"
@@ -31,6 +30,7 @@ static NSString *kRegisterTipsText = @"还没有账号？";
 static NSString *kRegisterButtonText = @"注册新账号";
 static NSString *kLoginProgressText = @"登录中";
 static NSString *kLoginFailText = @"登录失败";
+static NSString *kBindErrorText = @"绑定失败";
 static NSString *kCellIdentifier = @"cellIdentifierForLogin";
 /* Font */
 static const CGFloat kBackButtonFontSize = 13.0f;
@@ -150,6 +150,7 @@ static const int kRegisterButtonHeight = 44;
     if (sender != self.registerButton)
         return;
     ADRegisterViewController *registerView = [[ADRegisterViewController alloc] init];
+    registerView.isUsedForBindApp = self.isUsedForBindApp;
     [self.navigationController pushViewController:registerView
                                          animated:YES];
 }
@@ -227,26 +228,12 @@ static const int kRegisterButtonHeight = 44;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
         [ADUserInfo currentUser].mail = self.emailTextField.text;
         [ADUserInfo currentUser].pwdH1 = [self.passwordTextField.text MD5];
-        [[ADNetworkEngine sharedEngine] checkLoginForUin:resp.uin
-                                             LoginTicket:resp.loginTicket
-                                          WithCompletion:^(ADCheckLoginResp *resp) {
-                                              [self handleCheckLoginResponse:resp];
-                                          }];
-    } else {
-        NSLog(@"Login Fail");
-        NSString *errorTitle = resp.baseResp.errmsg ? resp.baseResp.errmsg : kLoginFailText;
-        [SVProgressHUD showErrorWithStatus:errorTitle];
-    }
-}
-
-- (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
-    if (resp && resp.sessionKey) {
-        NSLog(@"Check Login Success");
         [SVProgressHUD dismiss];
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
-        NSLog(@"Check Login Fail");
-        NSString *errorTitle = resp.baseResp.errmsg ? resp.baseResp.errmsg : kLoginFailText;
+        NSLog(@"Login Fail");
+        NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                   defaultError:kLoginFailText];
         [SVProgressHUD showErrorWithStatus:errorTitle];
     }
 }
@@ -258,14 +245,12 @@ static const int kRegisterButtonHeight = 44;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
         [ADUserInfo currentUser].mail = self.emailTextField.text;
         [ADUserInfo currentUser].pwdH1 = [self.passwordTextField.text MD5];
-        [[ADNetworkEngine sharedEngine] checkLoginForUin:resp.uin
-                                             LoginTicket:resp.loginTicket
-                                          WithCompletion:^(ADCheckLoginResp *resp) {
-                                              [self handleCheckLoginResponse:resp];
-                                          }];
+        [SVProgressHUD dismiss];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         NSLog(@"Bind App Fail");
-        NSString *errorTitle = resp.baseResp.errmsg ? resp.baseResp.errmsg : kLoginFailText;
+        NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                   defaultError:kBindErrorText];
         [SVProgressHUD showErrorWithStatus:errorTitle];
     }
 }
