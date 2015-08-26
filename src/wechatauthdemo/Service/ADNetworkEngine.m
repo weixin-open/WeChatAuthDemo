@@ -25,7 +25,6 @@ typedef enum {
     ADNetworkEngineStateHaveLoginAPP = 1 << 2,
     ADNetworkEngineStateHaveCheckLogin = 1 << 3
 } ADNetworkEngineState;
-
 /**
  *  Two Flow Chart for State Machine
  *  1.   Stop----->Connected------------------>WXLogin--------->CheckLogin
