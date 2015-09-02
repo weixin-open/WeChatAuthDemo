@@ -5,8 +5,8 @@
 //  Created by Jeason on 26/08/2015.
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
-
 #import "ErrorTitle.h"
+#import "ADNetworkEngine.h"
 
 @implementation NSString (ErrorTitle)
 
@@ -27,7 +27,7 @@
 //            errorTitle = @"太久没有使用了，为了安全起见，请重新输入密码登录";
 //            break;
         case ADErrorCodeTicketExpired:
-            errorTitle = @"太久没有输入密码了，为了安全起见，请重新输入密码登录";
+            errorTitle = @"太久没有使用了，为了安全起见，请重新登录";
             break;
         case ADErrorCodeTicketNotMatch:
             errorTitle = @"登录票据错误";

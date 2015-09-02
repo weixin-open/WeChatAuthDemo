@@ -1,20 +1,23 @@
 //
-//  WXAuthManager.m
+//  WXApiManager.m
 //  wechatauthdemo
 //
 //  Created by Chuang Chen on 6/25/15.
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
-#import "WXAuthManager.h"
+#import "WXApiManager.h"
 #import "RandomKey.h"
+#import <SVProgressHUD.h>
 
-@implementation WXAuthManager
+static NSString *kWXNotInstallErrorTitle = @"您还没有安装微信，不能使用微信分享功能";
+
+@implementation WXApiManager
 
 #pragma mark - Life Cycle
 + (instancetype)sharedManager {
     static dispatch_once_t onceToken;
-    static WXAuthManager *instance = nil;
+    static WXApiManager *instance = nil;
     dispatch_once(&onceToken, ^{
         instance = [[self alloc] initInPrivate];
     });
@@ -50,8 +53,12 @@
 - (BOOL)sendLinkContent:(NSString *)urlString
                   Title:(NSString *)title
             Description:(NSString *)description
-                AtScene:(enum WXScene)scene
-               Delegate:(id<WXAuthDelegate>)delegate {
+                AtScene:(enum WXScene)scene {
+    
+    if (![WXApi isWXAppInstalled]) {
+        [SVProgressHUD showErrorWithStatus:kWXNotInstallErrorTitle];
+        return NO;
+    }
     WXWebpageObject *ext = [WXWebpageObject object];
     ext.webpageUrl = urlString;
     
@@ -66,8 +73,6 @@
     req.message = message;
     req.bText = NO;
     req.scene = scene;
-    
-    self.delegate = delegate;
     return [WXApi sendReq:req];
 }
 

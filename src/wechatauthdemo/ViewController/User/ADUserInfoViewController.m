@@ -16,7 +16,7 @@
 #import "ADLoginViewController.h"
 #import "ADShareViewController.h"
 #import "ADNetworkEngine.h"
-#import "WXAuthManager.h"
+#import "WXApiManager.h"
 #import "ADUserInfo.h"
 #import "ADGetUserInfoResp.h"
 #import "ADAPPBindWXResp.h"
@@ -29,8 +29,9 @@ static NSString *kUserInfoTitle = @"个人信息";
 static NSString *kMailDescText = @"账户邮箱";
 static NSString *kOpenIdDescText = @"OpenID";
 static NSString *kUnionIdDescText = @"UnionID";
-static NSString *kAccessTokenDescText = @"Access token有效期至";
+static NSString *kAccessTokenDescText =  @"Access token有效期至";
 static NSString *kRefreshTokenDescText = @"Refresh token有效期至";
+static NSString *kSessionKeyDescText =   @"App 登录态有效期至";
 static NSString *kAccessLogDescText = @"访问记录";
 static NSString *kShareText = @"开发指引";
 static NSString *kAboutUsText = @"关于我们";
@@ -57,7 +58,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
 @property (nonatomic, strong) UITableView *userInfoTable;
 @property (nonatomic, strong) ADGetUserInfoResp *userInfoResp;
 @property (nonatomic, strong) NSDateFormatter *formatter;
-@property (nonatomic, strong) ADShareViewController *shareView;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPressGesture;
 
 @end
 
@@ -75,17 +76,38 @@ static const CGFloat kButtonCellHeight = 40.0f;
                                                                              style:UIBarButtonItemStyleBordered
                                                                             target:nil
                                                                             action:nil];
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self getUserInfo];
+    [[ADNetworkEngine sharedEngine] getUserInfoForUin:[ADUserInfo currentUser].uin
+                                          LoginTicket:[ADUserInfo currentUser].loginTicket
+                                       WithCompletion:^(ADGetUserInfoResp *resp) {
+                                           [self handleGetUserInfoResponse:resp];
+                                       }];
 }
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     self.userInfoTable.frame = self.view.frame;
+}
+
+#pragma mark - User Actions
+- (void)onLongPressedUserInfoTable: (UILongPressGestureRecognizer *)sender {
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        CGPoint pressPoint = [sender locationInView:self.userInfoTable];
+        NSIndexPath *indexPath = [self.userInfoTable indexPathForRowAtPoint:pressPoint];
+        if (indexPath.section == 0 && indexPath.row == 5) { //Refresh Token
+            if (self.userInfoResp.refreshTokenExpireTime != kRefreshTokenTimeNone) {   //Have Refresh Token ExpireTime
+                [[[UIAlertView alloc] initWithTitle:@"测试功能"
+                                            message:@"这是一个测试功能，你可以使refresh token过期，以体验过期后的行为"
+                                           delegate:self
+                                  cancelButtonTitle:@"取消"
+                                  otherButtonTitles:@"确定", nil] show];
+            }
+        }
+    }
 }
 
 #pragma mark - UITableViewDataSouce
@@ -94,7 +116,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rowNumArray[] = {5, 1, 1, 1, 1};
+    NSInteger rowNumArray[] = {6, 1, 1, 1, 1};
     return rowNumArray[section];
 }
 
@@ -129,14 +151,23 @@ static const CGFloat kButtonCellHeight = 40.0f;
                 cell.descLabel.text = kUnionIdDescText;
                 cell.valueLabel.text = [self.userInfoResp.unionid length] == 0 ? @"暂无" : self.userInfoResp.unionid;
                 break;
-            case 3: //Access Token
+            case 3: //Session Key
+                cell.descLabel.text = kSessionKeyDescText;
+                cell.valueLabel.text = [self.formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:[ADUserInfo currentUser].sessionExpireTime]];
+                break;
+            case 4: //Access Token
                 cell.descLabel.text = kAccessTokenDescText;
                 cell.valueLabel.text = self.userInfoResp.accessTokenExpireTime == kAccessTokenTimeNone ? @"暂无" : [self.formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.userInfoResp.accessTokenExpireTime]];
                 break;
-            case 4: //Refresh Token
+            case 5: { //Refresh Token
                 cell.descLabel.text = kRefreshTokenDescText;
-                cell.valueLabel.text = self.userInfoResp.refreshTokenExpireTime == kRefreshTokenTimeNone ? @"暂无" : [self.formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.userInfoResp.refreshTokenExpireTime]];
+                if (self.userInfoResp.refreshTokenExpireTime == kRefreshTokenTimeNone) {
+                    cell.valueLabel.text = @"暂无";
+                } else {
+                    cell.valueLabel.text = [self.formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.userInfoResp.refreshTokenExpireTime]];
+                }
                 break;
+            }
             default:
                 break;
         }
@@ -193,7 +224,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
         }
     } else if (indexPath.section == 0 && indexPath.row == 1) {
         if ([self.userInfoResp.openid length] == 0) {   //Bind WX
-            [[WXAuthManager sharedManager] sendAuthRequestWithController:self
+            [[WXApiManager sharedManager] sendAuthRequestWithController:self
                                                                 delegate:self];
         }
     } else {
@@ -238,12 +269,22 @@ static const CGFloat kButtonCellHeight = 40.0f;
 
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    [self.navigationController pushViewController:[[WXLoginViewController alloc] init]
-                                         animated:YES];
+    if (buttonIndex != alertView.cancelButtonIndex) {   //Make Expired
+        [[ADNetworkEngine sharedEngine] makeRefreshTokenExpired:[ADUserInfo currentUser].uin
+                                                    LoginTicket:[ADUserInfo currentUser].loginTicket];
+    } else if (alertView.numberOfButtons == 1) {    //Go to Login
+        [[ADNetworkEngine sharedEngine] disConnect];
+        [[ADUserInfo currentUser] clear];
+        WXLoginViewController *wxLoginView = [[WXLoginViewController alloc] init];
+        [self.navigationController pushViewController:wxLoginView
+                                             animated:YES];
+    }
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 
 #pragma mark - WXAuthDelegate
 - (void)wxAuthSucceed:(NSString*)code {
+    NSLog(@"WXAuth Success");
     [SVProgressHUD showWithStatus:kBindingWXProgress];
     [[ADNetworkEngine sharedEngine] appBindWxForUin:[ADUserInfo currentUser].uin
                                         LoginTicket:[ADUserInfo currentUser].loginTicket
@@ -254,42 +295,20 @@ static const CGFloat kButtonCellHeight = 40.0f;
 }
 
 - (void)wxAuthDenied {
+    NSLog(@"WXAuth Deny");
     [SVProgressHUD showErrorWithStatus:kWXAuthDenyTitle];
 }
 
 #pragma mark - Private Methods
 - (void)getUserInfo {
-    [[ADNetworkEngine sharedEngine] checkLoginForUin:[ADUserInfo currentUser].uin
-                                         LoginTicket:[ADUserInfo currentUser].loginTicket
-                                      WithCompletion:^(ADCheckLoginResp *resp) {
-                                          [self handleCheckLoginResponse:resp];
-                                      }];
+    [[ADNetworkEngine sharedEngine] getUserInfoForUin:[ADUserInfo currentUser].uin
+                                          LoginTicket:[ADUserInfo currentUser].loginTicket
+                                       WithCompletion:^(ADGetUserInfoResp *resp) {
+                                           [self handleGetUserInfoResponse:resp];
+                                       }];
 }
 
 #pragma mark - Network Handler
-- (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
-    if (resp && resp.sessionKey) {
-        NSLog(@"Check Login Success");
-        [[ADUserInfo currentUser] save];
-        [[ADNetworkEngine sharedEngine] getUserInfoForUin:[ADUserInfo currentUser].uin
-                                              LoginTicket:[ADUserInfo currentUser].loginTicket
-                                           WithCompletion:^(ADGetUserInfoResp *resp) {
-                                               [self handleGetUserInfoResponse:resp];
-                                           }];
-    } else {
-        NSLog(@"Check Login Error");
-        NSString *error = [NSString errorTitleFromResponse:resp.baseResp
-                                              defaultError:kLoginErrorTitle];
-        if (resp.baseResp.errcode == ADErrorCodeTokenExpired ||
-            resp.baseResp.errcode == ADErrorCodeTicketExpired) {
-            [[[UIAlertView alloc] initWithTitle:kLoginErrorTitle
-                                        message:error
-                                       delegate:self
-                              cancelButtonTitle:@"确定"
-                              otherButtonTitles: nil] show];
-        }
-    }
-}
 - (void)handleGetUserInfoResponse:(ADGetUserInfoResp *)resp {
     if (resp && resp.mail) {
         NSLog(@"Get UserInfo Success");
@@ -302,34 +321,46 @@ static const CGFloat kButtonCellHeight = 40.0f;
         self.userInfoHeader.nickNameLabel.text = resp.nickname;
         [[ADNetworkEngine sharedEngine] downloadImageForUrl:resp.headimgurl
                                              WithCompletion:^(UIImage *image) {
-                                                 if (image)
-                                                     self.userInfoHeader.headPhotoImage.image = image;
+                                                 image = image == nil ? [UIImage imageNamed:@"wxLogoGreen"] : image;
+                                                 self.userInfoHeader.headPhotoImage.image = image;
                                              }];
         [self.userInfoTable reloadData];
     } else {
         NSLog(@"Get UserInfo Fail");
-        NSString *error = [NSString errorTitleFromResponse:resp.baseResp
-                                              defaultError:kGetUserInfoWarningText];
-        [SVProgressHUD showErrorWithStatus:error];
+        if (resp.baseResp.errcode == ADErrorCodeTokenExpired) {
+            [[[UIAlertView alloc] initWithTitle:@"Token过期"
+                                        message:@"太久没登录了，请重新登录"
+                                       delegate:self
+                              cancelButtonTitle:@"确定"
+                              otherButtonTitles:nil] show];
+        } else {
+            NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                       defaultError:kGetUserInfoWarningText];
+            [SVProgressHUD showErrorWithStatus:errorTitle];
+        }
     }
 }
 
 - (void)handleBindWXResponse: (ADAPPBindWXResp *)resp {
     if (resp && resp.loginTicket) {
         NSLog(@"BindWX Success");
-        [ADUserInfo currentUser].uin = resp.uin;
-        [ADUserInfo currentUser].loginTicket = resp.loginTicket;
-        [self getUserInfo];
         [SVProgressHUD dismiss];
+        [ADUserInfo currentUser].uin = (UInt32) resp.uin;
+        [ADUserInfo currentUser].loginTicket = resp.loginTicket;
+        [[ADNetworkEngine sharedEngine] getUserInfoForUin:[ADUserInfo currentUser].uin
+                                              LoginTicket:[ADUserInfo currentUser].loginTicket
+                                           WithCompletion:^(ADGetUserInfoResp *resp) {
+                                               [self handleGetUserInfoResponse:resp];
+                                           }];
     } else {
         NSLog(@"BindWX Fail");
-        NSString *error = [NSString errorTitleFromResponse:resp.baseResp
-                                              defaultError:kGetUserInfoWarningText];
-        [SVProgressHUD showErrorWithStatus:error];
+        NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                   defaultError:kBindWXWarningText];
+        [SVProgressHUD showErrorWithStatus:errorTitle];
     }
 }
 
-#pragma mark - Lazy Initializers
+#pragma mark - Lazy Initializer
 - (UserInfoHeaderView *)userInfoHeader {
     if (_userInfoHeader == nil) {
         _userInfoHeader = [[[NSBundle mainBundle] loadNibNamed:@"UserInfoHeaderView"
@@ -351,6 +382,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
         _userInfoTable.tableHeaderView = self.userInfoHeader;
         _userInfoTable.dataSource = self;
         _userInfoTable.delegate = self;
+        [_userInfoTable addGestureRecognizer:self.longPressGesture];
     }
     return _userInfoTable;
 }
@@ -362,4 +394,13 @@ static const CGFloat kButtonCellHeight = 40.0f;
     }
     return _formatter;
 }
+
+- (UILongPressGestureRecognizer *)longPressGesture {
+    if (_longPressGesture == nil) {
+        _longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                          action:@selector(onLongPressedUserInfoTable:)];
+    }
+    return _longPressGesture;
+}
+
 @end

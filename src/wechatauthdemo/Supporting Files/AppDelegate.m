@@ -10,26 +10,26 @@
 #import "WXLoginViewController.h"
 #import "ADUserInfoViewController.h"
 #import "WXApi.h"
-#import "WXAuthManager.h"
+#import "WXApiManager.h"
 #import "ADNetworkEngine.h"
 #import "ADNetworkConfigManager.h"
 #import "ADUserInfo.h"
+#import "ADCheckLoginResp.h"
 
-@interface AppDelegate ()
-
-@end
-
-static NSString *YourAppIdInWeChat = @"wx17ef1eaef46752cb";
+static NSString *YourAppIdInWeChat = @"wxbeafe42095e03edf";
+static NSString *kYourAppDescription = @"AuthDemo 2.0";
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    
+    /* Setup RootViewController */
     ADUserInfoViewController *userInfoView = [[ADUserInfoViewController alloc] init];
-    WXLoginViewController *wxLoginView = [[WXLoginViewController alloc] init];
     UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:userInfoView];
-    rootNav.navigationBar.hidden = YES;
+    self.window.rootViewController = rootNav;
+
     /* Setup NavigationBar */
     rootNav.navigationBar.tintColor = [UIColor blackColor];
     UIFont *barFont = [UIFont fontWithName:kTitleLabelFont
@@ -40,31 +40,49 @@ static NSString *YourAppIdInWeChat = @"wx17ef1eaef46752cb";
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:barAttributes
                                                                                             forState:UIControlStateNormal];
     [[UINavigationBar appearance] setTitleTextAttributes:barAttributes];
+    rootNav.navigationBar.hidden = YES;
 
     /* Register For WeChat */
     [WXApi registerApp:YourAppIdInWeChat
-       withDescription:@"Auth Demo 2.0"];
+       withDescription:kYourAppDescription];
     
     /* Setup Network */
     [[ADNetworkConfigManager sharedManager] setup];
+    WXLoginViewController *wxLoginView = [[WXLoginViewController alloc] init];
     
-    if (![[ADUserInfo currentUser] load]) { //if load fail
+    /* Load Local User */
+    if (![[ADUserInfo currentUser] load]) {
+        NSLog(@"Load Local User Fail");
         [rootNav pushViewController:wxLoginView animated:NO];
+        [self.window makeKeyAndVisible];
+    } else {
+        NSLog(@"Load Local User Success");
+        [[ADNetworkEngine sharedEngine] checkLoginForUin:[ADUserInfo currentUser].uin
+                                             LoginTicket:[ADUserInfo currentUser].loginTicket
+                                          WithCompletion:^(ADCheckLoginResp *resp) {
+                                              if (resp && resp.sessionKey) {
+                                                  NSLog(@"Check Login Success");
+                                                  [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
+                                                  [[ADUserInfo currentUser] save];
+                                              } else {
+                                                  NSLog(@"Check Login Fail");
+                                                  [rootNav pushViewController:wxLoginView animated:NO];
+                                              }
+                                              [self.window makeKeyAndVisible];
+                                          }];
     }
-    self.window.rootViewController = rootNav;
-    [self.window makeKeyAndVisible];
-    
     return YES;
 }
 
+#pragma warnings You MUST implement these two delegate to handle opening WeChat.
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-    return  [WXApi handleOpenURL:url delegate:[WXAuthManager sharedManager]];
+    return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    return  [WXApi handleOpenURL:url delegate:[WXAuthManager sharedManager]];
+    return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

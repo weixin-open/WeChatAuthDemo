@@ -8,14 +8,7 @@
 
 #ifndef AuthSDKDemo_Definition_h
 #define AuthSDKDemo_Definition_h
-
 #import "Constant.h"
-
-#define ScreenWidth  [UIScreen mainScreen].bounds.size.width
-#define ScreenHeight [UIScreen mainScreen].bounds.size.height
-
-static int64_t kRefreshTokenTimeNone = 2592000;
-static int64_t kAccessTokenTimeNone = 0;
 
 typedef enum {
     ADSexTypeUnknown,
@@ -24,6 +17,8 @@ typedef enum {
 } ADSexType;
 
 typedef enum {
+    ADErrorCodeNoError = 0,
+    ADErrorCodeSessionKeyExpired = 10001,
     ADErrorCodeUserExisted = 20001,
     ADErrorCodeAlreadyBind = 20002,
     ADErrorCodeUserNotExisted = 20003,
@@ -40,6 +35,12 @@ typedef enum {
     EncryptAlgorithmBase64 = 1 << 2,  /* Base64 Encode/Decode */
 } EncryptAlgorithm;
 
+typedef enum {
+    ADLoginTypeFromUnknown,
+    ADLoginTypeFromApp,
+    ADLoginTypeFromWX
+}ADLoginType;
+
 typedef void(^ButtonCallBack)(id sender);
 
 //A better version of NSLog
@@ -51,9 +52,17 @@ typedef void(^ButtonCallBack)(id sender);
     fprintf(stderr, "-------\n");                                               \
 } while (0)
 
+//A better version of extern
+#ifdef __cplusplus
+#define AUTH_DEMO_EXTERN	extern "C" __attribute__((visibility ("default")))
+#else
+#define AUTH_DEMO_EXTERN	    extern __attribute__((visibility ("default")))
+#endif
+
 #import "ADBaseResp.h"
 #import "ADAccessLog.h"
-#import "ErrorTitle.h"
 #import "ButtonColor.h"
+#import "ErrorTitle.h"
+#import "ErrorHandler.h"
 
 #endif

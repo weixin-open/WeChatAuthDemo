@@ -12,6 +12,7 @@
 @interface ADAccessLog : NSObject <NSCoding, NSCopying>
 
 @property (nonatomic, assign) double loginTime;
+@property (nonatomic, assign) ADLoginType loginType;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

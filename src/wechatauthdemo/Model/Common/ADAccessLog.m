@@ -9,7 +9,7 @@
 
 
 NSString *const kADAccessLogLoginTime = @"login_time";
-
+NSString *const kADAccessLogLoginType = @"login_type";
 
 @interface ADAccessLog ()
 
@@ -20,7 +20,7 @@ NSString *const kADAccessLogLoginTime = @"login_time";
 @implementation ADAccessLog
 
 @synthesize loginTime = _loginTime;
-
+@synthesize loginType = _loginType;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
@@ -35,7 +35,7 @@ NSString *const kADAccessLogLoginTime = @"login_time";
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
             self.loginTime = [[self objectOrNilForKey:kADAccessLogLoginTime fromDictionary:dict] doubleValue];
-
+            self.loginType = [[self objectOrNilForKey:kADAccessLogLoginType fromDictionary:dict] intValue];
     }
     
     return self;
@@ -46,7 +46,8 @@ NSString *const kADAccessLogLoginTime = @"login_time";
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
     [mutableDict setValue:[NSNumber numberWithDouble:self.loginTime] forKey:kADAccessLogLoginTime];
-
+    [mutableDict setValue:[NSNumber numberWithInt:self.loginType] forKey:kADAccessLogLoginType];
+    
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
@@ -70,6 +71,7 @@ NSString *const kADAccessLogLoginTime = @"login_time";
     self = [super init];
 
     self.loginTime = [aDecoder decodeDoubleForKey:kADAccessLogLoginTime];
+    self.loginType = [aDecoder decodeIntForKey:kADAccessLogLoginType];
     return self;
 }
 
@@ -77,6 +79,7 @@ NSString *const kADAccessLogLoginTime = @"login_time";
 {
 
     [aCoder encodeDouble:_loginTime forKey:kADAccessLogLoginTime];
+    [aCoder encodeInt:_loginType forKey:kADAccessLogLoginType];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -86,6 +89,7 @@ NSString *const kADAccessLogLoginTime = @"login_time";
     if (copy) {
 
         copy.loginTime = self.loginTime;
+        copy.loginType = self.loginType;
     }
     
     return copy;

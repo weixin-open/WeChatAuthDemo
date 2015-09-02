@@ -40,6 +40,8 @@ static NSString *kRegisterProgressText = @"请稍候";
 static NSString *kRegisterFailText = @"注册失败";
 static NSString *kLoginFailText = @"登录失败";
 static NSString *kBindingFailText = @"绑定失败";
+static NSString *kSexTypeMaleText = @"男";
+static NSString *kSexTypeFemaleText = @"女";
 /* Font */
 static const CGFloat kBackButtonFontSize = 13.0f;
 static const CGFloat kRegisterButtonFontSize = 16.0f;
@@ -303,13 +305,14 @@ static const int kPickerHeight = 168;
             [SVProgressHUD showErrorWithStatus:kConfirmWarningText];
         } else {
             [SVProgressHUD showWithStatus:kRegisterProgressText];
+            ADSexType sex = [self.sexTextField.text isEqualToString:kSexTypeMaleText] ? ADSexTypeMale : ADSexTypeFemale;
             if (self.isUsedForBindApp) {
                 [[ADNetworkEngine sharedEngine] wxBindAppForUin:[ADUserInfo currentUser].uin
                                                     LoginTicket:[ADUserInfo currentUser].loginTicket
                                                            Mail:self.mailTextField.text
                                                        Password:[self.pswTextField.text MD5]
                                                        NickName:self.nameTextField.text
-                                                            Sex:[self.sexTextField.text isEqualToString:@"男"]?ADSexTypeMale:ADSexTypeFemale
+                                                            Sex:sex
                                                    HeadImageUrl:[ADUserInfo currentUser].headimgurl
                                                      IsToCreate:YES
                                                  WithCompletion:^(ADWXBindAPPResp *resp) {
@@ -320,7 +323,7 @@ static const int kPickerHeight = 168;
                                                        Password:[self.pswTextField.text MD5]
                                                        NickName:self.nameTextField.text
                                                       HeadImage:UIImageJPEGRepresentation(self.headImage, 0.7)
-                                                            Sex:[self.sexTextField.text isEqualToString:@"男"]?ADSexTypeMale:ADSexTypeFemale
+                                                            Sex:sex
                                                  WithCompletion:^(ADRegisterResp *resp) {
                                                                 [self handleRegisterResp:resp];
                                                             }];
@@ -390,12 +393,30 @@ static const int kPickerHeight = 168;
         NSLog(@"Register Success");
         [ADUserInfo currentUser].uin = resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
-        [SVProgressHUD dismiss];
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [[ADNetworkEngine sharedEngine] checkLoginForUin:resp.uin
+                                             LoginTicket:resp.loginTicket
+                                          WithCompletion:^(ADCheckLoginResp *resp) {
+                                              [self handleCheckLoginResponse:resp];
+                                          }];
     } else {
         NSLog(@"Register Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kRegisterFailText];
+        [SVProgressHUD showErrorWithStatus:errorTitle];
+    }
+}
+
+- (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
+    if (resp && resp.sessionKey) {
+        NSLog(@"Check Login Success");
+        [SVProgressHUD dismiss];
+        [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
+        [[ADUserInfo currentUser] save];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        NSLog(@"Check Login Fail");
+        NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                   defaultError:kLoginFailText];
         [SVProgressHUD showErrorWithStatus:errorTitle];
     }
 }
@@ -415,7 +436,7 @@ static const int kPickerHeight = 168;
     }
 }
 
-#pragma mark - Lazy Initializers
+#pragma mark - Lazy Initializer
 - (UIButton *)backButton {
     if (_backButton == nil) {
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];

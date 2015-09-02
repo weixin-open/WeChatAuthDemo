@@ -8,9 +8,7 @@
 #import "ADNetworkEngine.h"
 #import "ADNetworkConfigManager.h"
 #import "JSONRequest.h"
-#import "RSA.h"
-#import "AES.h"
-#import "MD5.h"
+#import "ErrorHandler.h"
 #import "RandomKey.h"
 #import "DataModels.h"
 #import "ImageCache.h"
@@ -18,27 +16,26 @@
 static NSString *defaultHost = @"http://qytest.weixin.qq.com";
 static NSString *publickeyFileName = @"rsa_public";
 
-typedef enum {
-    ADNetworkEngineStateStop = 0,
-    ADNetworkEngineStateHaveConnected = 1 << 0,
-    ADNetworkEngineStateHaveWXLogin = 1 << 1,
-    ADNetworkEngineStateHaveLoginAPP = 1 << 2,
-    ADNetworkEngineStateHaveCheckLogin = 1 << 3
-} ADNetworkEngineState;
+//typedef enum {
+//    ADNetworkEngineStateStop = 0,
+//    ADNetworkEngineStateHaveConnected = 1 << 0,
+//    ADNetworkEngineStateHaveWXLogin = 1 << 1,
+//    ADNetworkEngineStateHaveLoginAPP = 1 << 2,
+//    ADNetworkEngineStateHaveCheckLogin = 1 << 3
+//} ADNetworkEngineState;
 /**
- *  Two Flow Chart for State Machine
- *  1.   Stop----->Connected------------------>WXLogin--------->CheckLogin
- *  CGI: NoneCGI-->Register/WXLogin/LoginApp-->CheckLogin------>WXBindApp,GetUserInfo
- *
- *  2.   Stop----->Connected------------------>AppLogin--------->CheckLogin
- *  CGI: NoneCGI-->Register/WXLogin/LoginApp-->CheckLogin------->AppBindWX,GetUserInfo
- */
+*  Two Flow Chart for State Machine
+*  1.   Stop----->Connected------------------>WXLogin--------->CheckLogin
+*  CGI: NoneCGI-->Register/WXLogin/LoginApp-->CheckLogin------>WXBindApp,GetUserInfo
+*
+*  2.   Stop----->Connected------------------>AppLogin--------->CheckLogin
+*  CGI: NoneCGI-->Register/WXLogin/LoginApp-->CheckLogin------->AppBindWX,GetUserInfo
+*/
 
 @interface ADNetworkEngine ()
 
 @property (nonatomic, strong) NSURLSession *session;
 @property (nonatomic, strong) NSString *RSAKey;
-@property (nonatomic, assign) ADNetworkEngineState state;
 
 @end
 
@@ -50,7 +47,6 @@ typedef enum {
     static ADNetworkEngine *instance = nil;
     dispatch_once(&onceToken, ^{
         instance = [[ADNetworkEngine alloc] initWithHost:defaultHost];
-        instance.state = ADNetworkEngineStateStop;
     });
     return instance;
 }
@@ -58,7 +54,6 @@ typedef enum {
 - (instancetype)initWithHost:(NSString *)host {
     if (self = [super init]) {
         self.host = host;
-        self.state = ADNetworkEngineStateStop;
     }
     return self;
 }
@@ -74,11 +69,11 @@ typedef enum {
 #pragma mark - Public Methods
 - (void)connectToServerWithCompletion:(ConnectCallBack)completion {
 //    NSAssert(self.state == ADNetworkEngineStateStop, @"You Can Not Connect Until You Clear Pre-Session Key");
-    
+
     [[self.session JSONTaskForHost:self.host
                               Para:@{
-                                     @"psk": self.session.sessionKey
-                                     }
+                                      @"psk": self.session.sessionKey
+                              }
                      ConfigKeyPath:(NSString *)kConnectCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
                         if (completion)
@@ -96,15 +91,15 @@ typedef enum {
 //    NSAssert(self.state != ADNetworkEngineStateHaveConnected, @"You Can Not Register New Account Until You Have Connected");
     [[self.session JSONTaskForHost:self.host
                               Para:@{
-                                     @"uin": @([ADUserInfo currentUser].uin),
-                                     @"req_buffer": @{
-                                             @"headimg_buf":[imageData base64EncodedStringWithOptions:0],
-                                             @"mail": mail,
-                                             @"pwd_h1": pwd,
-                                             @"nickname": nickName,
-                                             @"sex": @(sex),
-                                             }
-                                     }
+                                      @"uin": @([ADUserInfo currentUser].uin),
+                                      @"req_buffer": @{
+                                              @"headimg_buf":[imageData base64EncodedStringWithOptions:0],
+                                              @"mail": mail,
+                                              @"pwd_h1": pwd,
+                                              @"nickname": nickName,
+                                              @"sex": @(sex),
+                                      }
+                              }
                      ConfigKeyPath:(NSString *)kRegisterCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
                         if (completion)
@@ -117,15 +112,15 @@ typedef enum {
       WithCompletion:(LoginCallBack)completion {
     NSParameterAssert(mail);
 //    NSAssert(self.state == ADNetworkEngineStateHaveConnected, @"You Can Not Login With Account Until You Have Connected");
-    
+
     [[self.session JSONTaskForHost:self.host
                               Para:@{
-                                     @"uin": @([ADUserInfo currentUser].uin),
-                                     @"req_buffer": @{
-                                             @"mail": mail,
-                                             @"pwd_h1": pwd
-                                             }
-                                     }
+                                      @"uin": @([ADUserInfo currentUser].uin),
+                                      @"req_buffer": @{
+                                              @"mail": mail,
+                                              @"pwd_h1": pwd
+                                      }
+                              }
                      ConfigKeyPath:(NSString *)kLoginCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
                         if (completion)
@@ -137,14 +132,14 @@ typedef enum {
             WithCompletion:(WXLoginCallBack)completion {
     NSParameterAssert(code);
 //    NSAssert(self.state == ADNetworkEngineStateHaveConnected, @"You Can Not Login With WeChat Until You Have Connected");
-    
+
     [[self.session JSONTaskForHost:self.host
                               Para:@{
-                                     @"uin": @([ADUserInfo currentUser].uin),
-                                     @"req_buffer": @{
-                                             @"code": code
-                                             }
-                                     }
+                                      @"uin": @([ADUserInfo currentUser].uin),
+                                      @"req_buffer": @{
+                                              @"code": code
+                                      }
+                              }
                      ConfigKeyPath:(NSString *)kWXLoginCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
                         if (completion)
@@ -156,15 +151,15 @@ typedef enum {
              LoginTicket:(NSString *)loginTicket
           WithCompletion:(CheckLoginCallBack)completion {
     NSParameterAssert(loginTicket);
-//    NSAssert(self.state == ADNetworkEngineStateHaveWXLogin || self.state != ADNetworkEngineStateHaveLoginAPP,
+//    NSAssert(self.state == ADNetworkEngineStateHaveWXLogin || self.state == ADNetworkEngineStateHaveLoginAPP,
 //             @"You Should CheckLogin ONLY After You Have Login With Account Or Login With WeChat");
-    
+
     [[self.session JSONTaskForHost:self.host
                               Para:@{
-                                     @"uin": @(uin),
-                                     @"login_ticket": loginTicket,
-                                     @"tmp_key": self.session.sessionKey
-                                     }
+                                      @"uin": @(uin),
+                                      @"login_ticket": loginTicket,
+                                      @"tmp_key": self.session.sessionKey
+                              }
                      ConfigKeyPath:(NSString *)kCheckLoginCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
                         ADCheckLoginResp *resp = nil;
@@ -182,19 +177,28 @@ typedef enum {
            WithCompletion:(GetUserInfoCallBack)completion {
     NSParameterAssert(loginTicket);
 //    NSAssert(self.state & ADNetworkEngineStateHaveCheckLogin, @"You Can Not Get UserInfo Until CheckLogin");
-    
+
     [[self.session JSONTaskForHost:self.host
                               Para:@{
-                                     @"uin": @(uin),
-                                     @"req_buffer": @{
-                                             @"login_ticket": loginTicket,
-                                             @"uin": @(uin)
-                                             }
-                                     }
+                                      @"uin": @(uin),
+                                      @"req_buffer": @{
+                                              @"login_ticket": loginTicket,
+                                              @"uin": @(uin)
+                                      }
+                              }
                      ConfigKeyPath:(NSString *)kGetUserInfoCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        if (completion)
-                            completion (error == nil ? [ADGetUserInfoResp modelObjectWithDictionary:dict] : nil);
+                        ADGetUserInfoResp *resp = [ADGetUserInfoResp modelObjectWithDictionary:dict];
+                        [ErrorHandler handleNetworkExpiredError:resp.baseResp
+                                            WhileCatchErrorCode:^(ADErrorCode code) {
+                                                if (code == ADErrorCodeSessionKeyExpired) {
+                                                    [self getUserInfoForUin:uin
+                                                                LoginTicket:loginTicket
+                                                             WithCompletion:completion];
+                                                } else {
+                                                    completion != nil ? completion (resp) : nil;
+                                                }
+                                            }];
                     }] resume];
 }
 
@@ -210,25 +214,40 @@ typedef enum {
     NSParameterAssert(loginTicket && mail && pwd && nickName && headImageUrl);
 //    NSAssert((self.state & ADNetworkEngineStateHaveCheckLogin) && (self.state & ADNetworkEngineStateHaveWXLogin),
 //             @"You Can Bind App ONLY When You Login With WeChat And Have CheckedLogin");
-    
+
     [[self.session JSONTaskForHost:self.host
                               Para:@{
-                                     @"uin": @(uin),
-                                     @"req_buffer": @{
-                                             @"uin": @(uin),
-                                             @"login_ticket": loginTicket,
-                                             @"mail": mail,
-                                             @"pwd_h1": pwd,
-                                             @"nickname": nickName,
-                                             @"sex": @(sex),
-                                             @"headimgurl": headImageUrl,
-                                             @"is_to_create": @(isToCreate)
-                                             }
-                                     }
+                                      @"uin": @(uin),
+                                      @"req_buffer": @{
+                                              @"uin": @(uin),
+                                              @"login_ticket": loginTicket,
+                                              @"mail": mail,
+                                              @"pwd_h1": pwd,
+                                              @"nickname": nickName,
+                                              @"sex": @(sex),
+                                              @"headimgurl": headImageUrl,
+                                              @"is_to_create": @(isToCreate)
+                                      }
+                              }
                      ConfigKeyPath:(NSString *)kWXBindAppCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        if (completion)
-                            completion (error == nil ? [ADWXBindAPPResp modelObjectWithDictionary:dict] : nil);
+                        ADWXBindAPPResp *resp = [ADWXBindAPPResp modelObjectWithDictionary:dict];
+                        [ErrorHandler handleNetworkExpiredError:resp.baseResp
+                                            WhileCatchErrorCode:^(ADErrorCode code) {
+                                                if (code == ADErrorCodeSessionKeyExpired) {
+                                                    [self wxBindAppForUin:uin
+                                                              LoginTicket:loginTicket
+                                                                     Mail:mail
+                                                                 Password:pwd
+                                                                 NickName:nickName
+                                                                      Sex:sex
+                                                             HeadImageUrl:headImageUrl
+                                                               IsToCreate:isToCreate
+                                                           WithCompletion:completion];
+                                                } else {
+                                                    completion != nil ? completion (resp) : nil;
+                                                }
+                                            }];
                     }] resume];
 }
 
@@ -239,20 +258,30 @@ typedef enum {
     NSParameterAssert(loginTicket && code);
 //    NSAssert((self.state & ADNetworkEngineStateHaveLoginAPP) && (self.state & ADNetworkEngineStateHaveCheckLogin),
 //             @"You Can Bind WX ONLY When You Login With Account And Have CheckedLogin");
-    
+
     [[self.session JSONTaskForHost:self.host
                               Para:@{
-                                     @"uin": @(uin),
-                                     @"req_buffer": @{
-                                             @"uin": @(uin),
-                                             @"login_ticket": loginTicket,
-                                             @"code": code
-                                             }
-                                     }
+                                      @"uin": @(uin),
+                                      @"req_buffer": @{
+                                              @"uin": @(uin),
+                                              @"login_ticket": loginTicket,
+                                              @"code": code
+                                      }
+                              }
                      ConfigKeyPath:(NSString *)kAppBindWXCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        if (completion)
-                            completion (error == nil ? [ADAPPBindWXResp modelObjectWithDictionary:dict] : nil);
+                        ADAPPBindWXResp *resp = [ADAPPBindWXResp modelObjectWithDictionary:dict];
+                        [ErrorHandler handleNetworkExpiredError:resp.baseResp
+                                            WhileCatchErrorCode:^(ADErrorCode errorCode) {
+                                                if (errorCode == ADErrorCodeSessionKeyExpired) {
+                                                    [self appBindWxForUin:uin
+                                                              LoginTicket:loginTicket
+                                                                 AuthCode:code
+                                                           WithCompletion:completion];
+                                                } else {
+                                                    completion != nil ? completion (resp) : nil;
+                                                }
+                                            }];
                     }] resume];
 }
 
@@ -281,6 +310,22 @@ typedef enum {
             });
         });
     }
+}
+
+- (void)makeRefreshTokenExpired:(UInt32)uin
+                    LoginTicket:(NSString *)loginTicket {
+    [[self.session JSONTaskForHost:self.host
+                             Para:@{
+                                    @"uin": @(uin),
+                                    @"req_buffer": @{
+                                            @"uin": @(uin),
+                                            @"login_ticket": loginTicket
+                                            }
+                                    }
+                    ConfigKeyPath:(NSString *)kMakeExpiredCGIName
+                   WithCompletion:^(NSDictionary *dict, NSError *error) {
+                       NSLog(@"%@",dict);
+                   }] resume];
 }
 
 #pragma mark - Lazy Initializer

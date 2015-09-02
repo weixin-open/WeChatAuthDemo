@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSString *unionid;
 @property (nonatomic, strong) NSString *authCode;
 @property (nonatomic, strong) NSString *headimgurl;
+@property (nonatomic, assign) double sessionExpireTime;
 @property (nonatomic, assign) ADSexType sex;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;

@@ -8,7 +8,7 @@
 
 #import <SVProgressHUD.h>
 #import "ADShareViewController.h"
-#import "WXAuthManager.h"
+#import "WXApiManager.h"
 
 static NSString *kTitleText = @"微信登录开发指引";
 static NSString *kShareUrlString = @"http://mp.weixin.qq.com/s?__biz=MjM5NDAxMDg4MA==&mid=208833692&idx=1&sn=daa41a5b34ce7ffeb48985964e613941&scene=1&srcid=TnXuoDUuLCjDSJoLqkdG&from=singlemessage&isappinstalled=0#rd";
@@ -56,14 +56,10 @@ static NSString *kShareFailedText = @"分享失败";
     if (sender != self.navigationItem.rightBarButtonItem)
         return;
     
-    BOOL succ = [[WXAuthManager sharedManager] sendLinkContent:kShareUrlString
-                                                         Title:kTitleText
-                                                   Description:kShareDescText
-                                                       AtScene:WXSceneTimeline
-                                                      Delegate:self];
-    if (!succ) {
-        [SVProgressHUD showErrorWithStatus:kShareFailedText];
-    }
+    [[WXApiManager sharedManager] sendLinkContent:kShareUrlString
+                                            Title:kTitleText
+                                      Description:kShareDescText
+                                          AtScene:WXSceneTimeline];
 }
 
 - (UIWebView *)webView {

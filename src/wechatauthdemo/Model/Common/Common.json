@@ -5,10 +5,12 @@
     },
     "access_log" : [
                     {
-                    "login_time" : 12345
+                    "login_time" : 12345,
+                    "login_type" : 1
                     },
                     {
-                    "login_time" : 12345
+                    "login_time" : 12345,
+                    "login_type" : 1
                     }
                     ],
     "network_config_item": {

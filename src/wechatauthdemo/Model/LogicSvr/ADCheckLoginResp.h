@@ -13,6 +13,7 @@
 
 @property (nonatomic, strong) ADBaseResp *baseResp;
 @property (nonatomic, strong) NSString *sessionKey;
+@property (nonatomic, assign) double expireTime;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

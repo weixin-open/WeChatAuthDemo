@@ -36,15 +36,12 @@
 		7AA163621B85DA9A00E54AAC /* UserInfoDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */; };
 		7AD6CE641B8DA1BA001EFB40 /* RegisterHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6CE631B8DA1BA001EFB40 /* RegisterHeaderView.m */; };
 		7AD6CE661B8DA1E4001EFB40 /* RegisterHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD6CE651B8DA1E4001EFB40 /* RegisterHeaderView.xib */; };
-		7AD6CE691B8DBAFB001EFB40 /* ErrorTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6CE681B8DBAFB001EFB40 /* ErrorTitle.m */; };
-		7AD6CE6D1B8DD75C001EFB40 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD6CE6C1B8DD75C001EFB40 /* ImageCache.m */; };
 		7AD826611B81FDF9008CA90C /* ADNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */; };
-		7AD826621B81FDF9008CA90C /* WXAuthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8262E1B81FDF9008CA90C /* WXAuthManager.m */; };
+		7AD826621B81FDF9008CA90C /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8262E1B81FDF9008CA90C /* WXApiManager.m */; };
 		7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826311B81FDF9008CA90C /* AppDelegate.m */; };
 		7AD826651B81FDF9008CA90C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AD826341B81FDF9008CA90C /* Images.xcassets */; };
 		7AD826671B81FDF9008CA90C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826361B81FDF9008CA90C /* main.m */; };
 		7AD826691B81FDF9008CA90C /* EmailFormatValidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8263D1B81FDF9008CA90C /* EmailFormatValidate.m */; };
-		7AD8266A1B81FDF9008CA90C /* JSONRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8263F1B81FDF9008CA90C /* JSONRequest.m */; };
 		7AD8269A1B8200BD008CA90C /* ADAccessLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826841B8200BD008CA90C /* ADAccessLog.m */; };
 		7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826861B8200BD008CA90C /* ADBaseResp.m */; };
 		7AD8269C1B8200BD008CA90C /* Common.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AD826871B8200BD008CA90C /* Common.json */; };
@@ -58,13 +55,17 @@
 		7AD826AF1B820107008CA90C /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826AA1B820107008CA90C /* AES.m */; };
 		7AD826B01B820107008CA90C /* MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826AC1B820107008CA90C /* MD5.m */; };
 		7AD826B11B820107008CA90C /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826AE1B820107008CA90C /* RSA.m */; };
-		7AD826D21B820170008CA90C /* ADLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826C21B820170008CA90C /* ADLoginViewController.m */; };
-		7AD826D31B820170008CA90C /* ADRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826C41B820170008CA90C /* ADRegisterViewController.m */; };
-		7AD826D41B820170008CA90C /* WXLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826C61B820170008CA90C /* WXLoginViewController.m */; };
-		7AD826D51B820170008CA90C /* ADShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826CA1B820170008CA90C /* ADShareViewController.m */; };
-		7AD826D61B820170008CA90C /* ADAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826CD1B820170008CA90C /* ADAboutViewController.m */; };
-		7AD826D71B820170008CA90C /* ADHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826CF1B820170008CA90C /* ADHistoryViewController.m */; };
-		7AD826D81B820170008CA90C /* ADUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826D11B820170008CA90C /* ADUserInfoViewController.m */; };
+		7AE8C7541B9473560091CE4C /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C74D1B9473560091CE4C /* ErrorHandler.m */; };
+		7AE8C7551B9473560091CE4C /* ErrorTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C74F1B9473560091CE4C /* ErrorTitle.m */; };
+		7AE8C7561B9473560091CE4C /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7511B9473560091CE4C /* ImageCache.m */; };
+		7AE8C7571B9473560091CE4C /* JSONRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7531B9473560091CE4C /* JSONRequest.m */; };
+		7AE8C7611B9473950091CE4C /* ADAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C75A1B9473950091CE4C /* ADAboutViewController.m */; };
+		7AE8C7621B9473950091CE4C /* ADHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C75C1B9473950091CE4C /* ADHistoryViewController.m */; };
+		7AE8C7631B9473950091CE4C /* ADShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C75E1B9473950091CE4C /* ADShareViewController.m */; };
+		7AE8C7641B9473950091CE4C /* ADUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7601B9473950091CE4C /* ADUserInfoViewController.m */; };
+		7AE8C76A1B9473C70091CE4C /* ADLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7671B9473C70091CE4C /* ADLoginViewController.m */; };
+		7AE8C76B1B9473C70091CE4C /* WXLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */; };
+		7AE8C76F1B9473D30091CE4C /* ADRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C76E1B9473D30091CE4C /* ADRegisterViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -112,14 +113,10 @@
 		7AD6CE621B8DA1BA001EFB40 /* RegisterHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterHeaderView.h; sourceTree = "<group>"; };
 		7AD6CE631B8DA1BA001EFB40 /* RegisterHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterHeaderView.m; sourceTree = "<group>"; };
 		7AD6CE651B8DA1E4001EFB40 /* RegisterHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterHeaderView.xib; sourceTree = "<group>"; };
-		7AD6CE671B8DBAFB001EFB40 /* ErrorTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorTitle.h; sourceTree = "<group>"; };
-		7AD6CE681B8DBAFB001EFB40 /* ErrorTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorTitle.m; sourceTree = "<group>"; };
-		7AD6CE6B1B8DD75C001EFB40 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
-		7AD6CE6C1B8DD75C001EFB40 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 		7AD8262B1B81FDF9008CA90C /* ADNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADNetworkEngine.h; sourceTree = "<group>"; };
 		7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADNetworkEngine.m; sourceTree = "<group>"; };
-		7AD8262D1B81FDF9008CA90C /* WXAuthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXAuthManager.h; sourceTree = "<group>"; };
-		7AD8262E1B81FDF9008CA90C /* WXAuthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXAuthManager.m; sourceTree = "<group>"; };
+		7AD8262D1B81FDF9008CA90C /* WXApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiManager.h; sourceTree = "<group>"; };
+		7AD8262E1B81FDF9008CA90C /* WXApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiManager.m; sourceTree = "<group>"; };
 		7AD826301B81FDF9008CA90C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7AD826311B81FDF9008CA90C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		7AD826341B81FDF9008CA90C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -127,8 +124,6 @@
 		7AD826361B81FDF9008CA90C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		7AD8263C1B81FDF9008CA90C /* EmailFormatValidate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailFormatValidate.h; sourceTree = "<group>"; };
 		7AD8263D1B81FDF9008CA90C /* EmailFormatValidate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailFormatValidate.m; sourceTree = "<group>"; };
-		7AD8263E1B81FDF9008CA90C /* JSONRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONRequest.h; sourceTree = "<group>"; };
-		7AD8263F1B81FDF9008CA90C /* JSONRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONRequest.m; sourceTree = "<group>"; };
 		7AD826831B8200BD008CA90C /* ADAccessLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADAccessLog.h; sourceTree = "<group>"; };
 		7AD826841B8200BD008CA90C /* ADAccessLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADAccessLog.m; sourceTree = "<group>"; };
 		7AD826851B8200BD008CA90C /* ADBaseResp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBaseResp.h; sourceTree = "<group>"; };
@@ -157,20 +152,28 @@
 		7AD826AC1B820107008CA90C /* MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MD5.m; sourceTree = "<group>"; };
 		7AD826AD1B820107008CA90C /* RSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSA.h; sourceTree = "<group>"; };
 		7AD826AE1B820107008CA90C /* RSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSA.m; sourceTree = "<group>"; };
-		7AD826C11B820170008CA90C /* ADLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADLoginViewController.h; sourceTree = "<group>"; };
-		7AD826C21B820170008CA90C /* ADLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADLoginViewController.m; sourceTree = "<group>"; };
-		7AD826C31B820170008CA90C /* ADRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADRegisterViewController.h; sourceTree = "<group>"; };
-		7AD826C41B820170008CA90C /* ADRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADRegisterViewController.m; sourceTree = "<group>"; };
-		7AD826C51B820170008CA90C /* WXLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXLoginViewController.h; sourceTree = "<group>"; };
-		7AD826C61B820170008CA90C /* WXLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXLoginViewController.m; sourceTree = "<group>"; };
-		7AD826C91B820170008CA90C /* ADShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADShareViewController.h; sourceTree = "<group>"; };
-		7AD826CA1B820170008CA90C /* ADShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADShareViewController.m; sourceTree = "<group>"; };
-		7AD826CC1B820170008CA90C /* ADAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADAboutViewController.h; sourceTree = "<group>"; };
-		7AD826CD1B820170008CA90C /* ADAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADAboutViewController.m; sourceTree = "<group>"; };
-		7AD826CE1B820170008CA90C /* ADHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADHistoryViewController.h; sourceTree = "<group>"; };
-		7AD826CF1B820170008CA90C /* ADHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADHistoryViewController.m; sourceTree = "<group>"; };
-		7AD826D01B820170008CA90C /* ADUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADUserInfoViewController.h; sourceTree = "<group>"; };
-		7AD826D11B820170008CA90C /* ADUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADUserInfoViewController.m; sourceTree = "<group>"; };
+		7AE8C74C1B9473560091CE4C /* ErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorHandler.h; sourceTree = "<group>"; };
+		7AE8C74D1B9473560091CE4C /* ErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorHandler.m; sourceTree = "<group>"; };
+		7AE8C74E1B9473560091CE4C /* ErrorTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorTitle.h; sourceTree = "<group>"; };
+		7AE8C74F1B9473560091CE4C /* ErrorTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorTitle.m; sourceTree = "<group>"; };
+		7AE8C7501B9473560091CE4C /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
+		7AE8C7511B9473560091CE4C /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
+		7AE8C7521B9473560091CE4C /* JSONRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONRequest.h; sourceTree = "<group>"; };
+		7AE8C7531B9473560091CE4C /* JSONRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONRequest.m; sourceTree = "<group>"; };
+		7AE8C7591B9473950091CE4C /* ADAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADAboutViewController.h; sourceTree = "<group>"; };
+		7AE8C75A1B9473950091CE4C /* ADAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADAboutViewController.m; sourceTree = "<group>"; };
+		7AE8C75B1B9473950091CE4C /* ADHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADHistoryViewController.h; sourceTree = "<group>"; };
+		7AE8C75C1B9473950091CE4C /* ADHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADHistoryViewController.m; sourceTree = "<group>"; };
+		7AE8C75D1B9473950091CE4C /* ADShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADShareViewController.h; sourceTree = "<group>"; };
+		7AE8C75E1B9473950091CE4C /* ADShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADShareViewController.m; sourceTree = "<group>"; };
+		7AE8C75F1B9473950091CE4C /* ADUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADUserInfoViewController.h; sourceTree = "<group>"; };
+		7AE8C7601B9473950091CE4C /* ADUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADUserInfoViewController.m; sourceTree = "<group>"; };
+		7AE8C7661B9473C70091CE4C /* ADLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADLoginViewController.h; sourceTree = "<group>"; };
+		7AE8C7671B9473C70091CE4C /* ADLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADLoginViewController.m; sourceTree = "<group>"; };
+		7AE8C7681B9473C70091CE4C /* WXLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXLoginViewController.h; sourceTree = "<group>"; };
+		7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXLoginViewController.m; sourceTree = "<group>"; };
+		7AE8C76D1B9473D30091CE4C /* ADRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADRegisterViewController.h; sourceTree = "<group>"; };
+		7AE8C76E1B9473D30091CE4C /* ADRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADRegisterViewController.m; sourceTree = "<group>"; };
 		C1A3AACEB12E8AB71622A688 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -276,8 +279,8 @@
 			children = (
 				7AD8262B1B81FDF9008CA90C /* ADNetworkEngine.h */,
 				7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */,
-				7AD8262D1B81FDF9008CA90C /* WXAuthManager.h */,
-				7AD8262E1B81FDF9008CA90C /* WXAuthManager.m */,
+				7AD8262D1B81FDF9008CA90C /* WXApiManager.h */,
+				7AD8262E1B81FDF9008CA90C /* WXApiManager.m */,
 				7AA163461B85A90E00E54AAC /* ADNetworkConfigManager.h */,
 				7AA163471B85A90E00E54AAC /* ADNetworkConfigManager.m */,
 			);
@@ -302,16 +305,11 @@
 			children = (
 				7AD826A51B820103008CA90C /* Definition */,
 				7AD826A81B820107008CA90C /* Encrypt */,
+				7AE8C74B1B9473560091CE4C /* NetworkHandler */,
 				7AD8263C1B81FDF9008CA90C /* EmailFormatValidate.h */,
 				7AD8263D1B81FDF9008CA90C /* EmailFormatValidate.m */,
-				7AD8263E1B81FDF9008CA90C /* JSONRequest.h */,
-				7AD8263F1B81FDF9008CA90C /* JSONRequest.m */,
 				7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */,
 				7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */,
-				7AD6CE671B8DBAFB001EFB40 /* ErrorTitle.h */,
-				7AD6CE681B8DBAFB001EFB40 /* ErrorTitle.m */,
-				7AD6CE6B1B8DD75C001EFB40 /* ImageCache.h */,
-				7AD6CE6C1B8DD75C001EFB40 /* ImageCache.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -322,12 +320,12 @@
 				7AA163591B85D49700E54AAC /* InputWithTextFieldCell.h */,
 				7AA1635A1B85D49700E54AAC /* InputWithTextFieldCell.m */,
 				7AA1635B1B85D49700E54AAC /* InputWithTextFieldCell.xib */,
-				7AA1635E1B85DA9A00E54AAC /* UserInfoDisplayCell.h */,
-				7AA1635F1B85DA9A00E54AAC /* UserInfoDisplayCell.m */,
-				7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */,
 				7A89F6A61B8B1CAC0007ACA7 /* InputWithPickerBar.h */,
 				7A89F6A71B8B1CAC0007ACA7 /* InputWithPickerBar.m */,
 				7A89F6A91B8B1CBF0007ACA7 /* InputWithPickerBar.xib */,
+				7AA1635E1B85DA9A00E54AAC /* UserInfoDisplayCell.h */,
+				7AA1635F1B85DA9A00E54AAC /* UserInfoDisplayCell.m */,
+				7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */,
 				7A89F6B01B8B20BF0007ACA7 /* UserInfoHeaderView.h */,
 				7A89F6B11B8B20BF0007ACA7 /* UserInfoHeaderView.m */,
 				7A89F6AE1B8B206F0007ACA7 /* UserInfoHeaderView.xib */,
@@ -341,8 +339,9 @@
 		7AD826471B81FDF9008CA90C /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7AD826C01B820170008CA90C /* LoginAndRegister */,
-				7AD826C71B820170008CA90C /* Tab */,
+				7AE8C7651B9473C70091CE4C /* Login */,
+				7AE8C76C1B9473D30091CE4C /* Register */,
+				7AE8C7581B9473950091CE4C /* User */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -410,50 +409,6 @@
 			path = Encrypt;
 			sourceTree = "<group>";
 		};
-		7AD826C01B820170008CA90C /* LoginAndRegister */ = {
-			isa = PBXGroup;
-			children = (
-				7AD826C51B820170008CA90C /* WXLoginViewController.h */,
-				7AD826C61B820170008CA90C /* WXLoginViewController.m */,
-				7AD826C11B820170008CA90C /* ADLoginViewController.h */,
-				7AD826C21B820170008CA90C /* ADLoginViewController.m */,
-				7AD826C31B820170008CA90C /* ADRegisterViewController.h */,
-				7AD826C41B820170008CA90C /* ADRegisterViewController.m */,
-			);
-			path = LoginAndRegister;
-			sourceTree = "<group>";
-		};
-		7AD826C71B820170008CA90C /* Tab */ = {
-			isa = PBXGroup;
-			children = (
-				7AD826C81B820170008CA90C /* Game */,
-				7AD826CB1B820170008CA90C /* User */,
-			);
-			path = Tab;
-			sourceTree = "<group>";
-		};
-		7AD826C81B820170008CA90C /* Game */ = {
-			isa = PBXGroup;
-			children = (
-				7AD826C91B820170008CA90C /* ADShareViewController.h */,
-				7AD826CA1B820170008CA90C /* ADShareViewController.m */,
-			);
-			path = Game;
-			sourceTree = "<group>";
-		};
-		7AD826CB1B820170008CA90C /* User */ = {
-			isa = PBXGroup;
-			children = (
-				7AD826CC1B820170008CA90C /* ADAboutViewController.h */,
-				7AD826CD1B820170008CA90C /* ADAboutViewController.m */,
-				7AD826CE1B820170008CA90C /* ADHistoryViewController.h */,
-				7AD826CF1B820170008CA90C /* ADHistoryViewController.m */,
-				7AD826D01B820170008CA90C /* ADUserInfoViewController.h */,
-				7AD826D11B820170008CA90C /* ADUserInfoViewController.m */,
-			);
-			path = User;
-			sourceTree = "<group>";
-		};
 		7AD826E51B821C35008CA90C /* Store */ = {
 			isa = PBXGroup;
 			children = (
@@ -462,6 +417,56 @@
 				7A3FFB421B82E0DB0009EE71 /* ADUserInfo.m */,
 			);
 			path = Store;
+			sourceTree = "<group>";
+		};
+		7AE8C74B1B9473560091CE4C /* NetworkHandler */ = {
+			isa = PBXGroup;
+			children = (
+				7AE8C74C1B9473560091CE4C /* ErrorHandler.h */,
+				7AE8C74D1B9473560091CE4C /* ErrorHandler.m */,
+				7AE8C74E1B9473560091CE4C /* ErrorTitle.h */,
+				7AE8C74F1B9473560091CE4C /* ErrorTitle.m */,
+				7AE8C7501B9473560091CE4C /* ImageCache.h */,
+				7AE8C7511B9473560091CE4C /* ImageCache.m */,
+				7AE8C7521B9473560091CE4C /* JSONRequest.h */,
+				7AE8C7531B9473560091CE4C /* JSONRequest.m */,
+			);
+			path = NetworkHandler;
+			sourceTree = "<group>";
+		};
+		7AE8C7581B9473950091CE4C /* User */ = {
+			isa = PBXGroup;
+			children = (
+				7AE8C75F1B9473950091CE4C /* ADUserInfoViewController.h */,
+				7AE8C7601B9473950091CE4C /* ADUserInfoViewController.m */,
+				7AE8C75B1B9473950091CE4C /* ADHistoryViewController.h */,
+				7AE8C75C1B9473950091CE4C /* ADHistoryViewController.m */,
+				7AE8C7591B9473950091CE4C /* ADAboutViewController.h */,
+				7AE8C75A1B9473950091CE4C /* ADAboutViewController.m */,
+				7AE8C75D1B9473950091CE4C /* ADShareViewController.h */,
+				7AE8C75E1B9473950091CE4C /* ADShareViewController.m */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		7AE8C7651B9473C70091CE4C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				7AE8C7681B9473C70091CE4C /* WXLoginViewController.h */,
+				7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */,
+				7AE8C7661B9473C70091CE4C /* ADLoginViewController.h */,
+				7AE8C7671B9473C70091CE4C /* ADLoginViewController.m */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		7AE8C76C1B9473D30091CE4C /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				7AE8C76D1B9473D30091CE4C /* ADRegisterViewController.h */,
+				7AE8C76E1B9473D30091CE4C /* ADRegisterViewController.m */,
+			);
+			path = Register;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -579,39 +584,40 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7AD826D31B820170008CA90C /* ADRegisterViewController.m in Sources */,
 				7AA163481B85A90E00E54AAC /* ADNetworkConfigManager.m in Sources */,
+				7AE8C76B1B9473C70091CE4C /* WXLoginViewController.m in Sources */,
 				7AD826A11B8200BD008CA90C /* ADLoginResp.m in Sources */,
 				7AD8269A1B8200BD008CA90C /* ADAccessLog.m in Sources */,
 				7AD6CE641B8DA1BA001EFB40 /* RegisterHeaderView.m in Sources */,
 				7AD826611B81FDF9008CA90C /* ADNetworkEngine.m in Sources */,
+				7AE8C7551B9473560091CE4C /* ErrorTitle.m in Sources */,
+				7AE8C7571B9473560091CE4C /* JSONRequest.m in Sources */,
+				7AE8C7621B9473950091CE4C /* ADHistoryViewController.m in Sources */,
 				7AD8269E1B8200BD008CA90C /* ADCheckLoginResp.m in Sources */,
 				7AA1634B1B85AAD200E54AAC /* ADNetworkConfigItem.m in Sources */,
-				7AD826D21B820170008CA90C /* ADLoginViewController.m in Sources */,
+				7AE8C7631B9473950091CE4C /* ADShareViewController.m in Sources */,
+				7AE8C7541B9473560091CE4C /* ErrorHandler.m in Sources */,
 				7AD826B01B820107008CA90C /* MD5.m in Sources */,
 				7AD826A41B8200BD008CA90C /* ADWXLoginResp.m in Sources */,
 				7A00ADC71B8353940013A0B2 /* RandomKey.m in Sources */,
 				7AD826A31B8200BD008CA90C /* ADWXBindAPPResp.m in Sources */,
 				7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */,
 				7AD826A21B8200BD008CA90C /* ADRegisterResp.m in Sources */,
-				7AD6CE691B8DBAFB001EFB40 /* ErrorTitle.m in Sources */,
 				7A89F6A81B8B1CAC0007ACA7 /* InputWithPickerBar.m in Sources */,
-				7AD826D61B820170008CA90C /* ADAboutViewController.m in Sources */,
 				7AD826691B81FDF9008CA90C /* EmailFormatValidate.m in Sources */,
 				7AD826AF1B820107008CA90C /* AES.m in Sources */,
 				7AA163611B85DA9A00E54AAC /* UserInfoDisplayCell.m in Sources */,
-				7AD826D41B820170008CA90C /* WXLoginViewController.m in Sources */,
-				7AD826D51B820170008CA90C /* ADShareViewController.m in Sources */,
+				7AE8C76F1B9473D30091CE4C /* ADRegisterViewController.m in Sources */,
+				7AE8C7561B9473560091CE4C /* ImageCache.m in Sources */,
+				7AE8C76A1B9473C70091CE4C /* ADLoginViewController.m in Sources */,
 				7AD8269D1B8200BD008CA90C /* ADAPPBindWXResp.m in Sources */,
-				7AD826D81B820170008CA90C /* ADUserInfoViewController.m in Sources */,
 				7AA1635C1B85D49700E54AAC /* InputWithTextFieldCell.m in Sources */,
-				7AD6CE6D1B8DD75C001EFB40 /* ImageCache.m in Sources */,
 				7A89F6B21B8B20BF0007ACA7 /* UserInfoHeaderView.m in Sources */,
 				7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */,
 				7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */,
-				7AD8266A1B81FDF9008CA90C /* JSONRequest.m in Sources */,
-				7AD826621B81FDF9008CA90C /* WXAuthManager.m in Sources */,
-				7AD826D71B820170008CA90C /* ADHistoryViewController.m in Sources */,
+				7AE8C7641B9473950091CE4C /* ADUserInfoViewController.m in Sources */,
+				7AE8C7611B9473950091CE4C /* ADAboutViewController.m in Sources */,
+				7AD826621B81FDF9008CA90C /* WXApiManager.m in Sources */,
 				7AD826B11B820107008CA90C /* RSA.m in Sources */,
 				7AD826671B81FDF9008CA90C /* main.m in Sources */,
 				7AD8269F1B8200BD008CA90C /* ADConnectResp.m in Sources */,

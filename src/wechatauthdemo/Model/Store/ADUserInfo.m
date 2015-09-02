@@ -93,6 +93,16 @@ static ADUserInfo *currentUser_ = nil;
 - (void)clear {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kADUserInfoUin];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:kADUserInfoLoginTicket];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    self.openid = nil;
+    self.mail = nil;
+    self.pwdH1 = nil;
+    self.uin = 0;
+    self.loginTicket = nil;
+    self.unionid = nil;
+    self.authCode = nil;
+    self.headimgurl = nil;
+    self.sex = ADSexTypeUnknown;
 }
 
 - (NSDictionary *)dictionaryRepresentation

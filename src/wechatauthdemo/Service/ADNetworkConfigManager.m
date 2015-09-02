@@ -17,6 +17,7 @@ const NSString *kCheckLoginCGIName = @"appcgi_checklogin";
 const NSString *kGetUserInfoCGIName = @"appcgi_getuserinfo";
 const NSString *kWXBindAppCGIName = @"appcgi_wxbindapp";
 const NSString *kAppBindWXCGIName = @"appcgi_appbindwx";
+const NSString *kMakeExpiredCGIName = @"testfunc";
 
 static NSMutableDictionary *allConfig;
 
@@ -30,6 +31,7 @@ static NSMutableDictionary *allConfig;
 @property (nonatomic, strong) ADNetworkConfigItem *getUserInfoConfig;
 @property (nonatomic, strong) ADNetworkConfigItem *wxBindAppConfig;
 @property (nonatomic, strong) ADNetworkConfigItem *appBindWxConfig;
+@property (nonatomic, strong) ADNetworkConfigItem *makeExpiredConfig;
 
 @end
 
@@ -78,6 +80,8 @@ static NSMutableDictionary *allConfig;
               forKeyPath:self.wxBindAppConfig.cgiName];
     [self registerConfig:self.appBindWxConfig
               forKeyPath:self.appBindWxConfig.cgiName];
+    [self registerConfig:self.makeExpiredConfig
+              forKeyPath:self.makeExpiredConfig.cgiName];
 }
 
 - (void)registerConfig:(ADNetworkConfigItem *)item forKeyPath:(NSString *)keyPath {
@@ -92,7 +96,7 @@ static NSMutableDictionary *allConfig;
     return [allConfig objectForKey:keyPath];
 }
 
-#pragma mark - Laze Initializers
+#pragma mark - Laze Initializer
 - (ADNetworkConfigItem *)connectConfig {
     if (_connectConfig == nil) {
         NSDictionary *configDict = @{
@@ -219,5 +223,21 @@ static NSMutableDictionary *allConfig;
         _appBindWxConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }
     return _appBindWxConfig;
+}
+
+- (ADNetworkConfigItem *)makeExpiredConfig {
+    if (_makeExpiredConfig == nil) {
+        NSDictionary *configDict = @{
+                                     @"cgi_name": kMakeExpiredCGIName,
+                                     @"request_path": @"/demoapi/testfunc",
+                                     @"encrypt_algorithm":@(EncryptAlgorithmAES|EncryptAlgorithmBase64),
+                                     @"encrypt_key_path": @"req_buffer",
+                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
+                                     @"http_method": @"POST",
+                                     @"decrypt_key_path": @"resp_buffer"
+                                     };
+        _makeExpiredConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
+    }
+    return _makeExpiredConfig;
 }
 @end

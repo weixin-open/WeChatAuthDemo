@@ -7,8 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const kEncryptWholePacketParaKey;
-extern NSString *const kDecryptWholePacketRespKey;
+AUTH_DEMO_EXTERN NSString *const kEncryptWholePacketParaKey;
+AUTH_DEMO_EXTERN NSString *const kDecryptWholePacketRespKey;
 
 @interface ADNetworkConfigItem : NSObject <NSCoding, NSCopying>
 

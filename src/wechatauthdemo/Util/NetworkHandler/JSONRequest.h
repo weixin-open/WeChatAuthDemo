@@ -7,12 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 
 typedef void (^JSONCallBack)(NSDictionary *dict, NSError *error);
 
 @interface NSURLSession(JSONRequest)
 
+/**
+ *  网络请求建立的统一接口.
+ *
+ *  @param host          请求的Host
+ *  @param para          请求的参数
+ *  @param configKeyPath 请求的配置ID， 详情阅读ADNetworkConfigManager
+ *  @param handler       请求完成时的回调
+ *
+ *  @return 返回一个DataTask（需要resume）
+ */
 - (NSURLSessionDataTask *)JSONTaskForHost:(NSString *)host
                                      Para:(NSDictionary *)para
                             ConfigKeyPath:(NSString *)configKeyPath

@@ -228,10 +228,28 @@ static const int kRegisterButtonHeight = 44;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
         [ADUserInfo currentUser].mail = self.emailTextField.text;
         [ADUserInfo currentUser].pwdH1 = [self.passwordTextField.text MD5];
-        [SVProgressHUD dismiss];
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [[ADNetworkEngine sharedEngine] checkLoginForUin:resp.uin
+                                             LoginTicket:resp.loginTicket
+                                          WithCompletion:^(ADCheckLoginResp *resp) {
+                                              [self handleCheckLoginResponse:resp];
+                                          }];
     } else {
         NSLog(@"Login Fail");
+        NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                   defaultError:kLoginFailText];
+        [SVProgressHUD showErrorWithStatus:errorTitle];
+    }
+}
+
+- (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
+    if (resp && resp.sessionKey) {
+        NSLog(@"Check Login Success");
+        [SVProgressHUD dismiss];
+        [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
+        [[ADUserInfo currentUser] save];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        NSLog(@"Check Login Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kLoginFailText];
         [SVProgressHUD showErrorWithStatus:errorTitle];
@@ -245,8 +263,12 @@ static const int kRegisterButtonHeight = 44;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
         [ADUserInfo currentUser].mail = self.emailTextField.text;
         [ADUserInfo currentUser].pwdH1 = [self.passwordTextField.text MD5];
-        [SVProgressHUD dismiss];
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [[ADUserInfo currentUser] save];
+        [[ADNetworkEngine sharedEngine] checkLoginForUin:resp.uin
+                                             LoginTicket:resp.loginTicket
+                                          WithCompletion:^(ADCheckLoginResp *resp) {
+                                              [self handleCheckLoginResponse:resp];
+                                          }];
     } else {
         NSLog(@"Bind App Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
@@ -255,7 +277,7 @@ static const int kRegisterButtonHeight = 44;
     }
 }
 
-#pragma mark - Lazy Initializers
+#pragma mark - Lazy Initializer
 - (UIButton *)backButton {
     if (_backButton == nil) {
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];

@@ -11,7 +11,7 @@
 
 NSString *const kADCheckLoginRespBaseResp = @"base_resp";
 NSString *const kADCheckLoginRespSessionKey = @"session_key";
-
+NSString *const kADCheckLoginRespExpireTime = @"expire_time";
 
 @interface ADCheckLoginResp ()
 
@@ -23,7 +23,7 @@ NSString *const kADCheckLoginRespSessionKey = @"session_key";
 
 @synthesize baseResp = _baseResp;
 @synthesize sessionKey = _sessionKey;
-
+@synthesize expireTime = _expireTime;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
@@ -39,7 +39,7 @@ NSString *const kADCheckLoginRespSessionKey = @"session_key";
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
             self.baseResp = [ADBaseResp modelObjectWithDictionary:[dict objectForKey:kADCheckLoginRespBaseResp]];
             self.sessionKey = [self objectOrNilForKey:kADCheckLoginRespSessionKey fromDictionary:dict];
-
+            self.expireTime = [[self objectOrNilForKey:kADCheckLoginRespExpireTime fromDictionary:dict] doubleValue];
     }
     
     return self;
@@ -51,7 +51,8 @@ NSString *const kADCheckLoginRespSessionKey = @"session_key";
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
     [mutableDict setValue:[self.baseResp dictionaryRepresentation] forKey:kADCheckLoginRespBaseResp];
     [mutableDict setValue:self.sessionKey forKey:kADCheckLoginRespSessionKey];
-
+    [mutableDict setValue:@(self.expireTime)  forKey:kADCheckLoginRespExpireTime];
+    
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
@@ -76,6 +77,7 @@ NSString *const kADCheckLoginRespSessionKey = @"session_key";
 
     self.baseResp = [aDecoder decodeObjectForKey:kADCheckLoginRespBaseResp];
     self.sessionKey = [aDecoder decodeObjectForKey:kADCheckLoginRespSessionKey];
+    self.expireTime = [[aDecoder decodeObjectForKey:kADCheckLoginRespExpireTime] doubleValue];
     return self;
 }
 
@@ -84,6 +86,7 @@ NSString *const kADCheckLoginRespSessionKey = @"session_key";
 
     [aCoder encodeObject:_baseResp forKey:kADCheckLoginRespBaseResp];
     [aCoder encodeObject:_sessionKey forKey:kADCheckLoginRespSessionKey];
+    [aCoder encodeObject:@(_expireTime) forKey:kADCheckLoginRespExpireTime];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -94,6 +97,7 @@ NSString *const kADCheckLoginRespSessionKey = @"session_key";
 
         copy.baseResp = [self.baseResp copyWithZone:zone];
         copy.sessionKey = [self.sessionKey copyWithZone:zone];
+        copy.expireTime = self.expireTime;
     }
     
     return copy;

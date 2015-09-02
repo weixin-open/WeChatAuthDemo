@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ *  AES_256_CBC_PKCS7Padding, 加密后输出的格式为char[16]+密文(TLS V1.2协议)
+ */
 @interface NSData (AES)
 
 - (NSData *)AES256EncryptWithKey:(NSString *)key;

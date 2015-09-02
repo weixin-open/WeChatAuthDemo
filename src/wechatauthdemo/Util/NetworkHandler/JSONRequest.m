@@ -13,15 +13,14 @@
 #import "ADNetworkConfigManager.h"
 #import "ADNetworkConfigItem.h"
 
-static char publicKeyId;
-static char sessionKeyId;
-
 /**
- *  iOS7里给NSURL Session增加Category会导致unrecognized selectors exception，
- *  可以看到iOS7里的NSURLSession在Runtime其实是__NSCFURLSession，
- *  所以说这个NSURLSession只是一个alias.这里耍个手段在NSObject上添加Category.
+ *  NSURLSession 是Class Cluster，有些Private Class的不是NSURLSession的子类.
+ *  这里给NSObject增加实现来达到目的.
  */
 @implementation NSObject (SessionKey)
+
+static char publicKeyId;
+static char sessionKeyId;
 
 - (NSString *)sessionKey {
     return objc_getAssociatedObject(self, &sessionKeyId);
@@ -38,7 +37,6 @@ static char sessionKeyId;
 - (void)setPublicKey:(NSString *)publicKey {
     objc_setAssociatedObject(self, &publicKeyId, publicKey, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-
 @end
 
 @implementation NSObject (JSONRequest)
@@ -50,6 +48,10 @@ static char sessionKeyId;
     __weak NSURLSession *selfSession = (NSURLSession *)self;
     
     ADNetworkConfigItem *config = [[ADNetworkConfigManager sharedManager] getConfigForKeyPath:configKeyPath];
+    NSAssert(config, @"Configure Item Not Exist For This CGI: %@", configKeyPath);
+    if (config == nil)
+        return nil;
+    
     /* Encrypt Data */
     NSData *encryptedData = [selfSession encryptJSONObject:para
                                                 ForKeyPath:config.encryptKeyPath
@@ -62,7 +64,6 @@ static char sessionKeyId;
     NSURL *url = [NSURL URLWithString:[host stringByAppendingString:config.requestPath]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request addValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-    
     [request setHTTPMethod:config.httpMethod];
     [request setHTTPBody:encryptedData];
     
@@ -169,13 +170,14 @@ static char sessionKeyId;
     
     if ([keyPath isEqualToString:kEncryptWholePacketParaKey])
         return toEncryptData;
-    /* Replace Object for KeyPath And Setup JSON */
+    /* Replace Object for KeyPath */
     if (toEncryptData == nil)
         return nil;
     NSMutableDictionary *mutableDict = [dict mutableCopy];
     [mutableDict setObject:[[NSString alloc] initWithData:toEncryptData
                                                  encoding:NSUTF8StringEncoding]
                     forKey:keyPath];
+    /* And Setup JSON */
     NSError *jsonError = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mutableDict
                                                        options:NSJSONWritingPrettyPrinted
@@ -184,7 +186,6 @@ static char sessionKeyId;
         NSLog(@"JSON Error: %@", jsonError);
         return nil;
     }
-    
     return jsonData;
 }
 
@@ -227,10 +228,12 @@ static char sessionKeyId;
         toDecryptData = [toDecryptData AES256DecryptWithKey:sessionKey];
     }
     /* Rplace Object for KeyPath */
-    if (toDecryptData == nil)
+    NSString *decryptedString = [[NSString alloc] initWithData:toDecryptData
+                                                      encoding:NSUTF8StringEncoding];
+    if (decryptedString == nil)
         return dict;
-    [mutableDict setObject:[[NSString alloc] initWithData:toDecryptData
-                                                 encoding:NSUTF8StringEncoding]
+    
+    [mutableDict setObject:decryptedString
                     forKey:keyPath];
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }

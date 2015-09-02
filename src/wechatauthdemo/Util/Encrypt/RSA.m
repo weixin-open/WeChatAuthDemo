@@ -109,7 +109,7 @@
     size_t srclen = (size_t)[self length];
     
     size_t outlen = SecKeyGetBlockSize(keyRef) * sizeof(uint8_t);
-    if(srclen > outlen - 11) {
+    if(srclen > outlen - 11) { //PKCS1 padding
         CFRelease(keyRef);
         return nil;
     }

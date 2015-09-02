@@ -12,6 +12,8 @@ static NSString *kCellIdentifer = @"kCellIdentifer";
 static NSString *kDateFormat = @"yyyy-MM-dd HH:mm";
 static NSString *kTitleText = @"访问记录";
 static NSString *kTableHeaderText = @"以下是您最近一段时间的访问记录";
+static NSString *kFromAppLogin = @"从账号密码登录";
+static NSString *kFromWXLogin =  @"从微信授权登录";
 
 @interface ADHistoryViewController ()
 
@@ -74,7 +76,9 @@ static NSString *kTableHeaderText = @"以下是您最近一段时间的访问记
                                                             forIndexPath:indexPath];
     ADAccessLog *accessLog = [self.accessLogArray objectAtIndex:indexPath.row];
     NSDate *loginDate = [NSDate dateWithTimeIntervalSince1970:accessLog.loginTime];
-    cell.textLabel.text = [self.formatter stringFromDate:loginDate];
+    NSString *loginDateString = [self.formatter stringFromDate:loginDate];
+    NSString *loginTypeString = accessLog.loginType == ADLoginTypeFromApp ? kFromAppLogin : kFromWXLogin;
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", loginDateString, loginTypeString];
     cell.textLabel.font = [UIFont fontWithName:kEnglishNumberFont
                                           size:14];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
