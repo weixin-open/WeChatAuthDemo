@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
-#import <SVProgressHUD.h>
 #import "WXLoginViewController.h"
 #import "ADLoginViewController.h"
 #import "ADNetworkEngine.h"
@@ -17,11 +16,10 @@
 #import "ADConnectResp.h"
 
 /* Title Message */
-static NSString *kNormalLoginTitle = @"普通账号登录";
-static NSString *kWXAuthDenyTitle = @"授权失败";
-static NSString *kWXLoginErrorTitle = @"微信登陆失败";
-static NSString *kLoginStatusTitle = @"登录中";
-static NSString *kTitleLabelText = @"WeChat Sample";
+static NSString* const kNormalLoginTitle = @"普通账号登录";
+static NSString* const kWXAuthDenyTitle = @"授权失败";
+static NSString* const kWXLoginErrorTitle = @"微信登陆失败";
+static NSString* const kTitleLabelText = @"微信登录Demo";
 /* Font */
 static const CGFloat kTitleLabelFontSize = 18.0f;
 static const CGFloat kWXLoginButtonFontSize = 16.0f;
@@ -120,7 +118,7 @@ static const int kNormalLoginButtonHeight = 44;
 #pragma mark - WXAuthDelegate
 - (void)wxAuthSucceed:(NSString *)code {
     [ADUserInfo currentUser].authCode = code;
-    [SVProgressHUD showWithStatus:kLoginStatusTitle];
+    ADShowActivity(self.view);
     [[ADNetworkEngine sharedEngine] wxLoginForAuthCode:code
                                         WithCompletion:^(ADWXLoginResp *resp) {
                                             [self handleWXLoginResponse:resp];
@@ -128,7 +126,7 @@ static const int kNormalLoginButtonHeight = 44;
 }
 
 - (void)wxAuthDenied {
-    [SVProgressHUD showErrorWithStatus:kWXAuthDenyTitle];
+    ADShowErrorAlert(kWXAuthDenyTitle);
 }
 
 #pragma mark - Network Handlers
@@ -146,14 +144,14 @@ static const int kNormalLoginButtonHeight = 44;
         NSLog(@"WXLogin Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kWXLoginErrorTitle];
-        [SVProgressHUD showErrorWithStatus:errorTitle];
+        ADShowErrorAlert(errorTitle);
     }
 }
 
 - (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
+    ADHideActivity;
     if (resp && resp.sessionKey) {
         NSLog(@"Check Login Success");
-        [SVProgressHUD dismiss];
         [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
         [[ADUserInfo currentUser] save];
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -161,7 +159,7 @@ static const int kNormalLoginButtonHeight = 44;
         NSLog(@"Check Login Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kWXLoginErrorTitle];
-        [SVProgressHUD showErrorWithStatus:errorTitle];
+        ADShowErrorAlert(errorTitle);
     }
 }
 
@@ -184,8 +182,9 @@ static const int kNormalLoginButtonHeight = 44;
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.text = kTitleLabelText;
-        _titleLabel.font = [UIFont fontWithName:kTitleLabelFont
+        _titleLabel.font = [UIFont fontWithName:kChineseFont
                                            size:kTitleLabelFontSize];
+        _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.textColor = [UIColor whiteColor];
     }
     return _titleLabel;
@@ -200,7 +199,7 @@ static const int kNormalLoginButtonHeight = 44;
         [_wxLoginButton addTarget:self
                            action:@selector(onClickWXLogin:)
                  forControlEvents:UIControlEventTouchUpInside];
-        _wxLoginButton.titleLabel.font = [UIFont fontWithName:kTitleLabelFont
+        _wxLoginButton.titleLabel.font = [UIFont fontWithName:kChineseFont
                                                          size:kWXLoginButtonFontSize];
     }
     return _wxLoginButton;
@@ -223,7 +222,7 @@ static const int kNormalLoginButtonHeight = 44;
                             forState:UIControlStateNormal];
         [_normalLoginButton setTitleColor:[UIColor linkButtonColor]
                                  forState:UIControlStateNormal];
-        _normalLoginButton.titleLabel.font = [UIFont fontWithName:kTitleLabelFont
+        _normalLoginButton.titleLabel.font = [UIFont fontWithName:kChineseFont
                                                              size:kNormalButtonFontSize];
     }
     return _normalLoginButton;

@@ -23,7 +23,6 @@
 </script>
 <div id="category"></div>
 
-
 ##一、建立登录前安全信道
 <b>当App尚未登录服务器前，App与Server之间会经过一次握手建立登录前安全信道，时序图如下所示：</b>
 
@@ -51,9 +50,11 @@ note left of AppClient: 5. AppClient用psk作为密钥的\nAES解密保存temp_u
 
 5. AppClient对回包进行Base64 Decode之后，用psk作为密钥进行AES解密获得temp_uin保存到内存中.
 
-<b>至此AppClient和AppServer之间的登录前安全信道建立完成，之后一直至[使用登录票据登录AppServer](#wow5)之前，AppClient和AppServer都使用psk作为密钥加密报文，并把密文经过Base64Encode之后，并带上temp_uin一并发送出去。</b>
+<b>至此AppClient和AppServer之间的登录前安全信道建立完成，之后一直至[使用登录票据登录AppServer](#wow6)之前，AppClient和AppServer都使用psk作为密钥加密报文，并把密文经过Base64Encode之后，并带上temp_uin一并发送出去。</b>
 
-##二、利用微信SSO换取登录票据
+##二、换取登录票据
+
+### 利用微信SSO换取登录票据
 <b>当用户点击“微信登录”按钮时，会触发利用微信SSO换取登录票据事件，此部分需在[登录前安全信道](#wow1)中进行，时序图如下所示：</b>
 
 <!--title 利用微信SSO换取登录票据
@@ -95,7 +96,7 @@ note left of AppClient: 8. 用psk解密Uin，\nLoginTicket并保存。
 
 8. AppClient收到，解密Uin和LoginTicket并保存到本地。
 
-##三、利用App账号密码换取登录票据
+### 利用App账号密码换取登录票据
 <b>当用户点击”普通登录“按钮时，会触发利用App账号密码换取登录票据事件，此部分需在[登录前安全信道](#wow1)中进行，时序图如下所示：</b>
 
 <!--title 利用账号密码换取登录票据
@@ -126,7 +127,7 @@ note left of AppClient: 5. 用psk解密Uin，\nLoginTicket并保存。
 5. AppClient收到，解密Uin和LoginTicket并保存到本地。
 
 
-##四、注册App账号并换取登录票据
+### 注册App账号并换取登录票据
 <b>当用户点击"现在注册"按钮时，会触发注册App账号并换取登录票据事件，此部分需在[登录前安全信道](#wow1)中进行，时序图如下所示 ：</b>
 
 <!--title 注册App账号并换取登录票据
@@ -156,7 +157,7 @@ note left of AppClient: 5. 用psk解密Uin，\nLoginTicket并保存。
 
 5. AppClient收到后，解密Uin和LoginTicket并保存到本地。
 
-##五、使用登录票据登录并建立正式安全信道
+##三、使用登录票据登录并建立正式安全信道
 <b>当AppClient获得正式Uin和LoginTicket时，会触发通过登录票据登录AppServer事件，此部分跟安全信道无关，时序图如下所示 ：</b>
 
 <!--title 通过登录票据登录AppServer
@@ -180,16 +181,15 @@ note left of AppClient: 5. 用temp_key解密SK，\nexpireTime并保存。
 
 2. AppClient用HardCode在AppClient的RSA公钥加密的temp_key, Uin, LoginTicket发送给服务器.
 
-3. AppServer通过RSA私钥解密获得temp_key, Uin, LoginTicket, 之后尝试匹配Uin和LoginTicket，若匹配成功则生成一个密钥SK(*SessionKey*)和对应的过期时间expireTime，并建立```Uin<->SK```的映射。
-
+3. AppServer通过RSA私钥解密获得temp_key, Uin, LoginTicket, 之后尝试匹配Uin和LoginTicket并且检查LoginTicket是否过期。如果票据是很久之前（例如三个月之前的）生成的，或者最近没有使用过（例如一周没使用过），那么票据就是过期的。若检查都成功则生成一个密钥SK(*SessionKey*)和对应的过期时间expireTime，并建立```Uin<->SK```的映射。
 4. AppServer用temp_key对{SK, expireTime}进行AES加密后经过Base64 Encoding发送给AppClient。
 
 5. AppClient收到后，用temp_key作为密钥解密获得SK和expireTime并保存到内存。
 
 <b>至此，AppClient和AppServer之间的正式安全信道建立完成，直至expireTime之前，AppClient和AppServer都使用SK作为密钥加密报文，并把密文经过Base64Encode之后，并带上Uin（明文）一并发送出去。 </b>
 
-##六、获得用户信息
-<b>当AppClient获得SK和expireTime时，会触发获得用户信息事件，此部分需在[正式安全信道](#wow5)中进行，时序图如下所示 ：</b>
+##四、获得用户信息
+<b>当AppClient获得SK和expireTime时，会触发获得用户信息事件，此部分需在[正式安全信道](#wow6)中进行，时序图如下所示 ：</b>
 
 <!--title 获得用户信息
 
@@ -213,18 +213,18 @@ note left of AppClient: 6. 解密用户信息\n并保存显示。
 
 1. AppClient用SK对｛Uin，LoginTicket｝加密并Base64 Encode之后，与Uin(明文)一同发给AppServer。
 
-2. AppServer通过明文获得Uin并索引到SK，若SK已过期，则触发[App登录态/SK过期](#wow11)子事件, 否则解密获得LoginTicket。之后查询Uin和LoginTicket是否匹配，若成功，则根据Uin查询获得用户OpenId等用户信息。
+2. AppServer通过明文获得Uin并索引到SK，若SK已过期，则触发[App登录态/SK过期](#wow12)子事件, 否则解密获得LoginTicket。之后查询Uin和LoginTicket是否匹配，若成功，则根据Uin查询获得用户OpenId等用户信息。
 
 3. AppServer利用OpenId和AccessToken向WXOpenServer查询用户的微信信息。<font color=red size=4>注意，这里AccessToken和RefreshToken只能存在于AppServer中，不能让AppClient直接请求微信用户信息。</font>
 	
-4. 若AccessToken未过期，WXOpenServer返回对应的微信用户信息，包括微信昵称，头像Url等，若已过期，则触发[微信登录的Token过期](#wow12)子事件。
+4. 若AccessToken未过期，WXOpenServer返回对应的微信用户信息，包括微信昵称，头像Url等，若已过期，则触发[微信登录的Token过期](#wow13)子事件。
 
 5. AppServer用SK对用户信息（包括昵称，头像，OpenId，AccessToken有效期，Refresh Token有效期）进行AES加密发送给AppClient。
 
 6. AppClient收到后，用SK作为密钥解密获得用户信息并保存到内存中和展示在屏幕上。
 
-##七、微信登录后绑定App账号
-<b> 用户[微信登录](#wow2)后，在未绑定App账号的情况下点击"绑定App账号"按钮时，会触发微信登录后绑定App账号事件，此部分需在[正式安全信道](#wow5)中进行。分为绑定已有的App账号和注册并绑定新App账号两种情况。</b>
+##五、微信登录后绑定App账号
+<b> 用户[微信登录](#wow2)后，在未绑定App账号的情况下点击"绑定App账号"按钮时，会触发微信登录后绑定App账号事件，此部分需在[正式安全信道](#wow6)中进行。分为绑定已有的App账号和注册并绑定新App账号两种情况。</b>
 
 ###绑定已有的App账号
 <b>用户通过输入App账号密码进行绑定，会触发绑定已有的App账号子事件，时序图为：</b>
@@ -250,11 +250,11 @@ note left of AppClient: 5. 用psk解密Uin2，LoginTicket2\n并替换原来的Ui
 
 2. AppClient将mail和pwdH1用SK作为密钥进行AES加密并Base64 Encode后，连带当前的Uin，称为Uin1（明文）一并发给AppServer。
 
-3. AppServer通过明文获得Uin1并索引到SK, 若SK已过期，则触发[App登录态/SK过期](#wow11)子事件, 否则解密获得mail，pwdH1，并对pwdH1加盐后进行二次MD5得到pwdH2。AppServer匹配mail和pwdH2，若匹配成功则利用mail查找对应的Uin2，LoginTicket2。根据Uin1查询OpenId，然后建立```Uin2<->OpenId```的映射。
+3. AppServer通过明文获得Uin1并索引到SK, 若SK已过期，则触发[App登录态/SK过期](#wow12)子事件, 否则解密获得mail，pwdH1，并对pwdH1加盐后进行二次MD5得到pwdH2。AppServer匹配mail和pwdH2，若匹配成功则利用mail查找对应的Uin2，LoginTicket2。根据Uin1查询OpenId，然后建立```Uin2<->OpenId```的映射。
 
 4. AppServer用SK对{LoginTicket2, Uin2}加密后经过Base64 Encoding发送给AppClient。
 
-5. AppClient收到，解密获得Uin2和LoginTicket2并替换Uin1和LoginTicket1。因为Uin已经改变，这时候需要重新[登录AppServer](#wow5)以刷新用户信息。
+5. AppClient收到，解密获得Uin2和LoginTicket2并替换Uin1和LoginTicket1。因为Uin已经改变，这时候需要重新[登录AppServer](#wow6)以刷新用户信息。
 
 ###注册并绑定新App账号
 <b>用户通过注册新的App账号进行绑定，会触发注册并绑定新App账号子事件，时序图为：</b>
@@ -280,14 +280,14 @@ note left of AppClient: 5. 解密获得Uin和LoginTicket，\n重新获得用户�
 
 2. AppClient将mail、pwdH1，nickName等AES加密后进行Base64 Encode，连带Uin（明文）一并发给AppServer。
 
-3. AppServer通过明文获得Uin并索引到SK，若SK已过期，则触发[App登录态/SK过期](#wow11)子事件, 否则解密获得信息，并对pwdH1加盐后进行二次MD5得到pwdH2。AppServer根据信息新建用户，若成功则建立```mail<->Uin```的映射，再加上之前[微信登录](#wow2)建立的```Uin<->OpenId```的映射即可完成绑定。
+3. AppServer通过明文获得Uin并索引到SK，若SK已过期，则触发[App登录态/SK过期](#wow12)子事件, 否则解密获得信息，并对pwdH1加盐后进行二次MD5得到pwdH2。AppServer根据信息新建用户，若成功则建立```mail<->Uin```的映射，再加上之前[微信登录](#wow2)建立的```Uin<->OpenId```的映射即可完成绑定。
 
 4. AppServer用SK对{LoginTicket, Uin}加密后经过Base64 Encoding发送给AppClient。
 
-5. AppClient收到后，解密Uin和LoginTicket并重新[获取用户信息](#wow6)。
+5. AppClient收到后，解密Uin和LoginTicket并重新[获取用户信息](#wow7)。
 
-##八、App登录后绑定微信号
-<b>用户用[账号密码登录](#wow3)后，在未绑定微信号的情况下点击“绑定微信号”按钮，会触发App登录后绑定微信号事件。此部分需在[正式安全信道](#wow5)中进行，时序图为：</b>
+##六、App登录后绑定微信号
+<b>用户用[账号密码登录](#wow3)后，在未绑定微信号的情况下点击“绑定微信号”按钮，会触发App登录后绑定微信号事件。此部分需在[正式安全信道](#wow6)中进行，时序图为：</b>
 
 <!--title App登录后绑定微信号
 
@@ -316,7 +316,7 @@ note left of AppClient: 8. 解密获得Uin和LoginTicket，\n重新获得用户�
 
 2. AppClient用SK对codeAES加密后进行Base64 Encode，连带Uin（明文）一并发给AppServer。
 
-3. AppServer通过明文获得Uin并索引到SK，若SK已过期，则触发[App登录态/SK过期](#wow5)子事件, 否则解密后获得code参数。
+3. AppServer通过明文获得Uin并索引到SK，若SK已过期，则触发[App登录态/SK过期](#wow12)子事件, 否则解密后获得code参数。
 
 4. AppServer用存在本地的AppID，AppSecret以及code参数发向微信OpenServer请求Token信息。<font color=red size=4><b>注意，这里AppSecret只能存在于AppServer中，不能让AppClient直接请求Token信息。</b></font>
 
@@ -326,11 +326,11 @@ note left of AppClient: 8. 解密获得Uin和LoginTicket，\n重新获得用户�
 
 7. AppServer用psk对{LoginTicket, Uin}加密后经过Base64 Encoding发送给AppClient。
 
-8. AppClient收到，解密Uin和LoginTicket并重新[获取用户信息](#wow6)。
+8. AppClient收到，解密Uin和LoginTicket并重新[获取用户信息](#wow7)。
 
-##九、App登录态/SK过期
+##七、App登录态/SK过期
 
-<b>当AppServer在[获得用户信息](#wow6)或[微信登录后绑定App账号](#wow7)或[App登录后绑定微信号](#wow10)子事件中发现SK过期时，会触发App登录态/SK过期事件。此部分只需要执行之前的子事件即可，是否为安全通道由具体子事件决定，时序图如下：</b>
+<b>当AppServer在[获得用户信息](#wow7)或[微信登录后绑定App账号](#wow8)或[App登录后绑定微信号](#wow11)子事件中发现SK过期时，会触发App登录态/SK过期事件。此部分只需要执行之前的子事件即可，是否为安全通道由具体子事件决定，时序图如下：</b>
 
 <!--title App登录态/SK过期
 
@@ -363,14 +363,14 @@ AppClient->AppServer: 9. GetUserInfoRequest或\nwxBindAppRequest或\nappBindWXRe
 
 3. AppServer返回一个错误码标识SK已经过期。
 
-4. AppClient收到错误码后重新执行[使用登录票据登录并建立正式安全信道](#wow5)子事件.
+4. AppClient收到错误码后重新执行[使用登录票据登录并建立正式安全信道](#wow6)子事件.
 
 5. AppClient重新发起GetUserInfoRequest或wxBindAppRequest或appBindWXRequest请求.
 
 
-##十、微信登录的Token过期
+##八、微信登录的Token过期
 
-<b>当AppServer在[获得用户信息](#wow6)子事件中通过OpenId和AccessToken向WXOpenServer请求微信信息时，发现AccessToken过期，会触发微信登录的Token过期事件。此部分分为AccessToken过期和RefreshToken过期两种情况。以下为分别描述：</b>
+<b>当AppServer在[获得用户信息](#wow7)子事件中通过OpenId和AccessToken向WXOpenServer请求微信信息时，发现AccessToken过期，会触发微信登录的Token过期事件。此部分分为AccessToken过期和RefreshToken过期两种情况。以下为分别描述：</b>
 
 ###Access Token过期
 
@@ -400,7 +400,7 @@ note left of AppServer: 4. 再次请求微信信息
 
 ###Refresh Token过期
 
-<b>若AppServer在刷新AccessToken的过程中发现RefreshToken过期，则需要让AppClient重新进行微信授权以获得新的RefreshToken。此部分需在[正式安全信道](#wow5)中进行，时序图为:</b>
+<b>若AppServer在刷新AccessToken的过程中发现RefreshToken过期，则需要让AppClient重新进行微信授权以获得新的RefreshToken。此部分需在[正式安全信道](#wow6)中进行，时序图为:</b>
 
 <!--title Refresh Token过期
 
@@ -427,4 +427,4 @@ note left of AppClient: 5. 重新登录AppServer\n并获取用户信息
 
 4. AppClient收到错误码后重新触发[利用微信SSO换取登录票据](#wow2)子事件。
 
-5. AppClient重新触发[使用登录票据登录并建立正式安全信道](#wow5)子事件并重新[获取用户信息](#wow6)。
+5. AppClient重新触发[使用登录票据登录并建立正式安全信道](#wow6)子事件并重新[获取用户信息](#wow7)。

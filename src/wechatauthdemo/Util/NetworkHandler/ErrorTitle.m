@@ -21,19 +21,19 @@
             errorTitle = @"用户已经绑定";
             break;
         case ADErrorCodeUserExisted:
-            errorTitle = @"邮箱已注册";
+            errorTitle = @"账号已注册";
             break;
         case ADErrorCodeTokenExpired:
 //            errorTitle = @"太久没有使用了，为了安全起见，请重新输入密码登录";
 //            break;
         case ADErrorCodeTicketExpired:
-            errorTitle = @"太久没有使用了，为了安全起见，请重新登录";
+            errorTitle = @"太久没有登录了，为了安全起见，请重新登录";
             break;
         case ADErrorCodeTicketNotMatch:
             errorTitle = @"登录票据错误";
             break;
         case ADErrorCodeUserNotExisted:
-            errorTitle = @"邮箱不存在";
+            errorTitle = @"该账号未注册";
             break;
         case ADErrorCodePasswordNotMatch:
             errorTitle = @"密码不正确";

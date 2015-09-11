@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
-#import <SVProgressHUD.h>
 #import "EmailFormatValidate.h"
 #import "MD5.h"
 #import "InputWithTextFieldCell.h"
@@ -19,19 +18,19 @@
 #import "ADWXBindAPPResp.h"
 
 /* Message Text */
-static NSString *kBackButtonTitle = @"返回";
-static NSString *kLoginViewTitle = @"请输入账号密码";
-static NSString *kEmailDescText = @"账户邮箱";
-static NSString *kPswDescText = @"密码";
-static NSString *kEmailWarningText = @"请输入有效邮箱账号";
-static NSString *kPasswordWarningText = @"密码至少6位";
-static NSString *kLoginButtonText = @"登录";
-static NSString *kRegisterTipsText = @"还没有账号？";
-static NSString *kRegisterButtonText = @"注册新账号";
-static NSString *kLoginProgressText = @"登录中";
-static NSString *kLoginFailText = @"登录失败";
-static NSString *kBindErrorText = @"绑定失败";
-static NSString *kCellIdentifier = @"cellIdentifierForLogin";
+static NSString* const kBackButtonTitle = @"返回";
+static NSString* const kLoginViewTitle = @"请输入账号密码";
+static NSString* const kEmailDescText = @"账户邮箱";
+static NSString* const kPswDescText = @"密码";
+static NSString* const kEmailWarningText = @"请输入有效邮箱账号";
+static NSString* const kPasswordWarningText = @"密码至少6位";
+static NSString* const kLoginButtonText = @"登录";
+static NSString* const kRegisterTipsText = @"还没有账号？";
+static NSString* const kRegisterButtonText = @"注册新账号";
+static NSString* const kLoginProgressText = @"登录中";
+static NSString* const kLoginFailText = @"登录失败";
+static NSString* const kBindErrorText = @"绑定失败";
+static NSString* const kCellIdentifier = @"cellIdentifierForLogin";
 /* Font */
 static const CGFloat kBackButtonFontSize = 13.0f;
 static const CGFloat kTitleLabelFontSize = 20.0f;
@@ -119,11 +118,11 @@ static const int kRegisterButtonHeight = 44;
         return;
     
     if (![EmailFormatValidate isValidate:self.emailTextField.text]) {
-        [SVProgressHUD showErrorWithStatus:kEmailWarningText];
+        ADShowErrorAlert(kEmailWarningText);
     } else if ([self.passwordTextField.text length] < kPasswordMinLength) {
-        [SVProgressHUD showErrorWithStatus:kPasswordWarningText];
+        ADShowErrorAlert(kPasswordWarningText);
     } else {
-        [SVProgressHUD showWithStatus:kLoginProgressText];
+        ADShowActivity(self.view);
         if (self.isUsedForBindApp) {
             [[ADNetworkEngine sharedEngine] wxBindAppForUin:[ADUserInfo currentUser].uin
                                                 LoginTicket:[ADUserInfo currentUser].loginTicket
@@ -199,6 +198,7 @@ static const int kRegisterButtonHeight = 44;
             cell.descLabel.text = kPswDescText;
             cell.textField.placeholder = kPasswordWarningText;
             cell.textField.secureTextEntry = YES;
+            cell.textField.keyboardType = UIKeyboardTypeDefault;
             cell.textField.returnKeyType = UIReturnKeyDone;
             [cell.textField removeTarget:self
                                   action:@selector(passwordEditingFinished:)
@@ -235,16 +235,17 @@ static const int kRegisterButtonHeight = 44;
                                           }];
     } else {
         NSLog(@"Login Fail");
+        ADHideActivity;
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kLoginFailText];
-        [SVProgressHUD showErrorWithStatus:errorTitle];
+        ADShowErrorAlert(errorTitle);
     }
 }
 
 - (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
+    ADHideActivity;
     if (resp && resp.sessionKey) {
         NSLog(@"Check Login Success");
-        [SVProgressHUD dismiss];
         [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
         [[ADUserInfo currentUser] save];
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -252,7 +253,7 @@ static const int kRegisterButtonHeight = 44;
         NSLog(@"Check Login Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kLoginFailText];
-        [SVProgressHUD showErrorWithStatus:errorTitle];
+        ADShowErrorAlert(errorTitle);
     }
 }
 
@@ -273,7 +274,8 @@ static const int kRegisterButtonHeight = 44;
         NSLog(@"Bind App Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kBindErrorText];
-        [SVProgressHUD showErrorWithStatus:errorTitle];
+        ADHideActivity;
+        ADShowErrorAlert(errorTitle);
     }
 }
 
@@ -281,7 +283,7 @@ static const int kRegisterButtonHeight = 44;
 - (UIButton *)backButton {
     if (_backButton == nil) {
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _backButton.titleLabel.font = [UIFont fontWithName:kTitleLabelFont
+        _backButton.titleLabel.font = [UIFont fontWithName:kChineseFont
                                                       size:kBackButtonFontSize];
         
         [_backButton setTitleColor:[UIColor blackColor]
@@ -299,7 +301,7 @@ static const int kRegisterButtonHeight = 44;
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.text = kLoginViewTitle;
-        _titleLabel.font = [UIFont fontWithName:kTitleLabelFont
+        _titleLabel.font = [UIFont fontWithName:kChineseFont
                                            size:kTitleLabelFontSize];
         _titleLabel.textColor = [UIColor blackColor];
     }
@@ -329,7 +331,7 @@ static const int kRegisterButtonHeight = 44;
         [_loginButton addTarget:self
                          action:@selector(onClickLogin:)
                forControlEvents:UIControlEventTouchUpInside];
-        _loginButton.titleLabel.font = [UIFont fontWithName:kTitleLabelFont
+        _loginButton.titleLabel.font = [UIFont fontWithName:kChineseFont
                                                        size:kLoginButtonFontSize];
     }
     return _loginButton;
@@ -340,7 +342,7 @@ static const int kRegisterButtonHeight = 44;
         _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_registerButton setTitle:kRegisterButtonText
                          forState:UIControlStateNormal];
-        _registerButton.titleLabel.font = [UIFont fontWithName:kTitleLabelFont
+        _registerButton.titleLabel.font = [UIFont fontWithName:kChineseFont
                                                           size:kBackButtonFontSize];
         [_registerButton setTitleColor:[UIColor linkButtonColor]
                               forState:UIControlStateNormal];
@@ -356,7 +358,7 @@ static const int kRegisterButtonHeight = 44;
         _registerTipsLabel = [[UILabel alloc] init];
         _registerTipsLabel.text = kRegisterTipsText;
         _registerTipsLabel.textColor = [UIColor grayColor];
-        _registerTipsLabel.font = [UIFont fontWithName:kTitleLabelFont
+        _registerTipsLabel.font = [UIFont fontWithName:kChineseFont
                                                   size:kBackButtonFontSize];
     }
     return _registerTipsLabel;

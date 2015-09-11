@@ -8,8 +8,8 @@
 
 #import "ADAboutViewController.h"
 
-static NSString *kTitleText = @"关于我们";
-static NSString *kAboutUsText = @"微信授权Demo为开源项目，为微信开发者提供开发Demo，开发者可以进行参考，并应用到自己的App中。";
+static NSString* const kTitleText = @"关于我们";
+static NSString* const kAboutUsText = @"微信登录Demo为微信团队开源项目，用于微信开发者进行微信登录、分享功能开发时的参考Demo。微信开发者可以参考项目中的代码来开发应用，也可以直接使用项目中的代码到自己的App中。\n开发者可以自由使用并传播本代码，但需要保留原作者信息。\n\n源代码下载地址：（git地址）\n联系我们：weixin-open@qq.com";
 
 @interface ADAboutViewController ()
 
@@ -27,11 +27,6 @@ static NSString *kAboutUsText = @"微信授权Demo为开源项目，为微信开
     [self.view addSubview:self.textView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBar.hidden = NO;
-}
-
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
@@ -41,20 +36,12 @@ static NSString *kAboutUsText = @"微信授权Demo为开源项目，为微信开
                                      ScreenHeight-inset-navigationBarHeight-statusBarHeight);
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hidden = YES;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Lazy Initializers
 - (UITextView *)textView {
     if (_textView == nil) {
         _textView = [[UITextView alloc] init];
+        _textView.font = [UIFont fontWithName:kChineseFont
+                                         size:17];
         _textView.text = kAboutUsText;
         _textView.editable = NO;
     }

@@ -11,58 +11,36 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="大饼的测试号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0LD-ne-Qaj">
-                    <rect key="frame" x="72" y="22" width="240" height="21"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="185" id="S9H-e7-x0f"/>
-                        <constraint firstAttribute="height" constant="21" id="hqy-Xa-HId"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="大饼的测试号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0LD-ne-Qaj">
+                    <rect key="frame" x="115" y="8" width="197" height="21"/>
+                    <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="S9H-e7-x0f"/>
-                        </mask>
-                    </variation>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wxLogoGreen" translatesAutoresizingMaskIntoConstraints="NO" id="clp-I3-cZn">
-                    <rect key="frame" x="20" y="11" width="44" height="44"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="44" id="DYN-Bo-NRp"/>
-                        <constraint firstAttribute="height" constant="44" id="cbp-09-1tA"/>
-                    </constraints>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="wxLogoGreen" translatesAutoresizingMaskIntoConstraints="NO" id="clp-I3-cZn">
+                    <rect key="frame" x="81" y="8" width="26" height="26"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="22"/>
+                            <integer key="value" value="13"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="中国-广东-广州" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ba2-uM-gOE">
+                    <rect key="frame" x="115" y="37" width="197" height="21"/>
+                    <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="14"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.93609845638275146" green="0.93607044219970703" blue="0.93608629703521729" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstAttribute="trailing" secondItem="0LD-ne-Qaj" secondAttribute="trailing" constant="8" id="7Rb-y5-aPG"/>
-                <constraint firstItem="clp-I3-cZn" firstAttribute="top" secondItem="dR2-CX-wPv" secondAttribute="top" constant="8" id="8ZS-LJ-fJa"/>
-                <constraint firstItem="0LD-ne-Qaj" firstAttribute="top" secondItem="dR2-CX-wPv" secondAttribute="top" constant="19" id="Xdo-Zo-pKr"/>
-                <constraint firstAttribute="centerY" secondItem="clp-I3-cZn" secondAttribute="centerY" id="Zjc-cD-ADe"/>
-                <constraint firstAttribute="centerY" secondItem="0LD-ne-Qaj" secondAttribute="centerY" id="hTa-Gj-QVh"/>
-                <constraint firstItem="clp-I3-cZn" firstAttribute="leading" secondItem="dR2-CX-wPv" secondAttribute="leading" constant="20" id="hrS-D2-pDG"/>
-                <constraint firstItem="0LD-ne-Qaj" firstAttribute="leading" secondItem="clp-I3-cZn" secondAttribute="trailing" constant="8" id="jqB-Kt-5SK"/>
-            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <variation key="default">
-                <mask key="constraints">
-                    <exclude reference="8ZS-LJ-fJa"/>
-                    <exclude reference="Xdo-Zo-pKr"/>
-                </mask>
-            </variation>
             <connections>
                 <outlet property="headPhotoImage" destination="clp-I3-cZn" id="4Ty-YD-R3y"/>
+                <outlet property="locateLabel" destination="ba2-uM-gOE" id="U9a-39-b4L"/>
                 <outlet property="nickNameLabel" destination="0LD-ne-Qaj" id="eNO-Wz-mOZ"/>
             </connections>
-            <point key="canvasLocation" x="479" y="372"/>
+            <point key="canvasLocation" x="381" y="296"/>
         </view>
     </objects>
     <resources>

@@ -3,7 +3,6 @@
 // Copyright (c) 2015 Tencent. All rights reserved.
 //
 
-#import <SVProgressHUD/SVProgressHUD.h>
 #import "ErrorHandler.h"
 #import "ErrorTitle.h"
 #import "AppDelegate.h"

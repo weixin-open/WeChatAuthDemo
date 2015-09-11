@@ -17,8 +17,9 @@ static const int normalHeight = 44;
 static const float kLoginButtonCornerRadius = 4.0f;
 static int64_t kRefreshTokenTimeNone = 2592000;
 static int64_t kAccessTokenTimeNone = 0;
-static NSString *kTitleLabelFont = @"STHeitiSC-Light";
-static NSString *kEnglishNumberFont = @"HelveticaNeue";
+static NSString* const kChineseFont = @"STHeitiSC-Light";
+static NSString* const kEnglishNumberFont = @"HelveticaNeue";
+static NSString* const kCancleWordingText = @"知道了";
 
 #define ScreenWidth  [UIScreen mainScreen].bounds.size.width
 #define ScreenHeight [UIScreen mainScreen].bounds.size.height

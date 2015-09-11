@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
-#import <SVProgressHUD.h>
 #import "UserInfoDisplayCell.h"
 #import "UserInfoHeaderView.h"
 #import "ADUserInfoViewController.h"
@@ -23,31 +22,31 @@
 #import "ADCheckLoginResp.h"
 
 /* Text Message */
-static NSString *kUserInfoCellIdentifier = @"cellIdentifierForUserInfo";
-static NSString *kButtonCellIdentifier = @"cellIdentifierForButton";
-static NSString *kUserInfoTitle = @"个人信息";
-static NSString *kMailDescText = @"账户邮箱";
-static NSString *kOpenIdDescText = @"OpenID";
-static NSString *kUnionIdDescText = @"UnionID";
-static NSString *kAccessTokenDescText =  @"Access token有效期至";
-static NSString *kRefreshTokenDescText = @"Refresh token有效期至";
-static NSString *kSessionKeyDescText =   @"App 登录态有效期至";
-static NSString *kAccessLogDescText = @"访问记录";
-static NSString *kShareText = @"开发指引";
-static NSString *kAboutUsText = @"关于我们";
-static NSString *kLogoutButtonText = @"退出登录";
-static NSString *kDateFormat = @"yyyy-MM-dd HH:mm";
-static NSString *kGetUserInfoWarningText = @"获取用户信息失败";
-static NSString *kWXAuthDenyTitle = @"微信授权失败";
-static NSString *kBindWXWarningText = @"绑定微信失败";
-static NSString *kBindingWXProgress = @"请稍候";
-static NSString *kLogoutTitleText = @"退出不会删除用户数据，下次登录依然可以使用本账号";
-static NSString *kCancelTitleText = @"取消";
-static NSString *kLoginErrorTitle = @"登录错误";
+static NSString* const kUserInfoCellIdentifier = @"cellIdentifierForUserInfo";
+static NSString* const kButtonCellIdentifier = @"cellIdentifierForButton";
+static NSString* const kUserInfoTitle = @"个人信息";
+static NSString* const kMailDescText = @"账户邮箱";
+static NSString* const kOpenIdDescText = @"OpenID";
+static NSString* const kUnionIdDescText = @"UnionID";
+static NSString* const kAccessTokenDescText =  @"Access token有效期至";
+static NSString* const kRefreshTokenDescText = @"Refresh token有效期至";
+static NSString* const kSessionKeyDescText =   @"App 登录态有效期至";
+static NSString* const kAccessLogDescText = @"访问记录";
+static NSString* const kShareText = @"开发指引";
+static NSString* const kAboutUsText = @"关于我们";
+static NSString* const kLogoutButtonText = @"退出登录";
+static NSString* const kDateFormat = @"yyyy-MM-dd HH:mm";
+static NSString* const kGetUserInfoWarningText = @"获取用户信息失败";
+static NSString* const kWXAuthDenyTitle = @"微信授权失败";
+static NSString* const kBindWXWarningText = @"绑定微信失败";
+static NSString* const kBindingWXProgress = @"请稍候";
+static NSString* const kLogoutTitleText = @"退出不会删除用户数据，下次登录依然可以使用本账号";
+static NSString* const kCancelTitleText = @"取消";
+static NSString* const kLoginErrorTitle = @"登录错误";
 /* Font */
-static const CGFloat kButtonCellFontSize = 12.0f;
+static const CGFloat kButtonCellFontSize = 17.0f;
 /* Size */
-static const CGFloat kUserInfoCellHeight = 49.0f;
+static const CGFloat kUserInfoCellHeight = 64.0f;
 static const CGFloat kButtonCellHeight = 40.0f;
 
 @interface ADUserInfoViewController ()<UITableViewDataSource, UITableViewDelegate,
@@ -59,6 +58,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
 @property (nonatomic, strong) ADGetUserInfoResp *userInfoResp;
 @property (nonatomic, strong) NSDateFormatter *formatter;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGesture;
+@property (nonatomic, assign) BOOL nextViewShouldShowNavigation;
 
 @end
 
@@ -67,20 +67,19 @@ static const CGFloat kButtonCellHeight = 40.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = kUserInfoTitle;
-    self.view.backgroundColor = [UIColor whiteColor];
-    
+    self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
     [self.view addSubview:self.userInfoTable];
-    
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回"
                                                                              style:UIBarButtonItemStyleBordered
                                                                             target:nil
                                                                             action:nil];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.nextViewShouldShowNavigation = YES;
+
     [[ADNetworkEngine sharedEngine] getUserInfoForUin:[ADUserInfo currentUser].uin
                                           LoginTicket:[ADUserInfo currentUser].loginTicket
                                        WithCompletion:^(ADGetUserInfoResp *resp) {
@@ -90,7 +89,13 @@ static const CGFloat kButtonCellHeight = 40.0f;
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.userInfoTable.frame = self.view.frame;
+    self.userInfoTable.frame = CGRectMake(0, statusBarHeight, ScreenWidth, ScreenHeight-statusBarHeight);
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:!self.nextViewShouldShowNavigation
+                                             animated:animated];
 }
 
 #pragma mark - User Actions
@@ -149,7 +154,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
             }
             case 2: //Union ID
                 cell.descLabel.text = kUnionIdDescText;
-                cell.valueLabel.text = [self.userInfoResp.unionid length] == 0 ? @"暂无" : self.userInfoResp.unionid;
+                cell.valueLabel.text = [self.userInfoResp.unionid length] == 0 ? @"None" : self.userInfoResp.unionid;
                 break;
             case 3: //Session Key
                 cell.descLabel.text = kSessionKeyDescText;
@@ -157,12 +162,12 @@ static const CGFloat kButtonCellHeight = 40.0f;
                 break;
             case 4: //Access Token
                 cell.descLabel.text = kAccessTokenDescText;
-                cell.valueLabel.text = self.userInfoResp.accessTokenExpireTime == kAccessTokenTimeNone ? @"暂无" : [self.formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.userInfoResp.accessTokenExpireTime]];
+                cell.valueLabel.text = self.userInfoResp.accessTokenExpireTime == kAccessTokenTimeNone ? @"None" : [self.formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.userInfoResp.accessTokenExpireTime]];
                 break;
             case 5: { //Refresh Token
                 cell.descLabel.text = kRefreshTokenDescText;
                 if (self.userInfoResp.refreshTokenExpireTime == kRefreshTokenTimeNone) {
-                    cell.valueLabel.text = @"暂无";
+                    cell.valueLabel.text = @"None";
                 } else {
                     cell.valueLabel.text = [self.formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:self.userInfoResp.refreshTokenExpireTime]];
                 }
@@ -176,7 +181,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
     } else if (indexPath.section == 1) {    //Access Log
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kButtonCellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = kAccessLogDescText;
-        cell.textLabel.font = [UIFont fontWithName:kTitleLabelFont
+        cell.textLabel.font = [UIFont fontWithName:kChineseFont
                                               size:kButtonCellFontSize];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -184,7 +189,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
     } else if (indexPath.section == 2) {    //Share
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kButtonCellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = kShareText;
-        cell.textLabel.font = [UIFont fontWithName:kTitleLabelFont
+        cell.textLabel.font = [UIFont fontWithName:kChineseFont
                                               size:kButtonCellFontSize];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -192,7 +197,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
     } else if (indexPath.section == 3) {    //About Us
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kButtonCellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = kAboutUsText;
-        cell.textLabel.font = [UIFont fontWithName:kTitleLabelFont
+        cell.textLabel.font = [UIFont fontWithName:kChineseFont
                                               size:kButtonCellFontSize];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -200,7 +205,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
     } else {    //Logout
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kButtonCellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = kLogoutButtonText;
-        cell.textLabel.font = [UIFont fontWithName:kTitleLabelFont
+        cell.textLabel.font = [UIFont fontWithName:kChineseFont
                                               size:kButtonCellFontSize];
         cell.textLabel.textColor = [UIColor redColor];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -219,11 +224,13 @@ static const CGFloat kButtonCellHeight = 40.0f;
         if ([self.userInfoResp.mail length] == 0) {
             ADLoginViewController *bindAppView = [[ADLoginViewController alloc] init];
             bindAppView.isUsedForBindApp = YES;
+            self.nextViewShouldShowNavigation = NO;
             [self.navigationController pushViewController:bindAppView
                                                  animated:YES];
         }
     } else if (indexPath.section == 0 && indexPath.row == 1) {
         if ([self.userInfoResp.openid length] == 0) {   //Bind WX
+            self.nextViewShouldShowNavigation = NO;
             [[WXApiManager sharedManager] sendAuthRequestWithController:self
                                                                 delegate:self];
         }
@@ -234,15 +241,15 @@ static const CGFloat kButtonCellHeight = 40.0f;
                                                                                                   AccessLogs:self.userInfoResp.accessLog]
                                                      animated:YES];
                 break;
-            case 2: //About Us
+            case 2: //Share
                 [self.navigationController pushViewController:[[ADShareViewController alloc] init]
                                                      animated:YES];
                 break;
-            case 3: //Logout
+            case 3: //About
                 [self.navigationController pushViewController:[[ADAboutViewController alloc] init]
                                                      animated:YES];
                 break;
-            case 4:
+            case 4: //Logout
                 [[[UIActionSheet alloc] initWithTitle:kLogoutTitleText
                                             delegate:self
                                    cancelButtonTitle:kCancelTitleText
@@ -261,10 +268,11 @@ static const CGFloat kButtonCellHeight = 40.0f;
         [[ADNetworkEngine sharedEngine] disConnect];
         [[ADUserInfo currentUser] clear];
         WXLoginViewController *wxLoginView = [[WXLoginViewController alloc] init];
+        self.nextViewShouldShowNavigation = NO;
         [self.navigationController pushViewController:wxLoginView
                                              animated:YES];
+        [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
     }
-    [actionSheet dismissWithClickedButtonIndex:buttonIndex animated:YES];
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -276,6 +284,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
         [[ADNetworkEngine sharedEngine] disConnect];
         [[ADUserInfo currentUser] clear];
         WXLoginViewController *wxLoginView = [[WXLoginViewController alloc] init];
+        self.nextViewShouldShowNavigation = NO;
         [self.navigationController pushViewController:wxLoginView
                                              animated:YES];
     }
@@ -285,7 +294,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
 #pragma mark - WXAuthDelegate
 - (void)wxAuthSucceed:(NSString*)code {
     NSLog(@"WXAuth Success");
-    [SVProgressHUD showWithStatus:kBindingWXProgress];
+    ADShowActivity(self.view);
     [[ADNetworkEngine sharedEngine] appBindWxForUin:[ADUserInfo currentUser].uin
                                         LoginTicket:[ADUserInfo currentUser].loginTicket
                                            AuthCode:code
@@ -296,7 +305,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
 
 - (void)wxAuthDenied {
     NSLog(@"WXAuth Deny");
-    [SVProgressHUD showErrorWithStatus:kWXAuthDenyTitle];
+    ADShowErrorAlert(kWXAuthDenyTitle);
 }
 
 #pragma mark - Private Methods
@@ -310,6 +319,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
 
 #pragma mark - Network Handler
 - (void)handleGetUserInfoResponse:(ADGetUserInfoResp *)resp {
+    ADHideActivity;
     if (resp && resp.mail) {
         NSLog(@"Get UserInfo Success");
         self.userInfoResp = resp;
@@ -319,6 +329,13 @@ static const CGFloat kButtonCellHeight = 40.0f;
         [ADUserInfo currentUser].sex = resp.sex;
 
         self.userInfoHeader.nickNameLabel.text = resp.nickname;
+        self.userInfoHeader.locateLabel.text = self.userInfoResp.country;
+        if (self.userInfoResp.province && [self.userInfoResp.province length] > 0) {
+            self.userInfoHeader.locateLabel.text = [self.userInfoHeader.locateLabel.text stringByAppendingFormat:@"-%@", self.userInfoResp.province];
+        }
+        if (self.userInfoResp.city && [self.userInfoResp.city length] > 0) {
+            self.userInfoHeader.locateLabel.text = [self.userInfoHeader.locateLabel.text stringByAppendingFormat:@"-%@", self.userInfoResp.city];
+        }
         [[ADNetworkEngine sharedEngine] downloadImageForUrl:resp.headimgurl
                                              WithCompletion:^(UIImage *image) {
                                                  image = image == nil ? [UIImage imageNamed:@"wxLogoGreen"] : image;
@@ -336,15 +353,15 @@ static const CGFloat kButtonCellHeight = 40.0f;
         } else {
             NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                        defaultError:kGetUserInfoWarningText];
-            [SVProgressHUD showErrorWithStatus:errorTitle];
+            ADShowErrorAlert(errorTitle);
         }
     }
 }
 
 - (void)handleBindWXResponse: (ADAPPBindWXResp *)resp {
+    ADHideActivity;
     if (resp && resp.loginTicket) {
         NSLog(@"BindWX Success");
-        [SVProgressHUD dismiss];
         [ADUserInfo currentUser].uin = (UInt32) resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
         [[ADNetworkEngine sharedEngine] getUserInfoForUin:[ADUserInfo currentUser].uin
@@ -356,7 +373,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
         NSLog(@"BindWX Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kBindWXWarningText];
-        [SVProgressHUD showErrorWithStatus:errorTitle];
+        ADShowErrorAlert(errorTitle);
     }
 }
 

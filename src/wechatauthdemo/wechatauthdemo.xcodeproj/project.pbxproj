@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		61F017AA63CD253A0B7AAE79 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E48D1AAC1987F311E45EB3E /* libPods.a */; };
 		730FE4AA1B3AD9C50072FD36 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 730FE4A91B3AD9C50072FD36 /* libc++.dylib */; };
 		7355607A1B45202D00B3EE93 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 735560791B45202D00B3EE93 /* Localizable.strings */; };
 		7363B3141B42963000D833A5 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7363B3131B42963000D833A5 /* libWeChatSDK.a */; };
@@ -17,10 +16,8 @@
 		73BED6231B3AA84600CA4C4D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73BED6221B3AA84600CA4C4D /* UIKit.framework */; };
 		73BED6251B3AA84E00CA4C4D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73BED6241B3AA84E00CA4C4D /* Foundation.framework */; };
 		7A00ADC21B8333650013A0B2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A00ADC11B8333650013A0B2 /* Default-568h@2x.png */; };
-		7A00ADC41B83369B0013A0B2 /* rsa_public.key in Resources */ = {isa = PBXBuildFile; fileRef = 7A00ADC31B83369B0013A0B2 /* rsa_public.key */; };
 		7A00ADC71B8353940013A0B2 /* RandomKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A00ADC61B8353940013A0B2 /* RandomKey.m */; };
-		7A3FFB3B1B82DE7B0009EE71 /* Store.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FFB3A1B82DE7B0009EE71 /* Store.json */; };
-		7A3FFB401B82DFA30009EE71 /* LogicSvr.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FFB3F1B82DFA30009EE71 /* LogicSvr.json */; };
+		7A0923881BA19FA00099A904 /* AlertTitleFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0923871BA19FA00099A904 /* AlertTitleFont.m */; };
 		7A3FFB431B82E0DB0009EE71 /* ADUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FFB421B82E0DB0009EE71 /* ADUserInfo.m */; };
 		7A58F3581B8B40BB00F3E241 /* ADGetUserInfoResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A58F3571B8B40BB00F3E241 /* ADGetUserInfoResp.m */; };
 		7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */; };
@@ -44,7 +41,6 @@
 		7AD826691B81FDF9008CA90C /* EmailFormatValidate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8263D1B81FDF9008CA90C /* EmailFormatValidate.m */; };
 		7AD8269A1B8200BD008CA90C /* ADAccessLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826841B8200BD008CA90C /* ADAccessLog.m */; };
 		7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826861B8200BD008CA90C /* ADBaseResp.m */; };
-		7AD8269C1B8200BD008CA90C /* Common.json in Resources */ = {isa = PBXBuildFile; fileRef = 7AD826871B8200BD008CA90C /* Common.json */; };
 		7AD8269D1B8200BD008CA90C /* ADAPPBindWXResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8268B1B8200BD008CA90C /* ADAPPBindWXResp.m */; };
 		7AD8269E1B8200BD008CA90C /* ADCheckLoginResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8268D1B8200BD008CA90C /* ADCheckLoginResp.m */; };
 		7AD8269F1B8200BD008CA90C /* ADConnectResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8268F1B8200BD008CA90C /* ADConnectResp.m */; };
@@ -55,6 +51,7 @@
 		7AD826AF1B820107008CA90C /* AES.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826AA1B820107008CA90C /* AES.m */; };
 		7AD826B01B820107008CA90C /* MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826AC1B820107008CA90C /* MD5.m */; };
 		7AD826B11B820107008CA90C /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826AE1B820107008CA90C /* RSA.m */; };
+		7AE8155E1BA1B7AB00B5C7C8 /* rsa_public.key in Resources */ = {isa = PBXBuildFile; fileRef = 7A00ADC31B83369B0013A0B2 /* rsa_public.key */; };
 		7AE8C7541B9473560091CE4C /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C74D1B9473560091CE4C /* ErrorHandler.m */; };
 		7AE8C7551B9473560091CE4C /* ErrorTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C74F1B9473560091CE4C /* ErrorTitle.m */; };
 		7AE8C7561B9473560091CE4C /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7511B9473560091CE4C /* ImageCache.m */; };
@@ -69,7 +66,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2A65C3A7C22C4588BC234F1C /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6E48D1AAC1987F311E45EB3E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		730FE4A91B3AD9C50072FD36 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		735560791B45202D00B3EE93 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ../Localizable.strings; sourceTree = "<group>"; };
@@ -86,6 +82,8 @@
 		7A00ADC31B83369B0013A0B2 /* rsa_public.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rsa_public.key; sourceTree = "<group>"; };
 		7A00ADC51B8353940013A0B2 /* RandomKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomKey.h; sourceTree = "<group>"; };
 		7A00ADC61B8353940013A0B2 /* RandomKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomKey.m; sourceTree = "<group>"; };
+		7A0923861BA19FA00099A904 /* AlertTitleFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertTitleFont.h; sourceTree = "<group>"; };
+		7A0923871BA19FA00099A904 /* AlertTitleFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertTitleFont.m; sourceTree = "<group>"; };
 		7A3FFB3A1B82DE7B0009EE71 /* Store.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Store.json; sourceTree = "<group>"; };
 		7A3FFB3F1B82DFA30009EE71 /* LogicSvr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LogicSvr.json; sourceTree = "<group>"; };
 		7A3FFB411B82E0DB0009EE71 /* ADUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADUserInfo.h; sourceTree = "<group>"; };
@@ -174,7 +172,6 @@
 		7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXLoginViewController.m; sourceTree = "<group>"; };
 		7AE8C76D1B9473D30091CE4C /* ADRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADRegisterViewController.h; sourceTree = "<group>"; };
 		7AE8C76E1B9473D30091CE4C /* ADRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADRegisterViewController.m; sourceTree = "<group>"; };
-		C1A3AACEB12E8AB71622A688 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,22 +186,12 @@
 				73BED6211B3AA83C00CA4C4D /* libsqlite3.0.dylib in Frameworks */,
 				73BED61F1B3AA82D00CA4C4D /* libz.dylib in Frameworks */,
 				73BED61D1B3AA82000CA4C4D /* SystemConfiguration.framework in Frameworks */,
-				61F017AA63CD253A0B7AAE79 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		286375D6F017C22F28C378CB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				C1A3AACEB12E8AB71622A688 /* Pods.debug.xcconfig */,
-				2A65C3A7C22C4588BC234F1C /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		73BED5DE1B3AA48600CA4C4D = {
 			isa = PBXGroup;
 			children = (
@@ -218,7 +205,6 @@
 				73BED6111B3AA59D00CA4C4D /* Frameworks */,
 				73BED6101B3AA56700CA4C4D /* WeChatSDK */,
 				73BED5E81B3AA48600CA4C4D /* Products */,
-				286375D6F017C22F28C378CB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -310,6 +296,8 @@
 				7AD8263D1B81FDF9008CA90C /* EmailFormatValidate.m */,
 				7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */,
 				7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */,
+				7A0923861BA19FA00099A904 /* AlertTitleFont.h */,
+				7A0923871BA19FA00099A904 /* AlertTitleFont.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -476,11 +464,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 73BED60A1B3AA48600CA4C4D /* Build configuration list for PBXNativeTarget "wechatauthdemo" */;
 			buildPhases = (
-				BAF808DEFC688FA2B8AB9B01 /* Check Pods Manifest.lock */,
 				73BED5E31B3AA48600CA4C4D /* Sources */,
 				73BED5E41B3AA48600CA4C4D /* Frameworks */,
 				73BED5E51B3AA48600CA4C4D /* Resources */,
-				77E16DE4EC81424BBE7E6627 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -529,55 +515,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AE8155E1BA1B7AB00B5C7C8 /* rsa_public.key in Resources */,
 				7AA1635D1B85D49700E54AAC /* InputWithTextFieldCell.xib in Resources */,
-				7AD8269C1B8200BD008CA90C /* Common.json in Resources */,
 				7A89F6AF1B8B206F0007ACA7 /* UserInfoHeaderView.xib in Resources */,
 				7355607A1B45202D00B3EE93 /* Localizable.strings in Resources */,
-				7A3FFB401B82DFA30009EE71 /* LogicSvr.json in Resources */,
 				7AD826651B81FDF9008CA90C /* Images.xcassets in Resources */,
 				7AA163621B85DA9A00E54AAC /* UserInfoDisplayCell.xib in Resources */,
 				7A89F6AA1B8B1CBF0007ACA7 /* InputWithPickerBar.xib in Resources */,
 				7AD6CE661B8DA1E4001EFB40 /* RegisterHeaderView.xib in Resources */,
-				7A3FFB3B1B82DE7B0009EE71 /* Store.json in Resources */,
 				7A00ADC21B8333650013A0B2 /* Default-568h@2x.png in Resources */,
-				7A00ADC41B83369B0013A0B2 /* rsa_public.key in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		77E16DE4EC81424BBE7E6627 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BAF808DEFC688FA2B8AB9B01 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		73BED5E31B3AA48600CA4C4D /* Sources */ = {
@@ -605,6 +555,7 @@
 				7AD826A21B8200BD008CA90C /* ADRegisterResp.m in Sources */,
 				7A89F6A81B8B1CAC0007ACA7 /* InputWithPickerBar.m in Sources */,
 				7AD826691B81FDF9008CA90C /* EmailFormatValidate.m in Sources */,
+				7A0923881BA19FA00099A904 /* AlertTitleFont.m in Sources */,
 				7AD826AF1B820107008CA90C /* AES.m in Sources */,
 				7AA163611B85DA9A00E54AAC /* UserInfoDisplayCell.m in Sources */,
 				7AE8C76F1B9473D30091CE4C /* ADRegisterViewController.m in Sources */,
@@ -714,7 +665,6 @@
 		};
 		73BED60B1B3AA48600CA4C4D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C1A3AACEB12E8AB71622A688 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -742,7 +692,6 @@
 		};
 		73BED60C1B3AA48600CA4C4D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A65C3A7C22C4588BC234F1C /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;

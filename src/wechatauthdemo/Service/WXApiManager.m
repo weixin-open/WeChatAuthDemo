@@ -8,9 +8,8 @@
 
 #import "WXApiManager.h"
 #import "RandomKey.h"
-#import <SVProgressHUD.h>
 
-static NSString *kWXNotInstallErrorTitle = @"您还没有安装微信，不能使用微信分享功能";
+static NSString* const kWXNotInstallErrorTitle = @"您还没有安装微信，不能使用微信分享功能";
 
 @implementation WXApiManager
 
@@ -56,7 +55,7 @@ static NSString *kWXNotInstallErrorTitle = @"您还没有安装微信，不能�
                 AtScene:(enum WXScene)scene {
     
     if (![WXApi isWXAppInstalled]) {
-        [SVProgressHUD showErrorWithStatus:kWXNotInstallErrorTitle];
+        ADShowErrorAlert(kWXNotInstallErrorTitle);
         return NO;
     }
     WXWebpageObject *ext = [WXWebpageObject object];

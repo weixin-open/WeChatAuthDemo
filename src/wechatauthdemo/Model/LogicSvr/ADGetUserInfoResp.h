@@ -17,6 +17,9 @@
 @property (nonatomic, strong) ADBaseResp *baseResp;
 @property (nonatomic, strong) NSString *headimgurl;
 @property (nonatomic, strong) NSString *unionid;
+@property (nonatomic, strong) NSString *city;
+@property (nonatomic, strong) NSString *province;
+@property (nonatomic, strong) NSString *country;
 @property (nonatomic, assign) int64_t refreshTokenExpireTime;
 @property (nonatomic, assign) ADSexType sex;
 @property (nonatomic, assign) int64_t accessTokenExpireTime;

@@ -20,7 +20,9 @@ NSString *const kADGetUserInfoRespRefreshTokenExpireTime = @"refresh_token_expir
 NSString *const kADGetUserInfoRespSex = @"sex";
 NSString *const kADGetUserInfoRespAccessTokenExpireTime = @"access_token_expire_time";
 NSString *const kADGetUserInfoRespAccessLog = @"access_log";
-
+NSString *const kADGetUserInfoRespCity = @"city";
+NSString *const kADGetUserInfoRespProvince = @"province";
+NSString *const kADGetUserInfoRespCountry = @"country";
 
 @interface ADGetUserInfoResp ()
 
@@ -40,7 +42,9 @@ NSString *const kADGetUserInfoRespAccessLog = @"access_log";
 @synthesize sex = _sex;
 @synthesize accessTokenExpireTime = _accessTokenExpireTime;
 @synthesize accessLog = _accessLog;
-
+@synthesize city = _city;
+@synthesize province = _province;
+@synthesize country = _country;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
@@ -63,6 +67,12 @@ NSString *const kADGetUserInfoRespAccessLog = @"access_log";
             self.refreshTokenExpireTime = [[self objectOrNilForKey:kADGetUserInfoRespRefreshTokenExpireTime fromDictionary:dict] doubleValue];
             self.sex = [[self objectOrNilForKey:kADGetUserInfoRespSex fromDictionary:dict] intValue];
             self.accessTokenExpireTime = [[self objectOrNilForKey:kADGetUserInfoRespAccessTokenExpireTime fromDictionary:dict] doubleValue];
+            self.city = [self objectOrNilForKey:kADGetUserInfoRespCity
+                                 fromDictionary:dict];
+            self.province = [self objectOrNilForKey:kADGetUserInfoRespProvince
+                                     fromDictionary:dict];
+            self.country = [self objectOrNilForKey:kADGetUserInfoRespCountry
+                                    fromDictionary:dict];
     NSObject *receivedADAccessLog = [dict objectForKey:kADGetUserInfoRespAccessLog];
     NSMutableArray *parsedADAccessLog = [NSMutableArray array];
     if ([receivedADAccessLog isKindOfClass:[NSArray class]]) {

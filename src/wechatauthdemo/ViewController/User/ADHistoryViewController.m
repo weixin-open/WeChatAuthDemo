@@ -8,12 +8,14 @@
 
 #import "ADHistoryViewController.h"
 
-static NSString *kCellIdentifer = @"kCellIdentifer";
-static NSString *kDateFormat = @"yyyy-MM-dd HH:mm";
-static NSString *kTitleText = @"访问记录";
-static NSString *kTableHeaderText = @"以下是您最近一段时间的访问记录";
-static NSString *kFromAppLogin = @"从账号密码登录";
-static NSString *kFromWXLogin =  @"从微信授权登录";
+static const int kTableHeaderHeight = 60;
+
+static NSString* const kCellIdentifer = @"kCellIdentifer";
+static NSString* const kDateFormat = @"yyyy年MM月dd日 HH:mm:ss";
+static NSString* const kTitleText = @"访问记录";
+static NSString* const kTableHeaderText = @"以下是您最近一段时间的访问记录";
+static NSString* const kFromAppLogin = @"从账号密码登录";
+static NSString* const kFromWXLogin =  @"从微信授权登录";
 
 @interface ADHistoryViewController ()
 
@@ -39,18 +41,9 @@ static NSString *kFromWXLogin =  @"从微信授权登录";
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = kTitleText;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView registerClass:[UITableViewCell class]
            forCellReuseIdentifier:kCellIdentifer];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBar.hidden = NO;
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hidden = YES;
 }
 
 #pragma mark - User Actions
@@ -78,8 +71,8 @@ static NSString *kFromWXLogin =  @"从微信授权登录";
     NSDate *loginDate = [NSDate dateWithTimeIntervalSince1970:accessLog.loginTime];
     NSString *loginDateString = [self.formatter stringFromDate:loginDate];
     NSString *loginTypeString = accessLog.loginType == ADLoginTypeFromApp ? kFromAppLogin : kFromWXLogin;
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", loginDateString, loginTypeString];
-    cell.textLabel.font = [UIFont fontWithName:kEnglishNumberFont
+    cell.textLabel.text = [NSString stringWithFormat:@"%@  %@", loginDateString, loginTypeString];
+    cell.textLabel.font = [UIFont fontWithName:kChineseFont
                                           size:14];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -91,7 +84,7 @@ static NSString *kFromWXLogin =  @"从微信授权登录";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return normalHeight;
+    return kTableHeaderHeight;
 }
 
 #pragma mark - Lazy Initializers
@@ -105,9 +98,12 @@ static NSString *kFromWXLogin =  @"从微信授权登录";
 
 - (UITableViewHeaderFooterView *)headerView {
     if (_headerView == nil) {
-        _headerView = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, normalHeight)];
-        _headerView.textLabel.font = [UIFont fontWithName:kTitleLabelFont
-                                                    size:12];
+        _headerView = [[UITableViewHeaderFooterView alloc] initWithFrame:CGRectMake(0,
+                                                                                    0,
+                                                                                    ScreenWidth,
+                                                                                    kTableHeaderHeight)];
+        _headerView.textLabel.font = [UIFont fontWithName:kChineseFont
+                                                    size:14];
         _headerView.textLabel.text = kTableHeaderText;
     }
     return _headerView;

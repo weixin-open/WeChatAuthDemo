@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "AlertTitleFont.h"
 #import "WXLoginViewController.h"
 #import "ADUserInfoViewController.h"
 #import "WXApi.h"
@@ -16,8 +17,9 @@
 #import "ADUserInfo.h"
 #import "ADCheckLoginResp.h"
 
-static NSString *YourAppIdInWeChat = @"wxbeafe42095e03edf";
-static NSString *kYourAppDescription = @"AuthDemo 2.0";
+static NSString* const YourAppIdInWeChat = @"wxbeafe42095e03edf";
+static NSString* const kYourAppDescription = @"AuthDemo 2.0";
+static const CGFloat kAlertTitleFontSize = 16;
 
 @implementation AppDelegate
 
@@ -32,7 +34,7 @@ static NSString *kYourAppDescription = @"AuthDemo 2.0";
 
     /* Setup NavigationBar */
     rootNav.navigationBar.tintColor = [UIColor blackColor];
-    UIFont *barFont = [UIFont fontWithName:kTitleLabelFont
+    UIFont *barFont = [UIFont fontWithName:kChineseFont
                                       size:16];
     NSDictionary *barAttributes = @{
                                     NSFontAttributeName: barFont
@@ -41,7 +43,13 @@ static NSString *kYourAppDescription = @"AuthDemo 2.0";
                                                                                             forState:UIControlStateNormal];
     [[UINavigationBar appearance] setTitleTextAttributes:barAttributes];
     rootNav.navigationBar.hidden = YES;
-
+    UILabel *alertAppear = nil;
+    if ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0) {
+        alertAppear = [UILabel appearanceWhenContainedIn:[UIAlertController class], nil];
+    } else {
+        alertAppear = [UILabel appearanceWhenContainedIn:[UIActionSheet class], nil];
+    }
+    [alertAppear setAlertTitleFont:[UIFont fontWithName:kChineseFont size:kAlertTitleFontSize]];
     /* Register For WeChat */
     [WXApi registerApp:YourAppIdInWeChat
        withDescription:kYourAppDescription];

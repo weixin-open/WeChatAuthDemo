@@ -7,7 +7,6 @@
 //
 
 #import "ADRegisterViewController.h"
-#import <SVProgressHUD.h>
 #import "MD5.h"
 #import "EmailFormatValidate.h"
 #import "InputWithTextFieldCell.h"
@@ -20,37 +19,33 @@
 #import "ADUserInfo.h"
 
 /* Message Text */
-static NSString *kBackButtonTitle = @"取消";
-static NSString *kRegisterViewTitle = @"用户注册";
-static NSString *kInputCellIdentifier = @"kInputCellIdentifierForRegister";
-static NSString *kNormalCellIdentifier = @"kNormalCellIdentifierForRegister";
-static NSString *kNameDescText = @"名称";
-static NSString *kSexDescText = @"性别";
-static NSString *kMailDescText = @"账户邮箱";
-static NSString *kPswDescText = @"密码";
-static NSString *kConfirmPswText = @"密码确认";
-static NSString *kNameWarningText = @"用户名至多20个字符";
-static NSString *kNameEmptyWarningText = @"用户名不能为空";
-static NSString *kSexWarningText = @"请选择性别";
-static NSString *kEmailWarningText = @"请输入有效邮箱账号";
-static NSString *kPasswordWarningText = @"密码至少6位";
-static NSString *kConfirmWarningText = @"两次密码应一致";
-static NSString *kRegisterButtonText = @"注册";
-static NSString *kRegisterProgressText = @"请稍候";
-static NSString *kRegisterFailText = @"注册失败";
-static NSString *kLoginFailText = @"登录失败";
-static NSString *kBindingFailText = @"绑定失败";
-static NSString *kSexTypeMaleText = @"男";
-static NSString *kSexTypeFemaleText = @"女";
+static NSString* const kBackButtonTitle = @"取消";
+static NSString* const kInputCellIdentifier = @"kInputCellIdentifierForRegister";
+static NSString* const kNormalCellIdentifier = @"kNormalCellIdentifierForRegister";
+static NSString* const kNameDescText = @"名称";
+static NSString* const kSexDescText = @"性别";
+static NSString* const kMailDescText = @"账户邮箱";
+static NSString* const kPswDescText = @"密码";
+static NSString* const kConfirmPswText = @"密码确认";
+static NSString* const kNameWarningText = @"用户名至多20个字符";
+static NSString* const kNameEmptyWarningText = @"用户名不能为空";
+static NSString* const kSexWarningText = @"请选择性别";
+static NSString* const kEmailWarningText = @"请输入有效邮箱账号";
+static NSString* const kPasswordWarningText = @"密码至少6位";
+static NSString* const kConfirmWarningText = @"两次密码应一致";
+static NSString* const kRegisterButtonText = @"注册";
+static NSString* const kRegisterProgressText = @"请稍候";
+static NSString* const kRegisterFailText = @"注册失败";
+static NSString* const kLoginFailText = @"登录失败";
+static NSString* const kBindingFailText = @"绑定失败";
+static NSString* const kSexTypeMaleText = @"男";
+static NSString* const kSexTypeFemaleText = @"女";
 /* Font */
 static const CGFloat kBackButtonFontSize = 13.0f;
 static const CGFloat kRegisterButtonFontSize = 16.0f;
-static const CGFloat kTitleLabelFontSize = 20.0f;
 /* Size */
 static const int kBackButtonWidth = 44;
 static const int kBackButtonHeight = 44;
-static const int kTitleLabelWidth = 150;
-static const int kTitleLabelHeight = 44;
 static const int kTableCellHeight = 49;
 static const int kMaxNameLength = 20;
 static const int kMinPswLength = 6;
@@ -86,7 +81,6 @@ static const int kPickerHeight = 168;
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.view addSubview:self.backButton];
-    [self.view addSubview:self.titleLabel];
     [self.view addSubview:self.registerTable];
 }
 
@@ -109,14 +103,10 @@ static const int kPickerHeight = 168;
     int backButtonCenterY = statusBarHeight + navigationBarHeight / 2;
     self.backButton.frame = CGRectMake(0, 0, kBackButtonWidth, kBackButtonHeight);
     self.backButton.center = CGPointMake(backButtonCenterX, backButtonCenterY);
-
-    int titleLabelCenterY = navigationBarHeight + statusBarHeight;
-    self.titleLabel.frame = CGRectMake(0, 0, kTitleLabelWidth, kTitleLabelHeight);
-    self.titleLabel.center = CGPointMake(self.view.center.x, titleLabelCenterY);
     
-    int registerTableHeight = ScreenHeight - CGRectGetMaxY(self.titleLabel.frame);
-    int registerTableCenterY = CGRectGetMaxY(self.titleLabel.frame) + registerTableHeight/2;
-    self.registerTable.frame = CGRectMake(0, 0, ScreenWidth-inset * 2, registerTableHeight);
+    int registerTableHeight = ScreenHeight - CGRectGetMaxY(self.backButton.frame);
+    int registerTableCenterY = CGRectGetMaxY(self.backButton.frame) + registerTableHeight/2;
+    self.registerTable.frame = CGRectMake(0, 0, ScreenWidth - inset*2, registerTableHeight);
     self.registerTable.center = CGPointMake(self.view.center.x, registerTableCenterY);
 }
 
@@ -210,7 +200,7 @@ static const int kPickerHeight = 168;
         cell.textLabel.text = kRegisterButtonText;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.font = [UIFont fontWithName:kTitleLabelFont
+        cell.textLabel.font = [UIFont fontWithName:kChineseFont
                                               size:kRegisterButtonFontSize];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
@@ -294,17 +284,17 @@ static const int kPickerHeight = 168;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1 && indexPath.row == 0) {  //Register Button
         if ([self.nameTextField.text length] == 0) {
-            [SVProgressHUD showErrorWithStatus:kNameEmptyWarningText];
+            ADShowErrorAlert(kNameEmptyWarningText);
         } else if ([self.nameTextField.text length] > kMaxNameLength) {
-            [SVProgressHUD showErrorWithStatus:kNameWarningText];
+            ADShowErrorAlert(kNameWarningText);
         } else if (![EmailFormatValidate isValidate:self.mailTextField.text]) {
-            [SVProgressHUD showErrorWithStatus:kEmailWarningText];
+            ADShowErrorAlert(kEmailWarningText);
         }else if ([self.pswTextField.text length] < kMinPswLength) {
-            [SVProgressHUD showErrorWithStatus:kPasswordWarningText];
+            ADShowErrorAlert(kPasswordWarningText);
         } else if (![self.pswTextField.text isEqualToString:self.confirmPswTextField.text]) {
-            [SVProgressHUD showErrorWithStatus:kConfirmWarningText];
+            ADShowErrorAlert(kConfirmWarningText);
         } else {
-            [SVProgressHUD showWithStatus:kRegisterProgressText];
+            ADShowActivity(self.view);
             ADSexType sex = [self.sexTextField.text isEqualToString:kSexTypeMaleText] ? ADSexTypeMale : ADSexTypeFemale;
             if (self.isUsedForBindApp) {
                 [[ADNetworkEngine sharedEngine] wxBindAppForUin:[ADUserInfo currentUser].uin
@@ -361,12 +351,23 @@ static const int kPickerHeight = 168;
     self.sexTextField.text = titleArray[row];
 }
 
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+}
+
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        return;
+    }
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     switch (buttonIndex) {
         case 0: //拍照上传
             picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            picker.cameraFlashMode = UIImagePickerControllerCameraFlashModeOff;
             break;
         case 1: //从相册选择
             picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -402,14 +403,14 @@ static const int kPickerHeight = 168;
         NSLog(@"Register Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kRegisterFailText];
-        [SVProgressHUD showErrorWithStatus:errorTitle];
+        ADShowErrorAlert(errorTitle);
     }
 }
 
 - (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
+    ADHideActivity;
     if (resp && resp.sessionKey) {
         NSLog(@"Check Login Success");
-        [SVProgressHUD dismiss];
         [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
         [[ADUserInfo currentUser] save];
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -417,22 +418,22 @@ static const int kPickerHeight = 168;
         NSLog(@"Check Login Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kLoginFailText];
-        [SVProgressHUD showErrorWithStatus:errorTitle];
+        ADShowErrorAlert(errorTitle);
     }
 }
 
 - (void)handleBindAppResp:(ADWXBindAPPResp *)resp {
+    ADHideActivity;
     if (resp && resp.loginTicket) {
         NSLog(@"BindApp Success");
         [ADUserInfo currentUser].uin = resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
-        [SVProgressHUD dismiss];
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         NSLog(@"BindApp Fail");
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kBindingFailText];
-        [SVProgressHUD showErrorWithStatus:errorTitle];
+        ADShowErrorAlert(errorTitle);
     }
 }
 
@@ -440,7 +441,7 @@ static const int kPickerHeight = 168;
 - (UIButton *)backButton {
     if (_backButton == nil) {
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _backButton.titleLabel.font = [UIFont fontWithName:kTitleLabelFont
+        _backButton.titleLabel.font = [UIFont fontWithName:kChineseFont
                                                       size:kBackButtonFontSize];
         [_backButton setTitleColor:[UIColor blackColor]
                           forState:UIControlStateNormal];
@@ -452,17 +453,6 @@ static const int kPickerHeight = 168;
     }
     return _backButton;
 }
-- (UILabel *)titleLabel {
-    if (_titleLabel == nil) {
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.text = kRegisterViewTitle;
-        _titleLabel.font = [UIFont fontWithName:kTitleLabelFont
-                                           size:kTitleLabelFontSize];
-        _titleLabel.textAlignment = NSTextAlignmentCenter;
-        _titleLabel.textColor = [UIColor blackColor];
-    }
-    return _titleLabel;
-}
 
 - (RegisterHeaderView *)header {
     if (_header == nil) {
@@ -471,7 +461,7 @@ static const int kPickerHeight = 168;
                                               options:nil] firstObject];
         __weak typeof(self) weakSelf = self;
         _header.headImageCallBack = ^(UIButton *sender) {
-            [[[UIActionSheet alloc] initWithTitle:@"上传头像"
+            [[[UIActionSheet alloc] initWithTitle:nil
                                         delegate:weakSelf
                                cancelButtonTitle:@"取消"
                           destructiveButtonTitle:nil

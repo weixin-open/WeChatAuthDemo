@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *headPhotoImage;
 @property (weak, nonatomic) IBOutlet UILabel *nickNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *locateLabel;
 
 @end

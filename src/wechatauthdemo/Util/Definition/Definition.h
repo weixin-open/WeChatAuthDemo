@@ -59,6 +59,35 @@ typedef void(^ButtonCallBack)(id sender);
 #define AUTH_DEMO_EXTERN	    extern __attribute__((visibility ("default")))
 #endif
 
+//Show Error
+#define ADShowErrorAlert(wording)                               \
+        [[[UIAlertView alloc] initWithTitle:nil                 \
+                                    message:wording             \
+                                   delegate:nil                 \
+                          cancelButtonTitle:kCancleWordingText  \
+                          otherButtonTitles:nil] show]
+
+@class UIActivityIndicatorView;
+
+static UIActivityIndicatorView *_indicatorView;
+//Show ActivityIndicator
+#define ADShowActivity(superView) do { \
+    if (_indicatorView == nil) { \
+            _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray]; \
+        }\
+    if (![_indicatorView isAnimating]){ \
+            [superView addSubview:_indicatorView]; \
+            _indicatorView.center = superView.center;\
+            [_indicatorView startAnimating]; \
+        }   \
+    } while(0)
+//Hide ActivityIndicator
+#define ADHideActivity do { \
+    if ([_indicatorView isAnimating]) { \
+        [_indicatorView stopAnimating];\
+    } \
+} while (0)
+
 #import "ADBaseResp.h"
 #import "ADAccessLog.h"
 #import "ButtonColor.h"

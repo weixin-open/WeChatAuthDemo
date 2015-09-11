@@ -13,24 +13,8 @@
 #import "DataModels.h"
 #import "ImageCache.h"
 
-static NSString *defaultHost = @"http://qytest.weixin.qq.com";
-static NSString *publickeyFileName = @"rsa_public";
-
-//typedef enum {
-//    ADNetworkEngineStateStop = 0,
-//    ADNetworkEngineStateHaveConnected = 1 << 0,
-//    ADNetworkEngineStateHaveWXLogin = 1 << 1,
-//    ADNetworkEngineStateHaveLoginAPP = 1 << 2,
-//    ADNetworkEngineStateHaveCheckLogin = 1 << 3
-//} ADNetworkEngineState;
-/**
-*  Two Flow Chart for State Machine
-*  1.   Stop----->Connected------------------>WXLogin--------->CheckLogin
-*  CGI: NoneCGI-->Register/WXLogin/LoginApp-->CheckLogin------>WXBindApp,GetUserInfo
-*
-*  2.   Stop----->Connected------------------>AppLogin--------->CheckLogin
-*  CGI: NoneCGI-->Register/WXLogin/LoginApp-->CheckLogin------->AppBindWX,GetUserInfo
-*/
+static NSString* const defaultHost = @"http://qytest.weixin.qq.com";
+static NSString* const publickeyFileName = @"rsa_public";
 
 @interface ADNetworkEngine ()
 
@@ -68,8 +52,6 @@ static NSString *publickeyFileName = @"rsa_public";
 
 #pragma mark - Public Methods
 - (void)connectToServerWithCompletion:(ConnectCallBack)completion {
-//    NSAssert(self.state == ADNetworkEngineStateStop, @"You Can Not Connect Until You Clear Pre-Session Key");
-
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                       @"psk": self.session.sessionKey
@@ -88,7 +70,6 @@ static NSString *publickeyFileName = @"rsa_public";
                     Sex:(ADSexType)sex
          WithCompletion:(RegisterCallBack)completion {
     NSParameterAssert(mail && pwd && nickName && imageData);
-//    NSAssert(self.state != ADNetworkEngineStateHaveConnected, @"You Can Not Register New Account Until You Have Connected");
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @([ADUserInfo currentUser].uin),
@@ -111,8 +92,6 @@ static NSString *publickeyFileName = @"rsa_public";
             Password:(NSString *)pwd
       WithCompletion:(LoginCallBack)completion {
     NSParameterAssert(mail);
-//    NSAssert(self.state == ADNetworkEngineStateHaveConnected, @"You Can Not Login With Account Until You Have Connected");
-
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @([ADUserInfo currentUser].uin),
@@ -131,8 +110,6 @@ static NSString *publickeyFileName = @"rsa_public";
 - (void)wxLoginForAuthCode:(NSString *)code
             WithCompletion:(WXLoginCallBack)completion {
     NSParameterAssert(code);
-//    NSAssert(self.state == ADNetworkEngineStateHaveConnected, @"You Can Not Login With WeChat Until You Have Connected");
-
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @([ADUserInfo currentUser].uin),
@@ -151,9 +128,6 @@ static NSString *publickeyFileName = @"rsa_public";
              LoginTicket:(NSString *)loginTicket
           WithCompletion:(CheckLoginCallBack)completion {
     NSParameterAssert(loginTicket);
-//    NSAssert(self.state == ADNetworkEngineStateHaveWXLogin || self.state == ADNetworkEngineStateHaveLoginAPP,
-//             @"You Should CheckLogin ONLY After You Have Login With Account Or Login With WeChat");
-
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @(uin),
@@ -176,8 +150,6 @@ static NSString *publickeyFileName = @"rsa_public";
               LoginTicket:(NSString *)loginTicket
            WithCompletion:(GetUserInfoCallBack)completion {
     NSParameterAssert(loginTicket);
-//    NSAssert(self.state & ADNetworkEngineStateHaveCheckLogin, @"You Can Not Get UserInfo Until CheckLogin");
-
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @(uin),
@@ -212,9 +184,6 @@ static NSString *publickeyFileName = @"rsa_public";
              IsToCreate:(BOOL)isToCreate
          WithCompletion:(WXBindAppCallBack)completion {
     NSParameterAssert(loginTicket && mail && pwd && nickName && headImageUrl);
-//    NSAssert((self.state & ADNetworkEngineStateHaveCheckLogin) && (self.state & ADNetworkEngineStateHaveWXLogin),
-//             @"You Can Bind App ONLY When You Login With WeChat And Have CheckedLogin");
-
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @(uin),
@@ -256,9 +225,6 @@ static NSString *publickeyFileName = @"rsa_public";
                AuthCode:(NSString *)code
          WithCompletion:(AppBindWXCallBack)completion {
     NSParameterAssert(loginTicket && code);
-//    NSAssert((self.state & ADNetworkEngineStateHaveLoginAPP) && (self.state & ADNetworkEngineStateHaveCheckLogin),
-//             @"You Can Bind WX ONLY When You Login With Account And Have CheckedLogin");
-
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @(uin),
@@ -286,7 +252,6 @@ static NSString *publickeyFileName = @"rsa_public";
 }
 
 - (void)disConnect {
-//    NSAssert(self.state & ADNetworkEngineStateHaveCheckLogin, @"You Can Logout Until You Have Logined");
     self.session = nil;
 }
 

@@ -6,17 +6,16 @@
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
-#import <SVProgressHUD.h>
 #import "ADShareViewController.h"
 #import "WXApiManager.h"
 
-static NSString *kTitleText = @"微信登录开发指引";
-static NSString *kShareUrlString = @"http://mp.weixin.qq.com/s?__biz=MjM5NDAxMDg4MA==&mid=208833692&idx=1&sn=daa41a5b34ce7ffeb48985964e613941&scene=1&srcid=TnXuoDUuLCjDSJoLqkdG&from=singlemessage&isappinstalled=0#rd";
-static NSString *kShareButtonText = @"分享";
-static NSString *kShareDescText = @"分享一个链接";
-static NSString *kShareFailedText = @"分享失败";
+static NSString* const kTitleText = @"微信登录开发指引";
+static NSString* const kShareUrlString = @"http://mp.weixin.qq.com/s?__biz=MjM5NDAxMDg4MA==&mid=208833692&idx=1&sn=daa41a5b34ce7ffeb48985964e613941&scene=1&srcid=TnXuoDUuLCjDSJoLqkdG&from=singlemessage&isappinstalled=0#rd";
+static NSString* const kShareButtonText = @"分享";
+static NSString* const kShareDescText = @"分享一个链接";
+static NSString* const kShareFailedText = @"分享失败";
 
-@interface ADShareViewController ()<WXAuthDelegate>
+@interface ADShareViewController ()<WXAuthDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) NSURLRequest *urlRequest;
@@ -38,28 +37,19 @@ static NSString *kShareFailedText = @"分享失败";
     [self.view addSubview:self.webView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBar.hidden = NO;
-}
-
 - (void)viewWillLayoutSubviews {
     self.webView.frame = self.view.frame;
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void)onClickShare:(UIBarButtonItem *)sender {
     if (sender != self.navigationItem.rightBarButtonItem)
         return;
     
-    [[WXApiManager sharedManager] sendLinkContent:kShareUrlString
-                                            Title:kTitleText
-                                      Description:kShareDescText
-                                          AtScene:WXSceneTimeline];
+    [[[UIActionSheet alloc] initWithTitle:@"分享到微信"
+                                delegate:self
+                       cancelButtonTitle:@"取消"
+                  destructiveButtonTitle:nil
+                        otherButtonTitles:@"转发到会话", @"分享到朋友圈", nil] showInView:self.view];
 }
 
 - (UIWebView *)webView {
@@ -76,6 +66,26 @@ static NSString *kShareFailedText = @"分享失败";
         _urlRequest = [[NSURLRequest alloc] initWithURL:url];
     }
     return _urlRequest;
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0: // 转发到会话
+            [[WXApiManager sharedManager] sendLinkContent:kShareUrlString
+                                                    Title:kTitleText
+                                              Description:kShareDescText
+                                                  AtScene:WXSceneSession];
+            break;
+        case 1: //分享到朋友圈
+            [[WXApiManager sharedManager] sendLinkContent:kShareUrlString
+                                                    Title:kTitleText
+                                              Description:kShareDescText
+                                                  AtScene:WXSceneTimeline];
+            break;
+        default:
+            break;
+    }
 }
 
 @end
