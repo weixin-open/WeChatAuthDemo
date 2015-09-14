@@ -57,11 +57,11 @@ static const int kPickerHeight = 168;
                     UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIButton *backButton;
-@property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) RegisterHeaderView *header;
 @property (nonatomic, strong) UITableView *registerTable;
 @property (nonatomic, strong) UIPickerView *sexPickerView;
 @property (nonatomic, strong) InputWithPickerBar *pickerBar;
+@property (nonatomic, strong) UIButton *registerButton;
 
 @property (nonatomic, weak) UITextField *activeField;
 @property (nonatomic, weak) UITextField *nameTextField;
@@ -82,6 +82,7 @@ static const int kPickerHeight = 168;
     
     [self.view addSubview:self.backButton];
     [self.view addSubview:self.registerTable];
+    [self.view addSubview:self.registerButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -104,10 +105,14 @@ static const int kPickerHeight = 168;
     self.backButton.frame = CGRectMake(0, 0, kBackButtonWidth, kBackButtonHeight);
     self.backButton.center = CGPointMake(backButtonCenterX, backButtonCenterY);
     
-    int registerTableHeight = ScreenHeight - CGRectGetMaxY(self.backButton.frame);
+    int registerTableHeight = ScreenHeight - CGRectGetMaxY(self.backButton.frame) - normalHeight - 2 * inset;
     int registerTableCenterY = CGRectGetMaxY(self.backButton.frame) + registerTableHeight/2;
-    self.registerTable.frame = CGRectMake(0, 0, ScreenWidth - inset*2, registerTableHeight);
-    self.registerTable.center = CGPointMake(self.view.center.x, registerTableCenterY);
+    self.registerTable.frame = CGRectMake(0, 0, ScreenWidth - inset*3, registerTableHeight);
+    self.registerTable.center = CGPointMake(self.view.center.x-0.5*inset, registerTableCenterY);
+    
+    int registerButtonCenterY = CGRectGetMaxY(self.registerTable.frame);
+    self.registerButton.frame = CGRectMake(0, 0, ScreenWidth - inset * 4.5, normalHeight);
+    self.registerButton.center = CGPointMake(self.view.center.x + 0.5 * inset, registerButtonCenterY);
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -125,6 +130,48 @@ static const int kPickerHeight = 168;
     if (sender != self.backButton)
         return;
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)onClickRegister:(UIButton *)sender {
+    if (sender != self.registerButton)
+        return;
+    
+    if ([self.nameTextField.text length] == 0) {
+        ADShowErrorAlert(kNameEmptyWarningText);
+    } else if ([self.nameTextField.text length] > kMaxNameLength) {
+        ADShowErrorAlert(kNameWarningText);
+    } else if (![EmailFormatValidate isValidate:self.mailTextField.text]) {
+        ADShowErrorAlert(kEmailWarningText);
+    }else if ([self.pswTextField.text length] < kMinPswLength) {
+        ADShowErrorAlert(kPasswordWarningText);
+    } else if (![self.pswTextField.text isEqualToString:self.confirmPswTextField.text]) {
+        ADShowErrorAlert(kConfirmWarningText);
+    } else {
+        ADShowActivity(self.view);
+        ADSexType sex = [self.sexTextField.text isEqualToString:kSexTypeMaleText] ? ADSexTypeMale : ADSexTypeFemale;
+        if (self.isUsedForBindApp) {
+            [[ADNetworkEngine sharedEngine] wxBindAppForUin:[ADUserInfo currentUser].uin
+                                                LoginTicket:[ADUserInfo currentUser].loginTicket
+                                                       Mail:self.mailTextField.text
+                                                   Password:[self.pswTextField.text MD5]
+                                                   NickName:self.nameTextField.text
+                                                        Sex:sex
+                                               HeadImageUrl:[ADUserInfo currentUser].headimgurl
+                                                 IsToCreate:YES
+                                             WithCompletion:^(ADWXBindAPPResp *resp) {
+                                                 [self handleBindAppResp:resp];
+                                             }];
+        } else {
+            [[ADNetworkEngine sharedEngine] registerForMail:self.mailTextField.text
+                                                   Password:[self.pswTextField.text MD5]
+                                                   NickName:self.nameTextField.text
+                                                  HeadImage:UIImageJPEGRepresentation(self.headImage, 0.7)
+                                                        Sex:sex
+                                             WithCompletion:^(ADRegisterResp *resp) {
+                                                 [self handleRegisterResp:resp];
+                                             }];
+        }
+    }
 }
 
 - (void)nameEditingFinished:(UITextField *)sender {
@@ -182,30 +229,15 @@ static const int kPickerHeight = 168;
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger rowsArray[] = {5, 1};
-    return rowsArray[section];
+    return 5;   //NickName,SexType,Email,Password,Confirm Password
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1) {   //Register Button
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kNormalCellIdentifier
-                                                                forIndexPath:indexPath];
-        cell.backgroundColor = [UIColor loginButtonColor];
-        cell.layer.cornerRadius = kLoginButtonCornerRadius;
-        cell.textLabel.text = kRegisterButtonText;
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.font = [UIFont fontWithName:kChineseFont
-                                              size:kRegisterButtonFontSize];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    }
-    
     InputWithTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:kInputCellIdentifier
                                                                    forIndexPath:indexPath];
     switch (indexPath.row) {
@@ -278,48 +310,7 @@ static const int kPickerHeight = 168;
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.section == 0 ? kTableCellHeight : normalHeight;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1 && indexPath.row == 0) {  //Register Button
-        if ([self.nameTextField.text length] == 0) {
-            ADShowErrorAlert(kNameEmptyWarningText);
-        } else if ([self.nameTextField.text length] > kMaxNameLength) {
-            ADShowErrorAlert(kNameWarningText);
-        } else if (![EmailFormatValidate isValidate:self.mailTextField.text]) {
-            ADShowErrorAlert(kEmailWarningText);
-        }else if ([self.pswTextField.text length] < kMinPswLength) {
-            ADShowErrorAlert(kPasswordWarningText);
-        } else if (![self.pswTextField.text isEqualToString:self.confirmPswTextField.text]) {
-            ADShowErrorAlert(kConfirmWarningText);
-        } else {
-            ADShowActivity(self.view);
-            ADSexType sex = [self.sexTextField.text isEqualToString:kSexTypeMaleText] ? ADSexTypeMale : ADSexTypeFemale;
-            if (self.isUsedForBindApp) {
-                [[ADNetworkEngine sharedEngine] wxBindAppForUin:[ADUserInfo currentUser].uin
-                                                    LoginTicket:[ADUserInfo currentUser].loginTicket
-                                                           Mail:self.mailTextField.text
-                                                       Password:[self.pswTextField.text MD5]
-                                                       NickName:self.nameTextField.text
-                                                            Sex:sex
-                                                   HeadImageUrl:[ADUserInfo currentUser].headimgurl
-                                                     IsToCreate:YES
-                                                 WithCompletion:^(ADWXBindAPPResp *resp) {
-                                                     [self handleBindAppResp:resp];
-                                                 }];
-            } else {
-                [[ADNetworkEngine sharedEngine] registerForMail:self.mailTextField.text
-                                                       Password:[self.pswTextField.text MD5]
-                                                       NickName:self.nameTextField.text
-                                                      HeadImage:UIImageJPEGRepresentation(self.headImage, 0.7)
-                                                            Sex:sex
-                                                 WithCompletion:^(ADRegisterResp *resp) {
-                                                                [self handleRegisterResp:resp];
-                                                            }];
-            }
-        }
-    }
+    return kTableCellHeight;
 }
 
 #pragma mark - UITextFieldDelegate
@@ -474,7 +465,7 @@ static const int kPickerHeight = 168;
 - (UITableView *)registerTable {
     if (_registerTable == nil) {
         _registerTable = [[UITableView alloc] initWithFrame:CGRectZero
-                                                      style:UITableViewStyleGrouped];
+                                                      style:UITableViewStylePlain];
         [_registerTable registerNib:[UINib nibWithNibName:@"InputWithTextFieldCell"
                                                    bundle:nil] forCellReuseIdentifier:kInputCellIdentifier];
         [_registerTable registerClass:[UITableViewCell class]
@@ -482,10 +473,11 @@ static const int kPickerHeight = 168;
         _registerTable.sectionHeaderHeight = _registerTable.sectionFooterHeight = inset;
         _registerTable.backgroundColor = [UIColor whiteColor];
         _registerTable.showsVerticalScrollIndicator = NO;
-        _registerTable.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _registerTable.tableHeaderView = self.header;
         _registerTable.dataSource = self;
         _registerTable.delegate = self;
+        _registerTable.tableFooterView = [[UIView alloc] init];
+        _registerTable.tableFooterView.backgroundColor = [UIColor clearColor];
     }
     return _registerTable;
 }
@@ -519,6 +511,24 @@ static const int kPickerHeight = 168;
         _headImage = [UIImage imageNamed:@"wxLogoGreen"];
     }
     return _headImage;
+}
+
+- (UIButton *)registerButton {
+    if (_registerButton == nil) {
+        _registerButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _registerButton.titleLabel.font = [UIFont fontWithName:kChineseFont
+                                                          size:kRegisterButtonFontSize];
+        _registerButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+        [_registerButton setBackgroundColor:[UIColor loginButtonColor]];
+        [_registerButton setTitleColor:[UIColor whiteColor]
+                              forState:UIControlStateNormal];
+        [_registerButton setTitle:kRegisterButtonText
+                         forState:UIControlStateNormal];
+        [_registerButton addTarget:self
+                            action:@selector(onClickRegister:)
+                  forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _registerButton;
 }
 
 @end
