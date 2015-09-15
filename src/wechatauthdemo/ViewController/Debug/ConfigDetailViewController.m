@@ -77,6 +77,7 @@
         cell.textField.textColor = [UIColor lightGrayColor];
         cell.textField.userInteractionEnabled = NO;
     }
+    cell.textField.placeholder = @"";
     cell.textField.text = [[[self.configItem dictionaryRepresentation] objectForKey:configName] description];
     cell.textField.font = [UIFont fontWithName:kEnglishNumberFont
                                           size:11];

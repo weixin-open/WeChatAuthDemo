@@ -61,9 +61,10 @@
     [[ADNetworkEngine sharedEngine] connectToServerWithCompletion:^(ADConnectResp *resp) {
         if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
             NSLog(@"Connect Success");
+            [[ADNetworkConfigManager sharedManager] save];
             [self dismissViewControllerAnimated:YES completion:nil];
         } else {
-            ADShowErrorAlert(@"appcgi_connect 失败，请检查Host是否正确.");
+            ADShowErrorAlert(@"appcgi_connect 失败，请检查配置是否正确.");
             [ADNetworkEngine sharedEngine].host = preHost;
         }
     }];
