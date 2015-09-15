@@ -8,6 +8,7 @@
 
 #import "WXLoginViewController.h"
 #import "ADLoginViewController.h"
+#import "DebugViewController.h"
 #import "ADNetworkEngine.h"
 #import "WXApiManager.h"
 #import "ADWXLoginResp.h"
@@ -44,6 +45,7 @@ static const int kNormalLoginButtonHeight = 44;
 @property (nonatomic, strong) UIImageView *wxLogoImageView;
 @property (nonatomic, strong) UIButton *wxLoginButton;
 @property (nonatomic, strong) UIButton *normalLoginButton;
+@property (nonatomic, strong) UIButton *debugButton;
 
 @end
 
@@ -61,6 +63,7 @@ static const int kNormalLoginButtonHeight = 44;
     [self.view addSubview:self.wxLoginButton];
     [self.view addSubview:self.wxLogoImageView];
     [self.view addSubview:self.normalLoginButton];
+    [self.view addSubview:self.debugButton];
     
     /* Setup Network */
     [[ADNetworkEngine sharedEngine] connectToServerWithCompletion:^(ADConnectResp *resp) {
@@ -97,6 +100,11 @@ static const int kNormalLoginButtonHeight = 44;
     CGFloat normalBtnCenterY = ScreenHeight-kNormalLoginButtonHeight/2-inset;
     self.normalLoginButton.frame = CGRectMake(0, 0, kNormalLoginButtonWidth, kNormalLoginButtonHeight);
     self.normalLoginButton.center = CGPointMake(self.view.center.x, normalBtnCenterY);
+    
+    CGFloat debugBtnCenterX = ScreenWidth - inset * 3;
+    CGFloat debugBtnCenterY = statusBarHeight + inset * 2;
+    self.debugButton.frame = CGRectMake(0, 0, normalHeight, normalHeight);
+    self.debugButton.center = CGPointMake(debugBtnCenterX, debugBtnCenterY);
 }
 
 #pragma mark - User Actions
@@ -113,6 +121,13 @@ static const int kNormalLoginButtonHeight = 44;
     
     ADLoginViewController *normalLoginView = [[ADLoginViewController alloc] init];
     [self.navigationController pushViewController:normalLoginView animated:YES];
+}
+
+- (void)onClickDebug: (UIButton *)sender {
+    if (sender != self.debugButton)
+        return;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[DebugViewController alloc] initWithStyle:UITableViewStyleGrouped]];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - WXAuthDelegate
@@ -227,4 +242,19 @@ static const int kNormalLoginButtonHeight = 44;
     }
     return _normalLoginButton;
 }
+
+- (UIButton *)debugButton {
+    if (_debugButton == nil) {
+        _debugButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_debugButton addTarget:self
+                         action:@selector(onClickDebug:)
+               forControlEvents:UIControlEventTouchUpInside];
+        [_debugButton setTitle:@"调试"
+                      forState:UIControlStateNormal];
+        _debugButton.titleLabel.font = [UIFont fontWithName:kChineseFont
+                                                       size:kWXLoginButtonFontSize];
+    }
+    return _debugButton;
+}
+
 @end
