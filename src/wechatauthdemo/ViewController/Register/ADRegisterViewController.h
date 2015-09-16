@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ADRegisterViewController : UIViewController
+@interface ADRegisterViewController : RootViewController
 
 @property (nonatomic, assign) BOOL isUsedForBindApp;
 

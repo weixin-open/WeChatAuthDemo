@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ADAboutViewController : UIViewController
+@interface ADAboutViewController : RootViewController
 
 @end

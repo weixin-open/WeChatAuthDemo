@@ -61,4 +61,8 @@ AUTH_DEMO_EXTERN const NSString *kMakeExpiredCGIName;
  */
 - (ADNetworkConfigItem *)getConfigForKeyPath:(NSString *)keyPath;
 
+- (NSArray *)allConfigKeys;
+
+- (void)save;
+
 @end

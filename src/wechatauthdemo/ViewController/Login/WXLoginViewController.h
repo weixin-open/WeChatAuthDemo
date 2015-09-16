@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WXLoginViewController : UIViewController
+@interface WXLoginViewController : RootViewController
 
 @end

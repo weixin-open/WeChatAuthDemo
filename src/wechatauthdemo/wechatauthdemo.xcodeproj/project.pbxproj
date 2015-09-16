@@ -17,6 +17,8 @@
 		73BED6251B3AA84E00CA4C4D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73BED6241B3AA84E00CA4C4D /* Foundation.framework */; };
 		7A00ADC21B8333650013A0B2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A00ADC11B8333650013A0B2 /* Default-568h@2x.png */; };
 		7A00ADC71B8353940013A0B2 /* RandomKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A00ADC61B8353940013A0B2 /* RandomKey.m */; };
+		7A0440DA1BA7BEF000574AA2 /* DebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0440D91BA7BEF000574AA2 /* DebugViewController.m */; settings = {ASSET_TAGS = (); }; };
+		7A0440DE1BA7C8FA00574AA2 /* ConfigDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0440DD1BA7C8FA00574AA2 /* ConfigDetailViewController.m */; settings = {ASSET_TAGS = (); }; };
 		7A0923881BA19FA00099A904 /* AlertTitleFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0923871BA19FA00099A904 /* AlertTitleFont.m */; };
 		7A3FFB431B82E0DB0009EE71 /* ADUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FFB421B82E0DB0009EE71 /* ADUserInfo.m */; };
 		7A58F3581B8B40BB00F3E241 /* ADGetUserInfoResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A58F3571B8B40BB00F3E241 /* ADGetUserInfoResp.m */; };
@@ -63,6 +65,8 @@
 		7AE8C76A1B9473C70091CE4C /* ADLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7671B9473C70091CE4C /* ADLoginViewController.m */; };
 		7AE8C76B1B9473C70091CE4C /* WXLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */; };
 		7AE8C76F1B9473D30091CE4C /* ADRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C76E1B9473D30091CE4C /* ADRegisterViewController.m */; };
+		7AF31E6B1BA9878B0007E389 /* LogTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF31E6A1BA9878B0007E389 /* LogTextViewController.m */; settings = {ASSET_TAGS = (); }; };
+		7AF31E6E1BA98C610007E389 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF31E6D1BA98C610007E389 /* RootViewController.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +86,10 @@
 		7A00ADC31B83369B0013A0B2 /* rsa_public.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rsa_public.key; sourceTree = "<group>"; };
 		7A00ADC51B8353940013A0B2 /* RandomKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomKey.h; sourceTree = "<group>"; };
 		7A00ADC61B8353940013A0B2 /* RandomKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomKey.m; sourceTree = "<group>"; };
+		7A0440D81BA7BEF000574AA2 /* DebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DebugViewController.h; path = Debug/DebugViewController.h; sourceTree = "<group>"; };
+		7A0440D91BA7BEF000574AA2 /* DebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DebugViewController.m; path = Debug/DebugViewController.m; sourceTree = "<group>"; };
+		7A0440DC1BA7C8FA00574AA2 /* ConfigDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConfigDetailViewController.h; path = Debug/ConfigDetailViewController.h; sourceTree = "<group>"; };
+		7A0440DD1BA7C8FA00574AA2 /* ConfigDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConfigDetailViewController.m; path = Debug/ConfigDetailViewController.m; sourceTree = "<group>"; };
 		7A0923861BA19FA00099A904 /* AlertTitleFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertTitleFont.h; sourceTree = "<group>"; };
 		7A0923871BA19FA00099A904 /* AlertTitleFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertTitleFont.m; sourceTree = "<group>"; };
 		7A3FFB3A1B82DE7B0009EE71 /* Store.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Store.json; sourceTree = "<group>"; };
@@ -172,6 +180,10 @@
 		7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXLoginViewController.m; sourceTree = "<group>"; };
 		7AE8C76D1B9473D30091CE4C /* ADRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADRegisterViewController.h; sourceTree = "<group>"; };
 		7AE8C76E1B9473D30091CE4C /* ADRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADRegisterViewController.m; sourceTree = "<group>"; };
+		7AF31E691BA9878B0007E389 /* LogTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogTextViewController.h; path = Debug/LogTextViewController.h; sourceTree = "<group>"; };
+		7AF31E6A1BA9878B0007E389 /* LogTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogTextViewController.m; path = Debug/LogTextViewController.m; sourceTree = "<group>"; };
+		7AF31E6C1BA98C610007E389 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = Debug/RootViewController.h; sourceTree = "<group>"; };
+		7AF31E6D1BA98C610007E389 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = Debug/RootViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -238,6 +250,21 @@
 				6E48D1AAC1987F311E45EB3E /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7A0440DB1BA7BF8300574AA2 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				7A0440D81BA7BEF000574AA2 /* DebugViewController.h */,
+				7A0440D91BA7BEF000574AA2 /* DebugViewController.m */,
+				7A0440DC1BA7C8FA00574AA2 /* ConfigDetailViewController.h */,
+				7A0440DD1BA7C8FA00574AA2 /* ConfigDetailViewController.m */,
+				7AF31E691BA9878B0007E389 /* LogTextViewController.h */,
+				7AF31E6A1BA9878B0007E389 /* LogTextViewController.m */,
+				7AF31E6C1BA98C610007E389 /* RootViewController.h */,
+				7AF31E6D1BA98C610007E389 /* RootViewController.m */,
+			);
+			name = Debug;
 			sourceTree = "<group>";
 		};
 		7AD6CE6A1B8DCFE7001EFB40 /* App */ = {
@@ -330,6 +357,7 @@
 				7AE8C7651B9473C70091CE4C /* Login */,
 				7AE8C76C1B9473D30091CE4C /* Register */,
 				7AE8C7581B9473950091CE4C /* User */,
+				7A0440DB1BA7BF8300574AA2 /* Debug */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -483,12 +511,12 @@
 		73BED5DF1B3AA48600CA4C4D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = boshao;
 				TargetAttributes = {
 					73BED5E61B3AA48600CA4C4D = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = 8P7343TG54;
+						DevelopmentTeam = N4BU3F8P5C;
 					};
 				};
 			};
@@ -545,12 +573,14 @@
 				7AE8C7621B9473950091CE4C /* ADHistoryViewController.m in Sources */,
 				7AD8269E1B8200BD008CA90C /* ADCheckLoginResp.m in Sources */,
 				7AA1634B1B85AAD200E54AAC /* ADNetworkConfigItem.m in Sources */,
+				7AF31E6B1BA9878B0007E389 /* LogTextViewController.m in Sources */,
 				7AE8C7631B9473950091CE4C /* ADShareViewController.m in Sources */,
 				7AE8C7541B9473560091CE4C /* ErrorHandler.m in Sources */,
 				7AD826B01B820107008CA90C /* MD5.m in Sources */,
 				7AD826A41B8200BD008CA90C /* ADWXLoginResp.m in Sources */,
 				7A00ADC71B8353940013A0B2 /* RandomKey.m in Sources */,
 				7AD826A31B8200BD008CA90C /* ADWXBindAPPResp.m in Sources */,
+				7AF31E6E1BA98C610007E389 /* RootViewController.m in Sources */,
 				7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */,
 				7AD826A21B8200BD008CA90C /* ADRegisterResp.m in Sources */,
 				7A89F6A81B8B1CAC0007ACA7 /* InputWithPickerBar.m in Sources */,
@@ -563,6 +593,7 @@
 				7AE8C76A1B9473C70091CE4C /* ADLoginViewController.m in Sources */,
 				7AD8269D1B8200BD008CA90C /* ADAPPBindWXResp.m in Sources */,
 				7AA1635C1B85D49700E54AAC /* InputWithTextFieldCell.m in Sources */,
+				7A0440DA1BA7BEF000574AA2 /* DebugViewController.m in Sources */,
 				7A89F6B21B8B20BF0007ACA7 /* UserInfoHeaderView.m in Sources */,
 				7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */,
 				7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */,
@@ -572,6 +603,7 @@
 				7AD826B11B820107008CA90C /* RSA.m in Sources */,
 				7AD826671B81FDF9008CA90C /* main.m in Sources */,
 				7AD8269F1B8200BD008CA90C /* ADConnectResp.m in Sources */,
+				7A0440DE1BA7C8FA00574AA2 /* ConfigDetailViewController.m in Sources */,
 				7A58F3581B8B40BB00F3E241 /* ADGetUserInfoResp.m in Sources */,
 				7A3FFB431B82E0DB0009EE71 /* ADUserInfo.m in Sources */,
 			);
@@ -601,6 +633,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -656,7 +689,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s";
@@ -670,6 +703,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/Util/Definition/Definition.h";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -684,6 +718,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/WeChatSDK",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tencent.wc.xin.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 arm64 armv7s";
@@ -697,6 +732,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/Util/Definition/Definition.h";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -711,6 +747,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/WeChatSDK",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tencent.wc.xin.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "armv7 arm64 armv7s";

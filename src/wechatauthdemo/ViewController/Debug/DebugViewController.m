@@ -14,6 +14,7 @@
 #import "InputWithTextFieldCell.h"
 #import "ADConnectResp.h"
 #import "ADBaseResp.h"
+#import "ADUserInfo.h"
 
 @interface DebugViewController ()
 
@@ -61,7 +62,10 @@
     [[ADNetworkEngine sharedEngine] connectToServerWithCompletion:^(ADConnectResp *resp) {
         if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
             NSLog(@"Connect Success");
+            [ADUserInfo currentUser].uin = resp.tempUin;
             [[ADNetworkConfigManager sharedManager] save];
+            [[NSUserDefaults standardUserDefaults] setObject:[ADNetworkEngine sharedEngine].host
+                                                      forKey:@"ADNetworkDefaultHost"];
             [self dismissViewControllerAnimated:YES completion:nil];
         } else {
             ADShowErrorAlert(@"appcgi_connect 失败，请检查配置是否正确.");

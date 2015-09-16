@@ -51,12 +51,12 @@ static char sessionKeyId;
     NSAssert(config, @"Configure Item Not Exist For This CGI: %@", configKeyPath);
     if (config == nil)
         return nil;
-    
+    NSLog(@"RequestCGIConfig: \n%@\nPara: %@\n", [config dictionaryRepresentation], para);
     /* Encrypt Data */
     NSData *encryptedData = [selfSession encryptJSONObject:para
                                                 ForKeyPath:config.encryptKeyPath
                                             UsingAlgorithm:config.encryptAlgorithm];
-    
+    NSLog(@"RequestEncryptData: %@", [[NSString alloc] initWithData:encryptedData encoding:NSUTF8StringEncoding]);
     /* 异步请求，在这里备份一份SessionKey，防止返回前SessionKey被修改。*/
     NSString *preSessionKey = selfSession.sessionKey;
     
@@ -104,13 +104,13 @@ static char sessionKeyId;
                                    });
                                    return;
                                }
-                               
+                               NSLog(@"ResponseCGI=%@\nResponse: %@\n", config.cgiName, dict);
                                /* Decrypt Dict */
                                dict = [selfSession decryptJSONObject:dict
                                                           ForKeyPath:config.decryptKeyPath
                                                       UsingAlgorithm:config.decryptAlgorithm
                                                       WithSessionKey:preSessionKey];
-                               
+                               NSLog(@"DecryptData: %@", dict);
                                /* Get Response Buffer */
                                NSString *respString = dict[config.decryptKeyPath];
                                data = [respString dataUsingEncoding:NSUTF8StringEncoding];

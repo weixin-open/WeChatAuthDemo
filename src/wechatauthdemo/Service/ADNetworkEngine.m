@@ -14,6 +14,7 @@
 #import "ImageCache.h"
 
 static NSString* const defaultHost = @"http://qytest.weixin.qq.com";
+//static NSString* const defaultHost = @"http://demo.maizify.com";
 static NSString* const publickeyFileName = @"rsa_public";
 
 @interface ADNetworkEngine ()
@@ -30,7 +31,8 @@ static NSString* const publickeyFileName = @"rsa_public";
     static dispatch_once_t onceToken;
     static ADNetworkEngine *instance = nil;
     dispatch_once(&onceToken, ^{
-        instance = [[ADNetworkEngine alloc] initWithHost:defaultHost];
+        NSString *savedHost = [[NSUserDefaults standardUserDefaults] objectForKey:@"ADNetworkDefaultHost"];
+        instance = [[ADNetworkEngine alloc] initWithHost:savedHost == nil ? defaultHost : savedHost];
     });
     return instance;
 }

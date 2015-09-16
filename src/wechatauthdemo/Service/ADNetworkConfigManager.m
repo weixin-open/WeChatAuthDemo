@@ -64,24 +64,30 @@ static NSMutableDictionary *allConfig;
 
 #pragma mark - Public Methods
 - (void)setup {
-    [self registerConfig:self.connectConfig
-              forKeyPath:self.connectConfig.cgiName];
-    [self registerConfig:self.registerConfig
-              forKeyPath:self.registerConfig.cgiName];
-    [self registerConfig:self.loginConfig
-              forKeyPath:self.loginConfig.cgiName];
-    [self registerConfig:self.wxLoginConfig
-              forKeyPath:self.wxLoginConfig.cgiName];
-    [self registerConfig:self.checkLoginConfig
-              forKeyPath:self.checkLoginConfig.cgiName];
-    [self registerConfig:self.getUserInfoConfig
-              forKeyPath:self.getUserInfoConfig.cgiName];
-    [self registerConfig:self.wxBindAppConfig
-              forKeyPath:self.wxBindAppConfig.cgiName];
-    [self registerConfig:self.appBindWxConfig
-              forKeyPath:self.appBindWxConfig.cgiName];
-    [self registerConfig:self.makeExpiredConfig
-              forKeyPath:self.makeExpiredConfig.cgiName];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"ADNetworkConfigAll"] == nil) {
+        [self registerConfig:self.connectConfig
+                  forKeyPath:self.connectConfig.cgiName];
+        [self registerConfig:self.registerConfig
+                  forKeyPath:self.registerConfig.cgiName];
+        [self registerConfig:self.loginConfig
+                  forKeyPath:self.loginConfig.cgiName];
+        [self registerConfig:self.wxLoginConfig
+                  forKeyPath:self.wxLoginConfig.cgiName];
+        [self registerConfig:self.checkLoginConfig
+                  forKeyPath:self.checkLoginConfig.cgiName];
+        [self registerConfig:self.getUserInfoConfig
+                  forKeyPath:self.getUserInfoConfig.cgiName];
+        [self registerConfig:self.wxBindAppConfig
+                  forKeyPath:self.wxBindAppConfig.cgiName];
+        [self registerConfig:self.appBindWxConfig
+                  forKeyPath:self.appBindWxConfig.cgiName];
+        [self registerConfig:self.makeExpiredConfig
+                  forKeyPath:self.makeExpiredConfig.cgiName];
+        [self save];
+    } else {
+        NSData *configData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ADNetworkConfigAll"];
+        allConfig = [NSKeyedUnarchiver unarchiveObjectWithData:configData];
+    }
 }
 
 - (void)registerConfig:(ADNetworkConfigItem *)item forKeyPath:(NSString *)keyPath {
@@ -94,6 +100,16 @@ static NSMutableDictionary *allConfig;
 
 - (ADNetworkConfigItem *)getConfigForKeyPath:(NSString *)keyPath {
     return [allConfig objectForKey:keyPath];
+}
+
+- (NSArray *)allConfigKeys {
+    return [allConfig allKeys];
+}
+
+- (void)save {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:allConfig]
+                                              forKey:@"ADNetworkConfigAll"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Laze Initializer

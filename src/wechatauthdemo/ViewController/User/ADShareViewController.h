@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ADShareViewController : UIViewController
+@interface ADShareViewController : RootViewController
 
 @end

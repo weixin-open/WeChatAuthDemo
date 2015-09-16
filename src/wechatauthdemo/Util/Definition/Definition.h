@@ -9,6 +9,7 @@
 #ifndef AuthSDKDemo_Definition_h
 #define AuthSDKDemo_Definition_h
 #import "Constant.h"
+#import "LogTextViewController.h"
 
 typedef enum {
     ADSexTypeUnknown,
@@ -44,13 +45,38 @@ typedef enum {
 typedef void(^ButtonCallBack)(id sender);
 
 //A better version of NSLog
+#ifdef DEBUG
 #define NSLog(format, ...) do {                                                 \
     fprintf(stderr, "<%s : %d> %s\n",                                           \
     [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],  \
     __LINE__, __func__);                                                        \
     (NSLog)((format), ##__VA_ARGS__);                                           \
     fprintf(stderr, "-------\n");                                               \
+    char logCharArray[1000] = {0};                                              \
+    sprintf(logCharArray, "<%s : %d> %s\n",                                     \
+    [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],  \
+    __LINE__, __func__);                                                        \
+    NSMutableString *logString = [[NSMutableString alloc] initWithCString:logCharArray encoding:NSUTF8StringEncoding];                                                  \
+    [logString appendFormat:format, ##__VA_ARGS__];                             \
+    [logString appendFormat: @"\n-------\n"];                                   \
+    dispatch_async(dispatch_get_main_queue(), ^{                                \
+        [[LogTextViewController sharedLogTextView] insertLog:logString];        \
+    });                                                                         \
 } while (0)
+#else
+#define NSLog(format, ...) do {                                                 \
+    char logCharArray[1000] = {0};                                              \
+    sprintf(logCharArray, "<%s : %d> %s\n",                                     \
+    [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],  \
+    __LINE__, __func__);                                                        \
+    NSMutableString *logString = [[NSMutableString alloc] initWithCString:logCharArray encoding:NSUTF8StringEncoding];                                                  \
+    [logString appendFormat:format, ##__VA_ARGS__];                             \
+    [logString appendFormat: @"\n-------\n"];                                   \
+    dispatch_async(dispatch_get_main_queue(), ^{                                \
+        [[LogTextViewController sharedLogTextView] insertLog:logString];        \
+    });                                                                         \
+} while(0)
+#endif
 
 //A better version of extern
 #ifdef __cplusplus
@@ -93,5 +119,6 @@ static UIActivityIndicatorView *_indicatorView;
 #import "ButtonColor.h"
 #import "ErrorTitle.h"
 #import "ErrorHandler.h"
+#import "RootViewController.h"
 
 #endif

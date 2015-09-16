@@ -56,9 +56,9 @@ static const CGFloat kAlertTitleFontSize = 16;
     
     /* Setup Network */
     [[ADNetworkConfigManager sharedManager] setup];
-    WXLoginViewController *wxLoginView = [[WXLoginViewController alloc] init];
     
     /* Load Local User */
+    WXLoginViewController *wxLoginView = [[WXLoginViewController alloc] init];
     if (![[ADUserInfo currentUser] load]) {
         NSLog(@"Load Local User Fail");
         [rootNav pushViewController:wxLoginView animated:NO];
