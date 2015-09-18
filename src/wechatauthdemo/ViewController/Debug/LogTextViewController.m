@@ -3,7 +3,7 @@
 //  wechatauthdemo
 //
 //  Created by Jeason on 16/09/2015.
-//  Copyright © 2015 boshao. All rights reserved.
+//  Copyright © 2015 Tencent. All rights reserved.
 //
 
 #import "LogTextViewController.h"
@@ -49,14 +49,25 @@
 }
 
 - (void)insertLog:(NSString *)log {
-    self.textView.text = [self.textView.text stringByAppendingFormat:@"%@\n", log];
+    static BOOL ever = NO;
+    static CGFloat lastPos = 0;
+    
+    UIColor *color = ever ? [UIColor whiteColor] : [UIColor redColor];
+    NSMutableAttributedString *attributeString = [self.textView.attributedText mutableCopy];
+    [attributeString appendAttributedString:[[NSAttributedString alloc] initWithString:log]];
+    [attributeString addAttribute:NSForegroundColorAttributeName
+                            value:color
+                            range:NSMakeRange(lastPos, [log length])];
+    self.textView.attributedText = attributeString;
+    lastPos = lastPos + [log length];
+    ever = !ever;
 }
 
 #pragma mark - Lazy Initializers
 - (UITextView *)textView {
     if (_textView == nil) {
         _textView = [[UITextView alloc] init];
-        _textView.font = [UIFont fontWithName:kEnglishNumberFont size:12];
+        _textView.font = [UIFont fontWithName:kEnglishNumberFont size:10];
         _textView.backgroundColor = [UIColor blackColor];
         _textView.textColor = [UIColor whiteColor];
         _textView.editable = NO;

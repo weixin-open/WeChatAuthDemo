@@ -381,7 +381,7 @@ static const int kPickerHeight = 168;
 
 #pragma mark - Network Handler
 - (void)handleRegisterResp:(ADRegisterResp *)resp {
-    if (resp && resp.loginTicket) {
+    if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"Register Success");
         [ADUserInfo currentUser].uin = resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
@@ -400,7 +400,7 @@ static const int kPickerHeight = 168;
 
 - (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
     ADHideActivity;
-    if (resp && resp.sessionKey) {
+    if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"Check Login Success");
         [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
         [[ADUserInfo currentUser] save];
@@ -415,7 +415,7 @@ static const int kPickerHeight = 168;
 
 - (void)handleBindAppResp:(ADWXBindAPPResp *)resp {
     ADHideActivity;
-    if (resp && resp.loginTicket) {
+    if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"BindApp Success");
         [ADUserInfo currentUser].uin = resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;

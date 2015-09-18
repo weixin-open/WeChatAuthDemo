@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ADLoginViewController : RootViewController
+@interface ADLoginViewController : UIViewController
 
 @property (nonatomic, assign) BOOL isUsedForBindApp;
 

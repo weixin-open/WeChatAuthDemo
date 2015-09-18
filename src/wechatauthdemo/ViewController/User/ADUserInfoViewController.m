@@ -320,7 +320,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
 #pragma mark - Network Handler
 - (void)handleGetUserInfoResponse:(ADGetUserInfoResp *)resp {
     ADHideActivity;
-    if (resp && resp.mail) {
+    if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"Get UserInfo Success");
         self.userInfoResp = resp;
         [ADUserInfo currentUser].mail = resp.mail;
@@ -360,7 +360,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
 
 - (void)handleBindWXResponse: (ADAPPBindWXResp *)resp {
     ADHideActivity;
-    if (resp && resp.loginTicket) {
+    if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"BindWX Success");
         [ADUserInfo currentUser].uin = (UInt32) resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;

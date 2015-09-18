@@ -146,7 +146,7 @@ static const int kNormalLoginButtonHeight = 44;
 
 #pragma mark - Network Handlers
 - (void)handleWXLoginResponse:(ADWXLoginResp *)resp {
-    if (resp && resp.loginTicket) {
+    if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"WXLogin Success");
         [ADUserInfo currentUser].uin = (UInt32)resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;

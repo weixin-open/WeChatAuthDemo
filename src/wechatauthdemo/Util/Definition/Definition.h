@@ -19,12 +19,15 @@ typedef enum {
 
 typedef enum {
     ADErrorCodeNoError = 0,
-    ADErrorCodeSessionKeyExpired = 10001,
+    ADErrorCodeUnknown = -1,
+    ADErrorCodeCanNotAccessOpenServer = -10001,
+    ADErrorCodeRequestError = -10002,
+    ADErrorCodeTicketNotMatch = -20001,
+    ADErrorCodeSessionKeyExpired = -20003,
     ADErrorCodeUserExisted = 20001,
     ADErrorCodeAlreadyBind = 20002,
     ADErrorCodeUserNotExisted = 20003,
     ADErrorCodePasswordNotMatch = 20004,
-    ADErrorCodeTicketNotMatch = 30001,
     ADErrorCodeTicketExpired = 30002,
     ADErrorCodeTokenExpired = 30003
 } ADErrorCode;
@@ -119,6 +122,5 @@ static UIActivityIndicatorView *_indicatorView;
 #import "ButtonColor.h"
 #import "ErrorTitle.h"
 #import "ErrorHandler.h"
-#import "RootViewController.h"
 
 #endif

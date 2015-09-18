@@ -141,7 +141,9 @@ static NSString* const publickeyFileName = @"rsa_public";
                         ADCheckLoginResp *resp = nil;
                         if (error == nil) {
                             resp = [ADCheckLoginResp modelObjectWithDictionary:dict];
-                            self.session.sessionKey = resp.sessionKey;
+                            if (resp.baseResp.errcode == ADErrorCodeNoError) {
+                                self.session.sessionKey = resp.sessionKey;
+                            }
                         }
                         if (completion)
                             completion(resp);

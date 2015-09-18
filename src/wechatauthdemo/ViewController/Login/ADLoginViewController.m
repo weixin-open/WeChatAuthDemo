@@ -222,7 +222,7 @@ static const int kRegisterButtonHeight = 44;
 
 #pragma mark - Network Handlers
 - (void)handleLoginResponse:(ADLoginResp *)resp {
-    if (resp && resp.loginTicket) {
+    if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"Login Success");
         [ADUserInfo currentUser].uin = resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;
@@ -244,7 +244,7 @@ static const int kRegisterButtonHeight = 44;
 
 - (void)handleCheckLoginResponse:(ADCheckLoginResp *)resp {
     ADHideActivity;
-    if (resp && resp.sessionKey) {
+    if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"Check Login Success");
         [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
         [[ADUserInfo currentUser] save];
@@ -258,7 +258,7 @@ static const int kRegisterButtonHeight = 44;
 }
 
 - (void)handleBindAppResponse:(ADWXBindAPPResp *)resp {
-    if (resp && resp.loginTicket) {
+    if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"Bind App Success");
         [ADUserInfo currentUser].uin = resp.uin;
         [ADUserInfo currentUser].loginTicket = resp.loginTicket;

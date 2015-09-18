@@ -19,6 +19,7 @@
 		7A00ADC71B8353940013A0B2 /* RandomKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A00ADC61B8353940013A0B2 /* RandomKey.m */; };
 		7A0440DA1BA7BEF000574AA2 /* DebugViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0440D91BA7BEF000574AA2 /* DebugViewController.m */; settings = {ASSET_TAGS = (); }; };
 		7A0440DE1BA7C8FA00574AA2 /* ConfigDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0440DD1BA7C8FA00574AA2 /* ConfigDetailViewController.m */; settings = {ASSET_TAGS = (); }; };
+		7A045E661BAC264000332AC1 /* ShakeDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A045E651BAC264000332AC1 /* ShakeDebug.m */; settings = {ASSET_TAGS = (); }; };
 		7A0923881BA19FA00099A904 /* AlertTitleFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0923871BA19FA00099A904 /* AlertTitleFont.m */; };
 		7A3FFB431B82E0DB0009EE71 /* ADUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A3FFB421B82E0DB0009EE71 /* ADUserInfo.m */; };
 		7A58F3581B8B40BB00F3E241 /* ADGetUserInfoResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A58F3571B8B40BB00F3E241 /* ADGetUserInfoResp.m */; };
@@ -66,7 +67,6 @@
 		7AE8C76B1B9473C70091CE4C /* WXLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */; };
 		7AE8C76F1B9473D30091CE4C /* ADRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C76E1B9473D30091CE4C /* ADRegisterViewController.m */; };
 		7AF31E6B1BA9878B0007E389 /* LogTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF31E6A1BA9878B0007E389 /* LogTextViewController.m */; settings = {ASSET_TAGS = (); }; };
-		7AF31E6E1BA98C610007E389 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF31E6D1BA98C610007E389 /* RootViewController.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +90,8 @@
 		7A0440D91BA7BEF000574AA2 /* DebugViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DebugViewController.m; path = Debug/DebugViewController.m; sourceTree = "<group>"; };
 		7A0440DC1BA7C8FA00574AA2 /* ConfigDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConfigDetailViewController.h; path = Debug/ConfigDetailViewController.h; sourceTree = "<group>"; };
 		7A0440DD1BA7C8FA00574AA2 /* ConfigDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConfigDetailViewController.m; path = Debug/ConfigDetailViewController.m; sourceTree = "<group>"; };
+		7A045E641BAC264000332AC1 /* ShakeDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShakeDebug.h; sourceTree = "<group>"; };
+		7A045E651BAC264000332AC1 /* ShakeDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShakeDebug.m; sourceTree = "<group>"; };
 		7A0923861BA19FA00099A904 /* AlertTitleFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertTitleFont.h; sourceTree = "<group>"; };
 		7A0923871BA19FA00099A904 /* AlertTitleFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertTitleFont.m; sourceTree = "<group>"; };
 		7A3FFB3A1B82DE7B0009EE71 /* Store.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Store.json; sourceTree = "<group>"; };
@@ -182,8 +184,6 @@
 		7AE8C76E1B9473D30091CE4C /* ADRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADRegisterViewController.m; sourceTree = "<group>"; };
 		7AF31E691BA9878B0007E389 /* LogTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogTextViewController.h; path = Debug/LogTextViewController.h; sourceTree = "<group>"; };
 		7AF31E6A1BA9878B0007E389 /* LogTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogTextViewController.m; path = Debug/LogTextViewController.m; sourceTree = "<group>"; };
-		7AF31E6C1BA98C610007E389 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = Debug/RootViewController.h; sourceTree = "<group>"; };
-		7AF31E6D1BA98C610007E389 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = Debug/RootViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,8 +261,6 @@
 				7A0440DD1BA7C8FA00574AA2 /* ConfigDetailViewController.m */,
 				7AF31E691BA9878B0007E389 /* LogTextViewController.h */,
 				7AF31E6A1BA9878B0007E389 /* LogTextViewController.m */,
-				7AF31E6C1BA98C610007E389 /* RootViewController.h */,
-				7AF31E6D1BA98C610007E389 /* RootViewController.m */,
 			);
 			name = Debug;
 			sourceTree = "<group>";
@@ -325,6 +323,8 @@
 				7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */,
 				7A0923861BA19FA00099A904 /* AlertTitleFont.h */,
 				7A0923871BA19FA00099A904 /* AlertTitleFont.m */,
+				7A045E641BAC264000332AC1 /* ShakeDebug.h */,
+				7A045E651BAC264000332AC1 /* ShakeDebug.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -580,7 +580,6 @@
 				7AD826A41B8200BD008CA90C /* ADWXLoginResp.m in Sources */,
 				7A00ADC71B8353940013A0B2 /* RandomKey.m in Sources */,
 				7AD826A31B8200BD008CA90C /* ADWXBindAPPResp.m in Sources */,
-				7AF31E6E1BA98C610007E389 /* RootViewController.m in Sources */,
 				7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */,
 				7AD826A21B8200BD008CA90C /* ADRegisterResp.m in Sources */,
 				7A89F6A81B8B1CAC0007ACA7 /* InputWithPickerBar.m in Sources */,
@@ -594,6 +593,7 @@
 				7AD8269D1B8200BD008CA90C /* ADAPPBindWXResp.m in Sources */,
 				7AA1635C1B85D49700E54AAC /* InputWithTextFieldCell.m in Sources */,
 				7A0440DA1BA7BEF000574AA2 /* DebugViewController.m in Sources */,
+				7A045E661BAC264000332AC1 /* ShakeDebug.m in Sources */,
 				7A89F6B21B8B20BF0007ACA7 /* UserInfoHeaderView.m in Sources */,
 				7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */,
 				7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */,

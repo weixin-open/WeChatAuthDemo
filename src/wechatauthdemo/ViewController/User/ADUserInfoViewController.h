@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ADUserInfoViewController : RootViewController
+@interface ADUserInfoViewController : UIViewController
 
 @end

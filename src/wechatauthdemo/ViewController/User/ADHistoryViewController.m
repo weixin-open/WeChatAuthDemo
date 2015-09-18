@@ -31,7 +31,7 @@ static NSString* const kFromWXLogin =  @"从微信授权登录";
 - (instancetype)initWithStyle:(UITableViewStyle)style
                    AccessLogs:(NSArray *)accessLogArray {
     if (self = [self initWithStyle:style]) {
-        self.accessLogArray = accessLogArray;
+        self.accessLogArray = accessLogArray == nil ? [[NSArray alloc] init] : accessLogArray;
     }
     return self;
 }
