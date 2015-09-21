@@ -35,6 +35,7 @@ static const int AES_256_IV_SIZE = 16;  //TLS V1.2协议
     
     if (cryptStatus == kCCSuccess) {
         [data appendBytes:buffer length:numBytesEncrypted];
+        free(buffer);
         return data;
     }
     free(buffer);

@@ -57,7 +57,7 @@ static NSString* const publickeyFileName = @"rsa_public";
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                       @"psk": self.session.sessionKey
-                              }
+                                      }
                      ConfigKeyPath:(NSString *)kConnectCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
                         if (completion)

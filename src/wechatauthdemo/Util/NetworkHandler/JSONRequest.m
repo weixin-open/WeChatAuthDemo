@@ -111,11 +111,26 @@ static char sessionKeyId;
                                                       UsingAlgorithm:config.decryptAlgorithm
                                                       WithSessionKey:preSessionKey];
                                NSLog(@"DecryptData: %@", dict);
+
                                /* Get Response Buffer */
                                NSString *respString = dict[config.decryptKeyPath];
-                               data = [respString dataUsingEncoding:NSUTF8StringEncoding];
                                
+                               /* Process System Error */
+                               if ((respString == nil || [respString length] == 0)
+                                   && dict[config.sysErrKeyPath] != nil) {
+                                   int errorCode = [dict[config.sysErrKeyPath] intValue];
+                                   NSLog(@"System Error Code = %d", errorCode);
+                                   NSError *sysError = [NSError errorWithDomain:@"SystemError"
+                                                                           code:errorCode
+                                                                       userInfo:dict];
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       handler (nil, sysError);
+                                   });
+                                   return;
+                               }
+
                                /* Get Response JSON */
+                               data = [respString dataUsingEncoding:NSUTF8StringEncoding];
                                dict = [NSJSONSerialization JSONObjectWithData:data
                                                                       options:NSJSONReadingAllowFragments
                                                                         error:&jsonError];
@@ -193,13 +208,11 @@ static char sessionKeyId;
                          ForKeyPath:(NSString *)keyPath
                      UsingAlgorithm:(EncryptAlgorithm)algorithm
                      WithSessionKey:(NSString *)sessionKey {
-    if (algorithm == EncryptAlgorithmNone)
+    NSObject *object = [dict objectForKey:keyPath];
+    if (algorithm == EncryptAlgorithmNone || object == nil)
         return dict;
     
-    NSMutableDictionary *mutableDict = [dict mutableCopy];
-    NSObject *object = [mutableDict objectForKey:keyPath];
     NSData *toDecryptData = nil;
-    
     /* Convert Object to Data */
     if ([object isKindOfClass:[NSDictionary class]]) {
         NSError *jsonError = nil;
@@ -232,7 +245,8 @@ static char sessionKeyId;
                                                       encoding:NSUTF8StringEncoding];
     if (decryptedString == nil)
         return dict;
-    
+
+    NSMutableDictionary *mutableDict = [dict mutableCopy];
     [mutableDict setObject:decryptedString
                     forKey:keyPath];
     return [NSDictionary dictionaryWithDictionary:mutableDict];

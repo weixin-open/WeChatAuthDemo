@@ -18,6 +18,7 @@
 
 /* Title Message */
 static NSString* const kNormalLoginTitle = @"普通账号登录";
+static NSString* const kConnectErrorTitle = @"连接服务器失败";
 static NSString* const kWXAuthDenyTitle = @"授权失败";
 static NSString* const kWXLoginErrorTitle = @"微信登陆失败";
 static NSString* const kTitleLabelText = @"微信登录Demo";
@@ -67,12 +68,7 @@ static const int kNormalLoginButtonHeight = 44;
     
     /* Setup Network */
     [[ADNetworkEngine sharedEngine] connectToServerWithCompletion:^(ADConnectResp *resp) {
-        if (resp && resp.baseResp.errcode == 0) {
-            [ADUserInfo currentUser].uin = (UInt32)resp.tempUin;
-            NSLog(@"Connect Success");
-        } else {
-            NSLog(@"Connect Failed");
-        }
+        [self handleConnectResponse:resp];
     }];
 }
 
@@ -145,6 +141,18 @@ static const int kNormalLoginButtonHeight = 44;
 }
 
 #pragma mark - Network Handlers
+- (void)handleConnectResponse: (ADConnectResp *)resp {
+    if (resp && resp.baseResp.errcode == 0) {
+        [ADUserInfo currentUser].uin = (UInt32)resp.tempUin;
+        NSLog(@"Connect Success");
+    } else {
+        NSLog(@"Connect Failed");
+        NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
+                                                   defaultError:kConnectErrorTitle];
+        ADShowErrorAlert(errorTitle);
+    }
+}
+
 - (void)handleWXLoginResponse:(ADWXLoginResp *)resp {
     if (resp && resp.baseResp.errcode == ADErrorCodeNoError) {
         NSLog(@"WXLogin Success");

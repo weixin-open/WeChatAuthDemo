@@ -122,7 +122,8 @@ static NSMutableDictionary *allConfig;
                                      @"encrypt_key_path": kEncryptWholePacketParaKey,
                                      @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
                                      @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer"
+                                     @"decrypt_key_path": @"resp_buffer",
+                                     @"sys_err_key_path": @"errcode"
                                      };
         _connectConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }
@@ -138,7 +139,8 @@ static NSMutableDictionary *allConfig;
                                      @"encrypt_key_path": @"req_buffer",
                                      @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
                                      @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer"
+                                     @"decrypt_key_path": @"resp_buffer",
+                                     @"sys_err_key_path": @"errcode"
                                      };
         _registerConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }
@@ -154,7 +156,8 @@ static NSMutableDictionary *allConfig;
                                      @"encrypt_key_path": @"req_buffer",
                                      @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
                                      @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer"
+                                     @"decrypt_key_path": @"resp_buffer",
+                                     @"sys_err_key_path": @"errcode"
                                      };
         _loginConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }
@@ -170,7 +173,8 @@ static NSMutableDictionary *allConfig;
                                      @"encrypt_key_path": @"req_buffer",
                                      @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
                                      @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer"
+                                     @"decrypt_key_path": @"resp_buffer",
+                                     @"sys_err_key_path": @"errcode"
                                      };
         _wxLoginConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }
@@ -186,7 +190,8 @@ static NSMutableDictionary *allConfig;
                                      @"encrypt_key_path": kEncryptWholePacketParaKey,
                                      @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
                                      @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer"
+                                     @"decrypt_key_path": @"resp_buffer",
+                                     @"sys_err_key_path": @"errcode"
                                      };
         _checkLoginConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }
@@ -202,7 +207,8 @@ static NSMutableDictionary *allConfig;
                                      @"encrypt_key_path": @"req_buffer",
                                      @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
                                      @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer"
+                                     @"decrypt_key_path": @"resp_buffer",
+                                     @"sys_err_key_path": @"errcode"
                                      };
         _getUserInfoConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }
@@ -218,7 +224,8 @@ static NSMutableDictionary *allConfig;
                                      @"encrypt_key_path": @"req_buffer",
                                      @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
                                      @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer"
+                                     @"decrypt_key_path": @"resp_buffer",
+                                     @"sys_err_key_path": @"errcode"
                                      };
         _wxBindAppConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }
@@ -234,7 +241,8 @@ static NSMutableDictionary *allConfig;
                                      @"encrypt_key_path": @"req_buffer",
                                      @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
                                      @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer"
+                                     @"decrypt_key_path": @"resp_buffer",
+                                     @"sys_err_key_path": @"errcode"
                                      };
         _appBindWxConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }
@@ -250,7 +258,8 @@ static NSMutableDictionary *allConfig;
                                      @"encrypt_key_path": @"req_buffer",
                                      @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
                                      @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer"
+                                     @"decrypt_key_path": @"resp_buffer",
+                                     @"sys_err_key_path": @"errcode"
                                      };
         _makeExpiredConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
     }

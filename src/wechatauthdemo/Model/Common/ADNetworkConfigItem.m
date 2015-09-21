@@ -7,7 +7,6 @@
 
 #import "ADNetworkConfigItem.h"
 
-
 NSString *const kADNetworkConfigItemCgiName = @"cgi_name";
 NSString *const kADNetworkConfigItemEncryptKeyPath = @"encrypt_key_path";
 NSString *const kADNetworkConfigItemEncryptAlgorithm = @"encrypt_algorithm";
@@ -15,6 +14,7 @@ NSString *const kADNetworkConfigItemDecryptAlgorithm = @"decrypt_algorithm";
 NSString *const kADNetworkConfigItemRequestPath = @"request_path";
 NSString *const kADNetworkConfigItemDecryptKeyPath = @"decrypt_key_path";
 NSString *const kADNetworkConfigItemHttpMethod = @"http_method";
+NSString *const kADNetworkConfigItemSysErrKeyPath = @"sys_err_key_path";
 
 NSString *const kEncryptWholePacketParaKey = @"kEncryptWholePacketParaKey";
 NSString *const kDecryptWholePacketRespKey = @"kDecryptWholePacketRespKey";
@@ -35,7 +35,7 @@ NSString *const kDecryptWholePacketRespKey = @"kDecryptWholePacketRespKey";
 @synthesize requestPath = _requestPath;
 @synthesize decryptKeyPath = _decryptKeyPath;
 @synthesize httpMethod = _httpMethod;
-
+@synthesize sysErrKeyPath = _sysErrKeyPath;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict
 {
@@ -56,6 +56,7 @@ NSString *const kDecryptWholePacketRespKey = @"kDecryptWholePacketRespKey";
             self.requestPath = [self objectOrNilForKey:kADNetworkConfigItemRequestPath fromDictionary:dict];
             self.decryptKeyPath = [self objectOrNilForKey:kADNetworkConfigItemDecryptKeyPath fromDictionary:dict];
             self.httpMethod = [self objectOrNilForKey:kADNetworkConfigItemHttpMethod fromDictionary:dict];
+            self.sysErrKeyPath = [self objectOrNilForKey:kADNetworkConfigItemSysErrKeyPath fromDictionary:dict];
 
     }
     
@@ -73,7 +74,7 @@ NSString *const kDecryptWholePacketRespKey = @"kDecryptWholePacketRespKey";
     [mutableDict setValue:self.requestPath forKey:kADNetworkConfigItemRequestPath];
     [mutableDict setValue:self.decryptKeyPath forKey:kADNetworkConfigItemDecryptKeyPath];
     [mutableDict setValue:self.httpMethod forKey:kADNetworkConfigItemHttpMethod];
-
+    [mutableDict setValue:self.sysErrKeyPath forKey:kADNetworkConfigItemSysErrKeyPath];
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
@@ -103,6 +104,7 @@ NSString *const kDecryptWholePacketRespKey = @"kDecryptWholePacketRespKey";
     self.requestPath = [aDecoder decodeObjectForKey:kADNetworkConfigItemRequestPath];
     self.decryptKeyPath = [aDecoder decodeObjectForKey:kADNetworkConfigItemDecryptKeyPath];
     self.httpMethod = [aDecoder decodeObjectForKey:kADNetworkConfigItemHttpMethod];
+    self.sysErrKeyPath = [aDecoder decodeObjectForKey:kADNetworkConfigItemSysErrKeyPath];
     return self;
 }
 
@@ -116,6 +118,7 @@ NSString *const kDecryptWholePacketRespKey = @"kDecryptWholePacketRespKey";
     [aCoder encodeObject:_requestPath forKey:kADNetworkConfigItemRequestPath];
     [aCoder encodeObject:_decryptKeyPath forKey:kADNetworkConfigItemDecryptKeyPath];
     [aCoder encodeObject:_httpMethod forKey:kADNetworkConfigItemHttpMethod];
+    [aCoder encodeObject:_sysErrKeyPath forKey:kADNetworkConfigItemSysErrKeyPath];
 }
 
 - (id)copyWithZone:(NSZone *)zone
@@ -131,6 +134,7 @@ NSString *const kDecryptWholePacketRespKey = @"kDecryptWholePacketRespKey";
         copy.requestPath = [self.requestPath copyWithZone:zone];
         copy.decryptKeyPath = [self.decryptKeyPath copyWithZone:zone];
         copy.httpMethod = [self.httpMethod copyWithZone:zone];
+        copy.sysErrKeyPath = [self.sysErrKeyPath copyWithZone:zone];
     }
     
     return copy;

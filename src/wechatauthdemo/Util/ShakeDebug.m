@@ -11,7 +11,6 @@
 
 @implementation UIViewController (ShakeDebug)
 
-#ifdef DEBUG
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     [super motionEnded:motion withEvent:event];
     if (event.type == UIEventSubtypeMotionShake) {
@@ -21,6 +20,5 @@
                                               completion:nil];
     }
 }
-#endif
 
 @end

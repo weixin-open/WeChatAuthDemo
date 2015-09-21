@@ -19,6 +19,7 @@ AUTH_DEMO_EXTERN NSString *const kDecryptWholePacketRespKey;
 @property (nonatomic, strong) NSString *requestPath;
 @property (nonatomic, strong) NSString *decryptKeyPath;
 @property (nonatomic, strong) NSString *httpMethod;
+@property (nonatomic, strong) NSString *sysErrKeyPath;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;
