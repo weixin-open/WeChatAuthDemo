@@ -1,0 +1,177 @@
+<?php if (!defined('WX_AUTH_DEMO')) { die('Unauthorized Access!'); }
+
+/**
+ * 微信授权登录demo的数据存储模块
+ * 该demo使用文件存储方式，存储路径请到config.php中配置
+ *
+ * 此模块仅作存储demo示例，
+ * 包含一些预设的假数据以便于模拟用户帐号系统，
+ * 正式环境中请编写自己的数据存储库（如mysql数据库），
+ * 并接入自己的用户帐号系统
+ */
+
+/**
+ * @version 2015-09-15
+ */
+class WXAuthDatabaseDemo implements WXDatabase
+{
+
+	function __construct()
+	{
+
+	}
+
+	public function uin_exists($uin)
+	{
+		if ($this->get_psk_by_uin($uin)) {
+			return true;
+		}
+		return false;
+	}
+
+	public function set_psk_by_uin($psk, $uin)
+	{
+		$this->set_item('uin_psk_map', 'uin_'.$uin, $psk);
+	}
+	public function get_psk_by_uin($uin)
+	{
+		return $this->get_item('uin_psk_map', 'uin_'.$uin);
+	}
+	public function delete_psk_by_uin($uin)
+	{
+		return $this->delete_item('uin_psk_map', 'uin_'.$uin);
+	}
+
+	public function set_uin_by_openid($uin, $openid)
+	{
+		$this->set_item('openid_uin_map', $openid, $uin);
+	}
+	public function get_uin_by_openid($openid)
+	{
+		return (int)$this->get_item('openid_uin_map', $openid);
+	}
+	public function delete_uin_by_openid($openid)
+	{
+		return $this->delete_item('openid_uin_map', $openid);
+	}
+
+	public function set_login_by_uin($login_data, $uin)
+	{
+		$this->set_item('uin_login_map', 'uin_'.$uin, $login_data);
+	}
+	public function get_login_by_uin($uin)
+	{
+		return $this->get_item('uin_login_map', 'uin_'.$uin);
+	}
+	public function delete_login_by_uin($uin)
+	{
+		return $this->delete_item('uin_login_map', 'uin_'.$uin);
+	}
+
+	public function set_oauth_by_uin($data, $uin)
+	{
+		$this->set_item('uin_oauth_map', 'uin_'.$uin, $data);
+	}
+	public function get_oauth_by_uin($uin)
+	{
+		return $this->get_item('uin_oauth_map', 'uin_'.$uin);
+	}
+	public function delete_oauth_by_uin($uin)
+	{
+		return $this->delete_item('uin_oauth_map', 'uin_'.$uin);
+	}
+
+	public function set_session_by_uin($session, $uin)
+	{
+		$this->set_item('uin_sessionkey_map', 'uin_'.$uin, $session);
+	}
+	public function get_session_by_uin($uin)
+	{
+		return $this->get_item('uin_sessionkey_map', 'uin_'.$uin);
+	}
+	public function delete_session_by_uin($uin)
+	{
+		return $this->delete_item('uin_sessionkey_map', 'uin_'.$uin);
+	}
+
+
+	public function set_mail_by_uin($mail, $uin)
+	{
+		$this->set_item('uin_mail_map', 'uin_'.$uin, $mail);
+	}
+	public function get_mail_by_uin($uin)
+	{
+		return $this->get_item('uin_mail_map', 'uin_'.$uin);
+	}
+
+	public function set_user_by_mail($user, $mail)
+	{
+		$this->set_item('mail_user_map', $mail, $user);
+	}
+	public function get_user_by_mail($mail)
+	{
+		return $this->get_item('mail_user_map', $mail);
+	}
+
+
+
+
+
+	public function is_available()
+	{
+		return is_writable(WX_AUTH_STORE_PATH);
+	}
+
+	public function set_item($file, $key, $value)
+	{
+		$data = $this->get($file);
+		if (!$data) {
+			$data = array();
+		}
+		$data[$key] = $value;
+		$this->set($file, $data);
+	}
+
+	public function get_item($file, $key)
+	{
+		$data = $this->get($file);
+		if ($data === null) {
+			return null;
+		}
+		if (!isset($data[$key])) {
+			return null;
+		}
+		return $data[$key];
+	}
+
+	public function delete_item($file, $key)
+	{
+		$data = $this->get($file, $key);
+		if ($data and isset($data[$key])) {
+			unset($data[$key]);
+			$this->set($file, $data);
+			return true;
+		}
+		return false;
+	}
+
+	public function set($file, $data)
+	{
+		$data = json_encode($data);
+		file_put_contents(WX_AUTH_STORE_PATH . $file . '.json', $data);
+		return true;
+	}
+
+	public function get($file)
+	{
+		$data = file_get_contents(WX_AUTH_STORE_PATH . $file . '.json');
+		if ($data) {
+			$data = json_decode($data, true);
+			return $data;
+		}
+		return null;
+	}
+
+} // END
+
+/* END file */
