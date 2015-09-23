@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="YU7-EB-m0e" customClass="RegisterHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="用户注册" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IEV-UZ-jpG">
+                    <rect key="frame" x="85" y="8" width="150" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="kzt-fv-nxx"/>
+                        <constraint firstAttribute="width" constant="150" id="we8-p4-EWP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="20"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0v-8c-Gcb">
+                    <rect key="frame" x="127" y="56" width="66" height="66"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="66" id="cYD-Ka-cFD"/>
+                        <constraint firstAttribute="width" constant="66" id="hGk-wV-dch"/>
+                    </constraints>
+                    <state key="normal" image="headImage">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onClickImage:" destination="YU7-EB-m0e" eventType="touchUpInside" id="Utk-JS-cFa"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Camera" translatesAutoresizingMaskIntoConstraints="NO" id="jFx-dV-eZo">
+                    <rect key="frame" x="169" y="99" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="0DT-KA-QJJ"/>
+                        <constraint firstAttribute="width" constant="30" id="E5o-ZW-qiG"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="IEV-UZ-jpG" firstAttribute="top" secondItem="YU7-EB-m0e" secondAttribute="top" constant="8" id="0JI-3b-OjW"/>
+                <constraint firstItem="jFx-dV-eZo" firstAttribute="leading" secondItem="YU7-EB-m0e" secondAttribute="leading" constant="169" id="4Ld-ld-K3d"/>
+                <constraint firstAttribute="bottom" secondItem="i0v-8c-Gcb" secondAttribute="bottom" constant="28" id="Hvg-kM-YBn"/>
+                <constraint firstAttribute="trailing" secondItem="jFx-dV-eZo" secondAttribute="trailing" priority="750" constant="115" id="IQP-Ry-XK3"/>
+                <constraint firstAttribute="trailing" secondItem="jFx-dV-eZo" secondAttribute="trailing" constant="115" id="MsT-o8-QLg"/>
+                <constraint firstAttribute="centerX" secondItem="IEV-UZ-jpG" secondAttribute="centerX" id="XuN-TN-j23"/>
+                <constraint firstItem="jFx-dV-eZo" firstAttribute="top" secondItem="IEV-UZ-jpG" secondAttribute="bottom" constant="70" id="ihM-aK-2VT"/>
+                <constraint firstAttribute="bottom" secondItem="jFx-dV-eZo" secondAttribute="bottom" constant="21" id="nQQ-6Z-yju"/>
+                <constraint firstAttribute="centerX" secondItem="i0v-8c-Gcb" secondAttribute="centerX" id="tTa-bm-8nc"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="IQP-Ry-XK3"/>
+                    <exclude reference="MsT-o8-QLg"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="cameraImage" destination="jFx-dV-eZo" id="pgS-PW-vnI"/>
+                <outlet property="headImageButton" destination="i0v-8c-Gcb" id="cmd-rc-cnX"/>
+            </connections>
+            <point key="canvasLocation" x="452" y="359"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Camera" width="30" height="30"/>
+        <image name="headImage" width="66" height="66"/>
+    </resources>
+</document>

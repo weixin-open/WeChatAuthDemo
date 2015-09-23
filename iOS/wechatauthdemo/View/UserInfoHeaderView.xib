@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="dR2-CX-wPv" customClass="UserInfoHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="大饼的测试号" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0LD-ne-Qaj">
+                    <rect key="frame" x="115" y="8" width="197" height="21"/>
+                    <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wxLogoGreen" translatesAutoresizingMaskIntoConstraints="NO" id="clp-I3-cZn">
+                    <rect key="frame" x="81" y="8" width="26" height="26"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="26" id="E5T-6f-RRV"/>
+                        <constraint firstAttribute="width" constant="26" id="zN0-hM-lhE"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="13"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="中国-广东-广州" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ba2-uM-gOE">
+                    <rect key="frame" x="115" y="37" width="197" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="8jA-gS-mIa"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="14"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.93609845638275146" green="0.93607044219970703" blue="0.93608629703521729" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="clp-I3-cZn" firstAttribute="top" secondItem="dR2-CX-wPv" secondAttribute="top" constant="8" id="EPU-G0-dM7"/>
+                <constraint firstItem="clp-I3-cZn" firstAttribute="leading" relation="lessThanOrEqual" secondItem="dR2-CX-wPv" secondAttribute="leading" constant="81" id="O27-Or-GLZ"/>
+                <constraint firstItem="0LD-ne-Qaj" firstAttribute="leading" secondItem="clp-I3-cZn" secondAttribute="trailing" constant="8" id="OOl-y3-hH6"/>
+                <constraint firstItem="ba2-uM-gOE" firstAttribute="leading" secondItem="dR2-CX-wPv" secondAttribute="leading" constant="115" id="TPi-xD-IbS"/>
+                <constraint firstAttribute="trailing" secondItem="ba2-uM-gOE" secondAttribute="trailing" constant="8" id="ho8-FC-wqB"/>
+                <constraint firstItem="ba2-uM-gOE" firstAttribute="top" secondItem="0LD-ne-Qaj" secondAttribute="bottom" constant="8" id="jJn-On-1qE"/>
+                <constraint firstAttribute="bottom" secondItem="ba2-uM-gOE" secondAttribute="bottom" constant="8" id="kR8-tR-ZgZ"/>
+                <constraint firstAttribute="trailing" secondItem="0LD-ne-Qaj" secondAttribute="trailing" constant="8" id="lfu-6e-RQ3"/>
+                <constraint firstItem="0LD-ne-Qaj" firstAttribute="top" secondItem="dR2-CX-wPv" secondAttribute="top" constant="8" id="nH5-mW-zzq"/>
+                <constraint firstAttribute="bottom" secondItem="clp-I3-cZn" secondAttribute="bottom" constant="32" id="rTd-9l-feA"/>
+                <constraint firstItem="ba2-uM-gOE" firstAttribute="top" secondItem="0LD-ne-Qaj" secondAttribute="bottom" constant="8" id="vId-ZX-jYs"/>
+                <constraint firstItem="0LD-ne-Qaj" firstAttribute="leading" secondItem="clp-I3-cZn" secondAttribute="trailing" constant="8" id="w4P-XI-dAS"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="headPhotoImage" destination="clp-I3-cZn" id="4Ty-YD-R3y"/>
+                <outlet property="locateLabel" destination="ba2-uM-gOE" id="U9a-39-b4L"/>
+                <outlet property="nickNameLabel" destination="0LD-ne-Qaj" id="eNO-Wz-mOZ"/>
+            </connections>
+            <point key="canvasLocation" x="381" y="296"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="wxLogoGreen" width="54" height="54"/>
+    </resources>
+</document>
