@@ -311,7 +311,26 @@ class WXAuthControllerDemo
 
 	public function action_replylist()
 	{
+		wxlog("\n\t\t\tcommentlist");
+		$sdk = $this->sdk;
+		$sdk->session_start();
 
+		$req = $sdk->get_request_data();
+		$comment_id = $req['buffer']['comment_id'];
+		
+		$comment = $this->db->get_comment($comment_id);
+		if (!$comment) {
+			wxlog('no comment');
+			$sdk->session_end(null, WX_ERR_NO_COMMENT, 'Cannot get comment by comment_id');
+		}
+
+		$resp = array(
+			'reply_list' => array_values($comment['reply_list'])
+		);
+		
+		wxlog($resp);
+		wxlog('replylist OK');
+		$sdk->session_end($resp);
 	}
 
 	public function action_addcomment()
