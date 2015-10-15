@@ -278,6 +278,34 @@ class WXAuthControllerDemo
 
 	public function action_commentlist()
 	{
+		wxlog("\n\t\t\tcommentlist");
+		$sdk = $this->sdk;
+		$sdk->session_start();
+
+		$req = $sdk->get_request_data();
+		$start_id = $req['buffer']['start_id'];
+		
+
+		$perpage = 20;
+		$count = $this->db->get_comment_count();
+		$list = $this->db->get_comment_list($start_id, $perpage);
+
+		// 处理回复，截取前3条
+		foreach ($list as $key => $comment) {
+			if ($comment['reply_count'] > 3) {
+				$list[$key]['reply_list'] = array_slice($comment['reply_list'], 0, 3, true);
+			}
+		}
+
+		$resp = array(
+			'perpage' => $perpage,
+			'comment_count' => $count,
+			'comment_list' => $list
+		);
+		
+		wxlog($resp);
+		wxlog('commentlist OK');
+		$sdk->session_end($resp);
 
 	}
 

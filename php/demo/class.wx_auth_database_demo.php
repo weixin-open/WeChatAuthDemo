@@ -147,6 +147,14 @@ class WXAuthDatabaseDemo implements WXDatabase
 		}
 		return $list;
 	}
+	public function get_comment_count()
+	{
+		$list = $this->get('comment_list');
+		if (!$list) {
+			return 0;
+		}
+		return count($list);
+	}
 	public function add_comment($comment)
 	{
 		$this->set_item('comment_list', $comment['comment_id'], $comment);
