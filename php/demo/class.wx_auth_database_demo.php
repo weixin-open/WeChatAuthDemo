@@ -171,7 +171,7 @@ class WXAuthDatabaseDemo implements WXDatabase
 	public function add_reply($reply, $comment_id)
 	{
 		$comment = $this->get_comment($comment_id);
-		$comment['reply_list'][] = $reply;
+		$comment['reply_list'][ $reply['id'] ] = $reply;
 		$comment['reply_count'] = count($comment['reply_list']);
 		$this->set_item('comment_list', $comment['comment_id'], $comment);
 		return true;

@@ -293,7 +293,7 @@ class WXAuthControllerDemo
 		// 处理回复，截取前3条
 		foreach ($list as $key => $comment) {
 			if ($comment['reply_count'] > 3) {
-				$list[$key]['reply_list'] = array_slice($comment['reply_list'], 0, 3, true);
+				$list[$key]['reply_list'] = array_slice($comment['reply_list'], 0, 3);
 			}
 		}
 
@@ -420,11 +420,19 @@ class WXAuthControllerDemo
 			$this->db->set_wxuser_by_uin($wx_user, $req['uin']);
 		}
 
+		// 找到被回复的人
+		if ($form['reply_to_id']) {
+			if (isset($comment['reply_list'][ $form['reply_to_id'] ])) {
+				$form['content'] = '回复 ' . $comment['reply_list'][ $form['reply_to_id'] ] . '：' . $form['content'];
+			}
+		}
+
 		// 生成新回复
 		$reply = array(
 			'id' => uniqid(), // 随机生成字符串，因为业务量小，所以不考虑id冲突
 			'content' => $form['content'],
 			'date' => time(),
+			'reply_to_id' => $form['reply_to_id'],
 			'user' => $wx_user
 		);
 		$this->db->add_reply($reply, $comment['comment_id']);
