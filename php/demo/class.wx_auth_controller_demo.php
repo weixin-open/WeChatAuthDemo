@@ -333,12 +333,60 @@ class WXAuthControllerDemo
 		wxlog($resp);
 		wxlog('addcomment OK');
 		$sdk->session_end($resp);
-
 	}
 
 	public function action_addreply()
 	{
+		wxlog("\n\t\t\taddreply");
+		$sdk = $this->sdk;
+		$sdk->session_start();
+		$sdk->need_login();
+		$sdk->need_oauth();
 
+		$req = $sdk->get_request_data();
+		$form = $req['buffer'];
+		$resp = array();
+
+		// 校验内容
+		if (!$form['content']) {
+			wxlog('no content');
+			$sdk->session_end(null, WX_ERR_INVALID_REPLY_CONTENT, 'Empty reply content');
+		}
+
+		// 获取留言
+		$comment = $this->db->get_comment($form['comment_id']);
+		if (!$comment) {
+			wxlog('no comment');
+			$sdk->session_end(null, WX_ERR_NO_COMMENT, 'Cannot get comment by comment_id');
+		}
+		
+		// 获取用户
+		$wx_user = $this->db->get_wxuser_by_uin($req['uin']);
+		if (!$wx_user) {
+			wxlog('no wx_user');
+			$oauth = $this->db->get_oauth_by_uin($req['uin']);
+			$wx_user = $sdk->request_api('/sns/userinfo', $oauth, array());
+			if (!$wx_user or isset($wx_user['errcode'])) {
+				wxlog('ERR: Got API with errcode: '.$wx_user['errcode']);
+				$sdk->session_end(null, $wx_user['errcode'], 'Fail to get API');
+			}
+			$this->db->set_wxuser_by_uin($wx_user, $req['uin']);
+		}
+
+		// 生成新回复
+		$reply = array(
+			'id' => uniqid(), // 随机生成字符串，因为业务量小，所以不考虑id冲突
+			'content' => $form['content'],
+			'date' => time(),
+			'user' => $wx_user
+		);
+		$this->db->add_reply($reply, $comment['comment_id']);
+
+		$resp['reply'] = $reply;
+		
+		wxlog($resp);
+		wxlog('addreply OK');
+		$sdk->session_end($resp);
 	}
 
 	/***************************************************************
