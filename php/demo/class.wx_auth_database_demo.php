@@ -113,6 +113,56 @@ class WXAuthDatabaseDemo implements WXDatabase
 		return $this->get_item('mail_user_map', $mail);
 	}
 
+	public function set_wxuser_by_uin($user, $uin)
+	{
+		$this->set_item('uin_wxuser_map', 'uin_'.$uin, $user);
+	}
+	public function get_wxuser_by_uin($uin)
+	{
+		return $this->get_item('uin_wxuser_map', 'uin_'.$uin);
+	}
+
+
+	// 第三方业务
+
+	public function get_comment_list($start_id = '', $limit = 10)
+	{
+		$comment_list = $this->get('comment_list');
+		if (!$comment_list) {
+			return array();
+		}
+		$list = array();
+		$start = false;
+		foreach ($comment_list as $comment_id => $comment) {
+			if ($comment['id'] == $comment_id) {
+				$start = true;
+				continue;
+			}
+			if ($start == true) {
+				$list[] = $comment;
+				if (count($list) >= $limit) {
+					break;
+				}
+			}
+		}
+		return $list;
+	}
+	public function add_comment($comment)
+	{
+		$list = $this->get('comment_list');
+		$list[ $comment['id'] ] = $comment;
+		$this->set('comment_list', $list);
+		return true;
+	}
+	public function get_comment($comment_id)
+	{
+		return $this->get_item('comment_list', $comment_id);
+	}
+	public function delete_comment($comment_id)
+	{
+		return $this->delete_item('comment_list', $comment_id);
+	}
+
 
 
 
@@ -146,7 +196,7 @@ class WXAuthDatabaseDemo implements WXDatabase
 
 	public function delete_item($file, $key)
 	{
-		$data = $this->get($file, $key);
+		$data = $this->get($file);
 		if ($data and isset($data[$key])) {
 			unset($data[$key]);
 			$this->set($file, $data);

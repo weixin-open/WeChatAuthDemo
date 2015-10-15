@@ -30,6 +30,11 @@ define('WX_LOGIN_TOKEN_EXPIRE_CREATE_TIME', 60*60*24*30);
 define('WX_LOGIN_TOKEN_EXPIRE_LAST_LOGIN_TIME', 60*60*24*7);
 define('WX_AUTH_SESSION_KEY_EXPIRE_TIME', 60*60);
 
+// 第三方业务相关的错误码，可根据实际业务情况来定义
+define('WX_ERR_INVALID_COMMENT_CONTENT',			-40001);	//留言内容不合法
+define('WX_ERR_INVALID_REPLY_CONTENT',				-40002);	//回复内容不合法
+define('WX_ERR_NO_COMMENT',							-40003);	//留言不存在
+
 /* !!! 请配置以上信息 !!! */
 
 

@@ -276,6 +276,71 @@ class WXAuthControllerDemo
 
 	}
 
+	public function action_commentlist()
+	{
+
+	}
+
+	public function action_replylist()
+	{
+
+	}
+
+	public function action_addcomment()
+	{
+		wxlog("\n\t\t\taddcomment");
+		$sdk = $this->sdk;
+		$sdk->session_start();
+		$sdk->need_login();
+		$sdk->need_oauth();
+
+		$req = $sdk->get_request_data();
+		$form = $req['buffer'];
+		$resp = array();
+
+		// 校验内容
+		if (!$form['content']) {
+			wxlog('no content');
+			$sdk->session_end(null, WX_ERR_INVALID_COMMENT_CONTENT, 'Empty comment content');
+		}
+		
+		// 获取用户
+		$wx_user = $this->db->get_wxuser_by_uin($req['uin']);
+		if (!$wx_user) {
+			wxlog('no wx_user');
+			$oauth = $this->db->get_oauth_by_uin($req['uin']);
+			$wx_user = $sdk->request_api('/sns/userinfo', $oauth, array());
+			if (!$wx_user or isset($wx_user['errcode'])) {
+				wxlog('ERR: Got API with errcode: '.$wx_user['errcode']);
+				$sdk->session_end(null, $wx_user['errcode'], 'Fail to get API');
+			}
+			$this->db->set_wxuser_by_uin($wx_user, $req['uin']);
+		}
+
+		// 生成新留言
+		$comment = array(
+			'id' => uniqid(), // 随机生成字符串，因为业务量小，所以不考虑id冲突
+			'content' => $form['content'],
+			'date' => time(),
+			'user' => $wx_user,
+			'reply_count' => 0,
+			'reply_list' => array()
+		);
+		$this->db->add_comment($comment);
+
+		$resp['comment'] = $comment;
+		
+		wxlog($resp);
+		wxlog('addcomment OK');
+		$sdk->session_end($resp);
+
+	}
+
+	public function action_addreply()
+	{
+
+	}
+
 	/***************************************************************
 	 * Helpers
 	 ***************************************************************/
