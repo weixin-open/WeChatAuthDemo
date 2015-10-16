@@ -82,5 +82,76 @@
             "errmsg" : "1234"
         },
         "session_key" : "123456"
+    },
+    
+    "GetCommentListResp": {
+        "base_resp": {
+            "errcode": 20001,
+            "errmsg": "1234"
+        },
+        "perpage": 10,
+        "comment_count": 25,
+        "cooment_list": [{
+                         "id": "string",
+                         "content": "string",
+                         "date": 123456,
+                         "user": {
+                            "openid": "string",
+                            "nickname": "string",
+                            "sex": 1,
+                            "city": "string",
+                            "country": "string",
+                            "headimgurl": "string"
+                         },
+                         "reply_count": 3,
+                         "reply_list": [{
+                                        "id": "string",
+                                        "content": "string",
+                                        "date": 123456,
+                                        "reply_to_id": "string",
+                                        "user": {
+                                            "openid": "string",
+                                            "nickname": "string",
+                                            "sex": 1,
+                                            "city": "string",
+                                            "country": "string",
+                                            "headimgurl": "string"
+                                        }
+                         }]
+                         
+        }]
+    },
+    
+    "GetReplyListResp": {
+        "base_resp": {
+            "errcode": 20001,
+            "errmsg": "1234"
+        },
+        "reply_list": [{
+                       "id": "string",
+                       "content": "string",
+                       "date": 123456,
+                       "reply_to_id": "string",
+                       "user": {
+                       "openid": "string",
+                       "nickname": "string",
+                       "sex": 1,
+                       "city": "string",
+                       "country": "string",
+                       "headimgurl": "string"
+                       }
+                }]
+    },
+    
+    "AddCommentResp": {
+        "base_resp": {
+            "errcode": 20001,
+            "errmsg": "1234"
+        },
+        "comment": "string"
+    },
+    
+    "AddReplyResp": {
+        "reply": "string"
     }
 }

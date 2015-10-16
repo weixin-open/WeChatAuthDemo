@@ -74,6 +74,12 @@ static ADUserInfo *currentUser_ = nil;
     return currentUser_;
 }
 
++ (instancetype)visitorUser {
+    ADUserInfo *visitorUser = [[ADUserInfo alloc] init];
+    visitorUser.nickname = @"访客";
+    return visitorUser;
+}
+
 - (BOOL)save {
     [[NSUserDefaults standardUserDefaults] setObject:@(self.uin)
                                               forKey:kADUserInfoUin];
@@ -103,6 +109,7 @@ static ADUserInfo *currentUser_ = nil;
     self.authCode = nil;
     self.headimgurl = nil;
     self.sex = ADSexTypeUnknown;
+    self.sessionExpireTime = 0;
 }
 
 - (NSDictionary *)dictionaryRepresentation

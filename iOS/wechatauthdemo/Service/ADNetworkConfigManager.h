@@ -18,6 +18,10 @@ AUTH_DEMO_EXTERN const NSString *kGetUserInfoCGIName;
 AUTH_DEMO_EXTERN const NSString *kWXBindAppCGIName;
 AUTH_DEMO_EXTERN const NSString *kAppBindWXCGIName;
 AUTH_DEMO_EXTERN const NSString *kMakeExpiredCGIName;
+AUTH_DEMO_EXTERN const NSString *kGetCommentListCGIName;
+AUTH_DEMO_EXTERN const NSString *kGetReplyListCGIName;
+AUTH_DEMO_EXTERN const NSString *kAddCommentCGIName;
+AUTH_DEMO_EXTERN const NSString *kAddReplyCGIName;
 
 @interface ADNetworkConfigManager : NSObject
 

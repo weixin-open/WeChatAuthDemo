@@ -28,6 +28,7 @@
 - (NSDictionary *)dictionaryRepresentation;
 
 + (instancetype)currentUser;
++ (instancetype)visitorUser;
 - (BOOL)save;
 - (BOOL)load;
 - (void)clear;

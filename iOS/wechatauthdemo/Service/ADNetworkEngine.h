@@ -16,6 +16,10 @@
 @class ADWXBindAPPResp;
 @class ADAPPBindWXResp;
 @class ADWXLoginResp;
+@class ADGetCommentListResp;
+@class ADGetReplyListResp;
+@class ADAddCommentResp;
+@class ADAddReplyResp;
 
 typedef void(^ConnectCallBack)(ADConnectResp *resp);
 typedef void(^RegisterCallBack)(ADRegisterResp *resp);
@@ -26,6 +30,10 @@ typedef void(^WXBindAppCallBack)(ADWXBindAPPResp *resp);
 typedef void(^AppBindWXCallBack)(ADAPPBindWXResp *resp);
 typedef void(^WXLoginCallBack)(ADWXLoginResp *resp);
 typedef void(^DownloadImageCallBack)(UIImage *image);
+typedef void(^GetCommentListCallBack)(ADGetCommentListResp *resp);
+typedef void(^GetReplyListCallBack)(ADGetReplyListResp *resp);
+typedef void(^AddCommentCallBack)(ADAddCommentResp *resp);
+typedef void(^AddReplyCallBack)(ADAddReplyResp *resp);
 
 @interface ADNetworkEngine : NSObject
 
@@ -183,4 +191,25 @@ typedef void(^DownloadImageCallBack)(UIImage *image);
  */
 - (void)makeRefreshTokenExpired:(UInt32)uin LoginTicket:(NSString *)loginTicket;
 
+- (void)getCommentListForUin:(UInt32)uin
+                 LoginTicket:(NSString *)loginTicket
+                        From:(NSString *)startId
+              WithCompletion:(GetCommentListCallBack)completion;
+
+- (void)getReplyListForUin:(UInt32)uin
+               LoginTicket:(NSString *)loginTicket
+                 OfComment:(NSString *)commentId
+            WithCompletion:(GetReplyListCallBack)completion;
+
+- (void)addCommentContent:(NSString *)content
+                   ForUin:(UInt32)uin
+              LoginTicket:(NSString *)loginTicket
+           WithCompletion:(AddCommentCallBack)completion;
+
+- (void)addReplyContent:(NSString *)content
+              ToComment:(NSString *)commentId
+              OrToReply:(NSString *)replyId
+                 ForUin:(UInt32)uin
+            LoginTicket:(NSString *)loginTicket
+         WithCompletion:(AddReplyCallBack)completion;
 @end

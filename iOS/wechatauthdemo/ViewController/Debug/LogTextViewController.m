@@ -27,7 +27,8 @@
                                                                             action:@selector(onClickDismiss:)];
 }
 
-- (void)viewWillLayoutSubviews {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     self.textView.frame = self.view.frame;
 }
 
@@ -44,6 +45,7 @@
     static LogTextViewController *instance;
     dispatch_once(&onceToken, ^{
         instance = [[LogTextViewController alloc] init];
+        instance.hidesBottomBarWhenPushed = YES;
     });
     return instance;
 }
@@ -74,6 +76,5 @@
     }
     return _textView;
 }
-
 
 @end

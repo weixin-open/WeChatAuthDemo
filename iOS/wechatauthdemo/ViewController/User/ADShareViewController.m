@@ -9,9 +9,7 @@
 #import "ADShareViewController.h"
 #import "WXApiManager.h"
 
-static NSString* const kTitleText = @"微信登录开发指引";
-static NSString* const kShareUrlString = @"http://mp.weixin.qq.com/s?__biz=MjM5NDAxMDg4MA==&mid=208833692&idx=1&sn=daa41a5b34ce7ffeb48985964e613941&scene=1&srcid=TnXuoDUuLCjDSJoLqkdG&from=singlemessage&isappinstalled=0#rd";
-static NSString* const kShareButtonText = @"分享";
+static NSString* const kShareButtonText = @"分享  ";
 static NSString* const kShareDescText = @"分享一个链接";
 static NSString* const kShareFailedText = @"分享失败";
 
@@ -27,7 +25,6 @@ static NSString* const kShareFailedText = @"分享失败";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = kTitleText;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:kShareButtonText
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
@@ -62,7 +59,7 @@ static NSString* const kShareFailedText = @"分享失败";
 
 - (NSURLRequest *)urlRequest {
     if (_urlRequest == nil) {
-        NSURL *url = [NSURL URLWithString:kShareUrlString];
+        NSURL *url = [NSURL URLWithString:self.urlString];
         _urlRequest = [[NSURLRequest alloc] initWithURL:url];
     }
     return _urlRequest;
@@ -72,14 +69,14 @@ static NSString* const kShareFailedText = @"分享失败";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0: // 转发到会话
-            [[WXApiManager sharedManager] sendLinkContent:kShareUrlString
-                                                    Title:kTitleText
+            [[WXApiManager sharedManager] sendLinkContent:self.urlString
+                                                    Title:self.title
                                               Description:kShareDescText
                                                   AtScene:WXSceneSession];
             break;
         case 1: //分享到朋友圈
-            [[WXApiManager sharedManager] sendLinkContent:kShareUrlString
-                                                    Title:kTitleText
+            [[WXApiManager sharedManager] sendLinkContent:self.urlString
+                                                    Title:self.title
                                               Description:kShareDescText
                                                   AtScene:WXSceneTimeline];
             break;

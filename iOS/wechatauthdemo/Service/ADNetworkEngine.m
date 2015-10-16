@@ -13,8 +13,8 @@
 #import "DataModels.h"
 #import "ImageCache.h"
 
-static NSString* const defaultHost = @"http://qytest.weixin.qq.com";
-//static NSString* const defaultHost = @"http://demo.maizify.com";
+//static NSString* const defaultHost = @"http://qytest.weixin.qq.com";
+static NSString* const defaultHost = @"http://demo.maizify.com";
 static NSString* const publickeyFileName = @"rsa_public";
 
 @interface ADNetworkEngine ()
@@ -296,6 +296,89 @@ static NSString* const publickeyFileName = @"rsa_public";
                        NSLog(@"%@",dict);
                    }] resume];
 }
+
+
+- (void)getCommentListForUin:(UInt32)uin
+                 LoginTicket:(NSString *)loginTicket
+                        From:(NSString *)startId
+              WithCompletion:(GetCommentListCallBack)completion {
+    [[self.session JSONTaskForHost:self.host
+                              Para:@{
+                                     @"uin": @(uin),
+                                     @"req_buffer": @{
+                                             @"uin": @(uin),
+                                             @"login_ticket": loginTicket,
+                                             @"start_id": startId
+                                             }
+                                     }
+                     ConfigKeyPath:(NSString *)kGetCommentListCGIName
+                    WithCompletion:^(NSDictionary *dict, NSError *error) {
+                        NSLog(@"%@",dict);
+                    }] resume];
+}
+
+- (void)getReplyListForUin:(UInt32)uin
+               LoginTicket:(NSString *)loginTicket
+                 OfComment:(NSString *)commentId
+            WithCompletion:(GetReplyListCallBack)completion {
+    [[self.session JSONTaskForHost:self.host
+                              Para:@{
+                                     @"uin": @(uin),
+                                     @"req_buffer": @{
+                                             @"uin": @(uin),
+                                             @"login_ticket": loginTicket,
+                                             @"comment_id": commentId
+                                             }
+                                     }
+                     ConfigKeyPath:(NSString *)kGetReplyListCGIName
+                    WithCompletion:^(NSDictionary *dict, NSError *error) {
+                        NSLog(@"%@",dict);
+                    }] resume];
+}
+
+- (void)addCommentContent:(NSString *)content
+                   ForUin:(UInt32)uin
+              LoginTicket:(NSString *)loginTicket
+           WithCompletion:(AddCommentCallBack)completion {
+    [[self.session JSONTaskForHost:self.host
+                              Para:@{
+                                     @"uin": @(uin),
+                                     @"req_buffer": @{
+                                             @"uin": @(uin),
+                                             @"login_ticket": loginTicket,
+                                             @"content": content
+                                             }
+                                     }
+                     ConfigKeyPath:(NSString *)kAddCommentCGIName
+                    WithCompletion:^(NSDictionary *dict, NSError *error) {
+                        NSLog(@"%@",dict);
+                    }] resume];
+}
+
+- (void)addReplyContent:(NSString *)content
+              ToComment:(NSString *)commentId
+              OrToReply:(NSString *)replyId
+                 ForUin:(UInt32)uin
+            LoginTicket:(NSString *)loginTicket
+         WithCompletion:(AddReplyCallBack)completion {
+    [[self.session JSONTaskForHost:self.host
+                              Para:@{
+                                     @"uin": @(uin),
+                                     @"req_buffer": @{
+                                             @"uin": @(uin),
+                                             @"login_ticket": loginTicket,
+                                             @"comment_id": commentId,
+                                             @"reply_to_id": replyId,
+                                             @"content": content
+                                             }
+                                     }
+                     ConfigKeyPath:(NSString *)kAddCommentCGIName
+                    WithCompletion:^(NSDictionary *dict, NSError *error) {
+                        NSLog(@"%@",dict);
+                    }] resume];
+
+}
+
 
 #pragma mark - Lazy Initializer
 - (NSURLSession *)session {

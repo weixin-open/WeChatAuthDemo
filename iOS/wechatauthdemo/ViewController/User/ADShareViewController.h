@@ -10,4 +10,6 @@
 
 @interface ADShareViewController : UIViewController
 
+@property (nonatomic, strong) NSString *urlString;
+
 @end
