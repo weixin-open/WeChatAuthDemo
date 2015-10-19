@@ -283,8 +283,8 @@ class WXAuthControllerDemo
 		$sdk->session_start();
 
 		$req = $sdk->get_request_data();
-		$start_id = $req['buffer']['start_id'];
-		
+		$start_id = $req['buffer']['start_id'] . '';
+		wxlog('start_id: ' . $start_id);
 
 		$perpage = 20;
 		$count = $this->db->get_comment_count();

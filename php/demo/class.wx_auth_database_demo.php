@@ -129,12 +129,16 @@ class WXAuthDatabaseDemo implements WXDatabase
 	{
 		$comment_list = $this->get('comment_list');
 		if (!$comment_list) {
+			wxlog('no comment_list');
 			return array();
 		}
 		$list = array();
 		$start = false;
+		if ($start_id == '') {
+			$start = true;
+		}
 		foreach ($comment_list as $comment_id => $comment) {
-			if ($comment['id'] == $comment_id) {
+			if ($comment['id'] == $start_id) {
 				$start = true;
 				continue;
 			}
@@ -157,7 +161,7 @@ class WXAuthDatabaseDemo implements WXDatabase
 	}
 	public function add_comment($comment)
 	{
-		$this->set_item('comment_list', $comment['comment_id'], $comment);
+		$this->set_item('comment_list', $comment['id'], $comment);
 		return true;
 	}
 	public function get_comment($comment_id)
