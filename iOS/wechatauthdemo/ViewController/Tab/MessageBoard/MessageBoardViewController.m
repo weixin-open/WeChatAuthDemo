@@ -19,10 +19,12 @@
 #import "ADReplyList.h"
 #import "NewCommentViewController.h"
 #import "InputWithTextFeildBar.h"
+#import "CommentReplyFooterView.h"
 
 static NSString *const kMessageBoardViewTitle = @"留言板";
 static NSString *const kCommentViewIdentifier = @"kCommentViewIdentifier";
 static NSString *const kReplyViewIdentifier = @"kReplyViewIdentifier";
+static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdentifer";
 
 @interface MessageBoardViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
@@ -110,7 +112,7 @@ static NSString *const kReplyViewIdentifier = @"kReplyViewIdentifier";
     
     AddReplyCallBack callBack = ^(ADAddReplyResp *resp) {
         [self.replyAccessoryView.textField resignFirstResponder];
-        [self.messagesTable reloadData];
+        [self refreshComments];
     };
     ADCommentList *comment = self.commentsArray[self.replyIndexPath.section];
     if (self.replyIndexPath.row == -1) {
@@ -151,9 +153,10 @@ static NSString *const kReplyViewIdentifier = @"kReplyViewIdentifier";
     // If active cell is hidden by keyboard, scroll it so it's visible
     CGRect aRect = self.view.frame;
     aRect.size.height -= kbSize.height;
-    if (!CGRectContainsPoint(aRect, self.replyView.frame.origin) ) {
+    if (!CGRectContainsPoint(aRect, self.replyView.frame.origin)) {
         [self.messagesTable scrollRectToVisible:self.replyView.frame
                                        animated:YES];
+        [self scrollViewDidScroll:self.messagesTable];
     }
     [self.replyAccessoryView.textField becomeFirstResponder];
 }
@@ -163,6 +166,7 @@ static NSString *const kReplyViewIdentifier = @"kReplyViewIdentifier";
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     self.messagesTable.contentInset = contentInsets;
     self.messagesTable.scrollIndicatorInsets = contentInsets;
+    [self scrollViewDidScroll:self.messagesTable];
 }
 
 #pragma mark - UITableViewDataSource
@@ -216,12 +220,40 @@ static NSString *const kReplyViewIdentifier = @"kReplyViewIdentifier";
     return commentView;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    CommentReplyFooterView *footerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kCommentReplyFooterIdentifer];
+    if (footerView == nil) {
+        footerView = [[[NSBundle mainBundle] loadNibNamed:@"CommentReplyFooterView"
+                                                   owner:nil
+                                                  options:nil] firstObject];
+    }
+    return footerView;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return [MessageBoardContentView calcHeightForComment:self.commentsArray[section]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [MessageBoardContentView calcHeightForReply:[self.commentsArray[indexPath.section] replyList][indexPath.row]];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return [self.commentsArray[section] replyCount] < 3 ? 0 : normalHeight / 2;
+}
+
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSArray *indexPathArray = self.messagesTable.indexPathsForVisibleRows;
+    if ([indexPathArray count] == 0)
+        return;
+    
+    CGFloat sectionHeaderHeight = [self tableView:self.messagesTable heightForHeaderInSection:[indexPathArray[0] section]];
+    if (scrollView.contentOffset.y <= sectionHeaderHeight && scrollView.contentOffset.y >= 0) {
+        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
+    } else if (scrollView.contentOffset.y >= sectionHeaderHeight) {
+        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
+    }
 }
 
 #pragma mark -Private Methods
@@ -238,11 +270,13 @@ static NSString *const kReplyViewIdentifier = @"kReplyViewIdentifier";
 - (UITableView *)messagesTable {
     if (_messagesTable == nil) {
         CGRect frame = self.view.frame;
-        frame.size.height -= navigationBarHeight+statusBarHeight;
+        frame.size.height -= navigationBarHeight+statusBarHeight+normalHeight;
         _messagesTable = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
         _messagesTable.backgroundColor = [UIColor groupTableViewBackgroundColor];
         [_messagesTable registerClass:[MessageBoardCommentView class] forHeaderFooterViewReuseIdentifier:kCommentViewIdentifier];
         [_messagesTable registerClass:[MessageBoardReplyCell class] forCellReuseIdentifier:kReplyViewIdentifier];
+        [_messagesTable registerNib:[UINib nibWithNibName:@"CommentReplyFooterView"
+                                                   bundle:nil] forHeaderFooterViewReuseIdentifier:kCommentReplyFooterIdentifer];
         _messagesTable.separatorStyle = UITableViewCellSeparatorStyleNone;
         _messagesTable.dataSource = self;
         _messagesTable.delegate = self;
