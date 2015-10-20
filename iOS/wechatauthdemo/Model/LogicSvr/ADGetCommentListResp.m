@@ -1,17 +1,17 @@
 //
 //  ADGetCommentListResp.m
 //
-//  Created by Jeason  on 16/10/2015
+//  Created by Jeason  on 19/10/2015
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
 #import "ADGetCommentListResp.h"
-#import "ADCoomentList.h"
 #import "ADBaseResp.h"
+#import "ADCommentList.h"
 
 
-NSString *const kADGetCommentListRespCoomentList = @"cooment_list";
 NSString *const kADGetCommentListRespBaseResp = @"base_resp";
+NSString *const kADGetCommentListRespCommentList = @"comment_list";
 NSString *const kADGetCommentListRespCommentCount = @"comment_count";
 NSString *const kADGetCommentListRespPerpage = @"perpage";
 
@@ -24,8 +24,8 @@ NSString *const kADGetCommentListRespPerpage = @"perpage";
 
 @implementation ADGetCommentListResp
 
-@synthesize coomentList = _coomentList;
 @synthesize baseResp = _baseResp;
+@synthesize commentList = _commentList;
 @synthesize commentCount = _commentCount;
 @synthesize perpage = _perpage;
 
@@ -42,20 +42,20 @@ NSString *const kADGetCommentListRespPerpage = @"perpage";
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
-    NSObject *receivedADCoomentList = [dict objectForKey:kADGetCommentListRespCoomentList];
-    NSMutableArray *parsedADCoomentList = [NSMutableArray array];
-    if ([receivedADCoomentList isKindOfClass:[NSArray class]]) {
-        for (NSDictionary *item in (NSArray *)receivedADCoomentList) {
+            self.baseResp = [ADBaseResp modelObjectWithDictionary:[dict objectForKey:kADGetCommentListRespBaseResp]];
+    NSObject *receivedADCommentList = [dict objectForKey:kADGetCommentListRespCommentList];
+    NSMutableArray *parsedADCommentList = [NSMutableArray array];
+    if ([receivedADCommentList isKindOfClass:[NSArray class]]) {
+        for (NSDictionary *item in (NSArray *)receivedADCommentList) {
             if ([item isKindOfClass:[NSDictionary class]]) {
-                [parsedADCoomentList addObject:[ADCoomentList modelObjectWithDictionary:item]];
+                [parsedADCommentList addObject:[ADCommentList modelObjectWithDictionary:item]];
             }
        }
-    } else if ([receivedADCoomentList isKindOfClass:[NSDictionary class]]) {
-       [parsedADCoomentList addObject:[ADCoomentList modelObjectWithDictionary:(NSDictionary *)receivedADCoomentList]];
+    } else if ([receivedADCommentList isKindOfClass:[NSDictionary class]]) {
+       [parsedADCommentList addObject:[ADCommentList modelObjectWithDictionary:(NSDictionary *)receivedADCommentList]];
     }
 
-    self.coomentList = [NSArray arrayWithArray:parsedADCoomentList];
-            self.baseResp = [ADBaseResp modelObjectWithDictionary:[dict objectForKey:kADGetCommentListRespBaseResp]];
+    self.commentList = [NSArray arrayWithArray:parsedADCommentList];
             self.commentCount = [[self objectOrNilForKey:kADGetCommentListRespCommentCount fromDictionary:dict] doubleValue];
             self.perpage = [[self objectOrNilForKey:kADGetCommentListRespPerpage fromDictionary:dict] doubleValue];
 
@@ -68,18 +68,18 @@ NSString *const kADGetCommentListRespPerpage = @"perpage";
 - (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
-    NSMutableArray *tempArrayForCoomentList = [NSMutableArray array];
-    for (NSObject *subArrayObject in self.coomentList) {
+    [mutableDict setValue:[self.baseResp dictionaryRepresentation] forKey:kADGetCommentListRespBaseResp];
+    NSMutableArray *tempArrayForCommentList = [NSMutableArray array];
+    for (NSObject *subArrayObject in self.commentList) {
         if([subArrayObject respondsToSelector:@selector(dictionaryRepresentation)]) {
             // This class is a model object
-            [tempArrayForCoomentList addObject:[subArrayObject performSelector:@selector(dictionaryRepresentation)]];
+            [tempArrayForCommentList addObject:[subArrayObject performSelector:@selector(dictionaryRepresentation)]];
         } else {
             // Generic object
-            [tempArrayForCoomentList addObject:subArrayObject];
+            [tempArrayForCommentList addObject:subArrayObject];
         }
     }
-    [mutableDict setValue:[NSArray arrayWithArray:tempArrayForCoomentList] forKey:kADGetCommentListRespCoomentList];
-    [mutableDict setValue:[self.baseResp dictionaryRepresentation] forKey:kADGetCommentListRespBaseResp];
+    [mutableDict setValue:[NSArray arrayWithArray:tempArrayForCommentList] forKey:kADGetCommentListRespCommentList];
     [mutableDict setValue:[NSNumber numberWithDouble:self.commentCount] forKey:kADGetCommentListRespCommentCount];
     [mutableDict setValue:[NSNumber numberWithDouble:self.perpage] forKey:kADGetCommentListRespPerpage];
 
@@ -105,8 +105,8 @@ NSString *const kADGetCommentListRespPerpage = @"perpage";
 {
     self = [super init];
 
-    self.coomentList = [aDecoder decodeObjectForKey:kADGetCommentListRespCoomentList];
     self.baseResp = [aDecoder decodeObjectForKey:kADGetCommentListRespBaseResp];
+    self.commentList = [aDecoder decodeObjectForKey:kADGetCommentListRespCommentList];
     self.commentCount = [aDecoder decodeDoubleForKey:kADGetCommentListRespCommentCount];
     self.perpage = [aDecoder decodeDoubleForKey:kADGetCommentListRespPerpage];
     return self;
@@ -115,8 +115,8 @@ NSString *const kADGetCommentListRespPerpage = @"perpage";
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
 
-    [aCoder encodeObject:_coomentList forKey:kADGetCommentListRespCoomentList];
     [aCoder encodeObject:_baseResp forKey:kADGetCommentListRespBaseResp];
+    [aCoder encodeObject:_commentList forKey:kADGetCommentListRespCommentList];
     [aCoder encodeDouble:_commentCount forKey:kADGetCommentListRespCommentCount];
     [aCoder encodeDouble:_perpage forKey:kADGetCommentListRespPerpage];
 }
@@ -127,8 +127,8 @@ NSString *const kADGetCommentListRespPerpage = @"perpage";
     
     if (copy) {
 
-        copy.coomentList = [self.coomentList copyWithZone:zone];
         copy.baseResp = [self.baseResp copyWithZone:zone];
+        copy.commentList = [self.commentList copyWithZone:zone];
         copy.commentCount = self.commentCount;
         copy.perpage = self.perpage;
     }

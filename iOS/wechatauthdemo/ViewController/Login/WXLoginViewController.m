@@ -148,6 +148,7 @@ static const int kNormalLoginButtonHeight = 44;
 - (void)handleConnectResponse: (ADConnectResp *)resp {
     if (resp && resp.baseResp.errcode == 0) {
         [ADUserInfo currentUser].uin = (UInt32)resp.tempUin;
+        [ADUserInfo visitorUser].uin = (UInt32)resp.tempUin;
         NSLog(@"Connect Success");
     } else {
         NSLog(@"Connect Failed");

@@ -14,4 +14,6 @@
 
 - (void)insertLog:(NSString *)log;
 
+@property (nonatomic, assign) BOOL presented;
+
 @end

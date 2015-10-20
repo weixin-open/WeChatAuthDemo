@@ -299,26 +299,37 @@ static NSString* const publickeyFileName = @"rsa_public";
 
 
 - (void)getCommentListForUin:(UInt32)uin
-                 LoginTicket:(NSString *)loginTicket
                         From:(NSString *)startId
               WithCompletion:(GetCommentListCallBack)completion {
+    
+    NSMutableDictionary *requestBuffer = [[NSMutableDictionary alloc] initWithDictionary:@{
+                                                                                           @"uin": @(uin),
+                                                                                           }];
+    if (startId != nil) {
+        requestBuffer[@"start_id"] = startId;
+    }
     [[self.session JSONTaskForHost:self.host
                               Para:@{
                                      @"uin": @(uin),
-                                     @"req_buffer": @{
-                                             @"uin": @(uin),
-                                             @"login_ticket": loginTicket,
-                                             @"start_id": startId
-                                             }
+                                     @"req_buffer": requestBuffer
                                      }
                      ConfigKeyPath:(NSString *)kGetCommentListCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        NSLog(@"%@",dict);
+                        ADGetCommentListResp *resp = [ADGetCommentListResp modelObjectWithDictionary:dict];
+                        [ErrorHandler handleNetworkExpiredError:resp.baseResp
+                                            WhileCatchErrorCode:^(ADErrorCode code) {
+                                                if (code == ADErrorCodeSessionKeyExpired) {
+                                                    [self getCommentListForUin:uin
+                                                                          From:startId
+                                                                WithCompletion:completion];
+                                                } else {
+                                                    completion != nil ? completion (resp) : nil;
+                                                }
+                                            }];
                     }] resume];
 }
 
 - (void)getReplyListForUin:(UInt32)uin
-               LoginTicket:(NSString *)loginTicket
                  OfComment:(NSString *)commentId
             WithCompletion:(GetReplyListCallBack)completion {
     [[self.session JSONTaskForHost:self.host
@@ -326,13 +337,22 @@ static NSString* const publickeyFileName = @"rsa_public";
                                      @"uin": @(uin),
                                      @"req_buffer": @{
                                              @"uin": @(uin),
-                                             @"login_ticket": loginTicket,
                                              @"comment_id": commentId
                                              }
                                      }
                      ConfigKeyPath:(NSString *)kGetReplyListCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        NSLog(@"%@",dict);
+                        ADGetReplyListResp *resp = [ADGetReplyListResp modelObjectWithDictionary:dict];
+                        [ErrorHandler handleNetworkExpiredError:resp.baseResp
+                                            WhileCatchErrorCode:^(ADErrorCode code) {
+                                                if (code == ADErrorCodeSessionKeyExpired) {
+                                                    [self getReplyListForUin:uin
+                                                                   OfComment:commentId
+                                                              WithCompletion:completion];
+                                                } else {
+                                                    completion != nil ? completion (resp) : nil;
+                                                }
+                                            }];
                     }] resume];
 }
 
@@ -351,7 +371,19 @@ static NSString* const publickeyFileName = @"rsa_public";
                                      }
                      ConfigKeyPath:(NSString *)kAddCommentCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        NSLog(@"%@",dict);
+                        ADAddCommentResp *resp = [ADAddCommentResp modelObjectWithDictionary:dict];
+                        [ErrorHandler handleNetworkExpiredError:resp.baseResp
+                                            WhileCatchErrorCode:^(ADErrorCode code) {
+                                                if (code == ADErrorCodeSessionKeyExpired) {
+                                                    [self addCommentContent:content
+                                                                     ForUin:uin
+                                                                LoginTicket:loginTicket
+                                                             WithCompletion:completion];
+                                                } else {
+                                                    completion != nil ? completion (resp) : nil;
+                                                }
+                                            }];
+
                     }] resume];
 }
 
@@ -361,24 +393,53 @@ static NSString* const publickeyFileName = @"rsa_public";
                  ForUin:(UInt32)uin
             LoginTicket:(NSString *)loginTicket
          WithCompletion:(AddReplyCallBack)completion {
-    [[self.session JSONTaskForHost:self.host
-                              Para:@{
-                                     @"uin": @(uin),
-                                     @"req_buffer": @{
-                                             @"uin": @(uin),
-                                             @"login_ticket": loginTicket,
-                                             @"comment_id": commentId,
-                                             @"reply_to_id": replyId,
-                                             @"content": content
-                                             }
-                                     }
-                     ConfigKeyPath:(NSString *)kAddCommentCGIName
-                    WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        NSLog(@"%@",dict);
-                    }] resume];
+    
+    JSONCallBack callBack = ^(NSDictionary *dict, NSError *error) {
+        ADAddReplyResp *resp = [ADAddReplyResp modelObjectWithDictionary:dict];
+        [ErrorHandler handleNetworkExpiredError:resp.baseResp
+                            WhileCatchErrorCode:^(ADErrorCode code) {
+                                if (code == ADErrorCodeSessionKeyExpired) {
+                                    [self addReplyContent:content
+                                                ToComment:commentId
+                                                OrToReply:replyId
+                                                   ForUin:uin
+                                              LoginTicket:loginTicket
+                                           WithCompletion:completion];
+                                } else {
+                                    completion != nil ? completion (resp) : nil;
+                                }
+                            }];
+    };
+    
+    if (replyId == nil) {
+        [[self.session JSONTaskForHost:self.host
+                                  Para:@{
+                                         @"uin": @(uin),
+                                         @"req_buffer": @{
+                                                 @"uin": @(uin),
+                                                 @"login_ticket": loginTicket,
+                                                 @"comment_id": commentId,
+                                                 @"content": content
+                                                 }
+                                         }
+                         ConfigKeyPath:(NSString *)kAddReplyCGIName
+                        WithCompletion:callBack] resume];
+    } else {
+        [[self.session JSONTaskForHost:self.host
+                                  Para:@{
+                                         @"uin": @(uin),
+                                         @"req_buffer": @{
+                                                 @"uin": @(uin),
+                                                 @"login_ticket": loginTicket,
+                                                 @"reply_to_id": replyId,
+                                                 @"content": content
+                                                 }
+                                         }
+                         ConfigKeyPath:(NSString *)kAddReplyCGIName
+                        WithCompletion:callBack] resume];
+    }
 
 }
-
 
 #pragma mark - Lazy Initializer
 - (NSURLSession *)session {

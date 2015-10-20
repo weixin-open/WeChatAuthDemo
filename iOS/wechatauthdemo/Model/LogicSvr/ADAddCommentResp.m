@@ -1,12 +1,13 @@
 //
 //  ADAddCommentResp.m
 //
-//  Created by Jeason  on 16/10/2015
+//  Created by Jeason  on 20/10/2015
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
 #import "ADAddCommentResp.h"
 #import "ADBaseResp.h"
+#import "ADCommentList.h"
 
 
 NSString *const kADAddCommentRespBaseResp = @"base_resp";
@@ -38,7 +39,7 @@ NSString *const kADAddCommentRespComment = @"comment";
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
             self.baseResp = [ADBaseResp modelObjectWithDictionary:[dict objectForKey:kADAddCommentRespBaseResp]];
-            self.comment = [self objectOrNilForKey:kADAddCommentRespComment fromDictionary:dict];
+            self.comment = [ADCommentList modelObjectWithDictionary:[dict objectForKey:kADAddCommentRespComment]];
 
     }
     
@@ -50,7 +51,7 @@ NSString *const kADAddCommentRespComment = @"comment";
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
     [mutableDict setValue:[self.baseResp dictionaryRepresentation] forKey:kADAddCommentRespBaseResp];
-    [mutableDict setValue:self.comment forKey:kADAddCommentRespComment];
+    [mutableDict setValue:[self.comment dictionaryRepresentation] forKey:kADAddCommentRespComment];
 
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }

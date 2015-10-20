@@ -91,7 +91,7 @@
         },
         "perpage": 10,
         "comment_count": 25,
-        "cooment_list": [{
+        "comment_list": [{
                          "id": "string",
                          "content": "string",
                          "date": 123456,
@@ -148,10 +148,54 @@
             "errcode": 20001,
             "errmsg": "1234"
         },
-        "comment": "string"
+        "comment": {
+            "id": "string",
+            "content": "string",
+            "date": 123456,
+            "user": {
+                "openid": "string",
+                "nickname": "string",
+                "sex": 1,
+                "city": "string",
+                "country": "string",
+                "headimgurl": "string"
+            },
+            "reply_count": 3,
+            "reply_list": [{
+                           "id": "string",
+                           "content": "string",
+                           "date": 123456,
+                           "reply_to_id": "string",
+                           "user": {
+                           "openid": "string",
+                           "nickname": "string",
+                           "sex": 1,
+                           "city": "string",
+                           "country": "string",
+                           "headimgurl": "string"
+                           }
+                           }]
+        }
     },
     
     "AddReplyResp": {
-        "reply": "string"
+        "base_resp": {
+            "errcode": 20001,
+            "errmsg": "1234"
+        },
+        "reply": {
+            "id": "string",
+            "content": "string",
+            "date": 123456,
+            "reply_to_id": "string",
+            "user": {
+                "openid": "string",
+                "nickname": "string",
+                "sex": 1,
+                "city": "string",
+                "country": "string",
+                "headimgurl": "string"
+            }
+        }
     }
 }

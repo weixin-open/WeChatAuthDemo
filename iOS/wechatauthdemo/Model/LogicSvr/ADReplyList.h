@@ -16,6 +16,7 @@
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) NSString *replyToId;
 @property (nonatomic, assign) double date;
+@property (nonatomic, assign) CGFloat height;
 
 + (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
 - (instancetype)initWithDictionary:(NSDictionary *)dict;

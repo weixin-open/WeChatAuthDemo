@@ -1,13 +1,16 @@
 //
 //  ADAddReplyResp.m
 //
-//  Created by Jeason  on 16/10/2015
+//  Created by Jeason  on 20/10/2015
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
 #import "ADAddReplyResp.h"
+#import "ADBaseResp.h"
+#import "ADReplyList.h"
 
 
+NSString *const kADAddReplyRespBaseResp = @"base_resp";
 NSString *const kADAddReplyRespReply = @"reply";
 
 
@@ -19,6 +22,7 @@ NSString *const kADAddReplyRespReply = @"reply";
 
 @implementation ADAddReplyResp
 
+@synthesize baseResp = _baseResp;
 @synthesize reply = _reply;
 
 
@@ -34,7 +38,8 @@ NSString *const kADAddReplyRespReply = @"reply";
     // This check serves to make sure that a non-NSDictionary object
     // passed into the model class doesn't break the parsing.
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
-            self.reply = [self objectOrNilForKey:kADAddReplyRespReply fromDictionary:dict];
+            self.baseResp = [ADBaseResp modelObjectWithDictionary:[dict objectForKey:kADAddReplyRespBaseResp]];
+            self.reply = [ADReplyList modelObjectWithDictionary:[dict objectForKey:kADAddReplyRespReply]];
 
     }
     
@@ -45,7 +50,8 @@ NSString *const kADAddReplyRespReply = @"reply";
 - (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *mutableDict = [NSMutableDictionary dictionary];
-    [mutableDict setValue:self.reply forKey:kADAddReplyRespReply];
+    [mutableDict setValue:[self.baseResp dictionaryRepresentation] forKey:kADAddReplyRespBaseResp];
+    [mutableDict setValue:[self.reply dictionaryRepresentation] forKey:kADAddReplyRespReply];
 
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
@@ -69,6 +75,7 @@ NSString *const kADAddReplyRespReply = @"reply";
 {
     self = [super init];
 
+    self.baseResp = [aDecoder decodeObjectForKey:kADAddReplyRespBaseResp];
     self.reply = [aDecoder decodeObjectForKey:kADAddReplyRespReply];
     return self;
 }
@@ -76,6 +83,7 @@ NSString *const kADAddReplyRespReply = @"reply";
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
 
+    [aCoder encodeObject:_baseResp forKey:kADAddReplyRespBaseResp];
     [aCoder encodeObject:_reply forKey:kADAddReplyRespReply];
 }
 
@@ -85,6 +93,7 @@ NSString *const kADAddReplyRespReply = @"reply";
     
     if (copy) {
 
+        copy.baseResp = [self.baseResp copyWithZone:zone];
         copy.reply = [self.reply copyWithZone:zone];
     }
     

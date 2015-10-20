@@ -192,12 +192,10 @@ typedef void(^AddReplyCallBack)(ADAddReplyResp *resp);
 - (void)makeRefreshTokenExpired:(UInt32)uin LoginTicket:(NSString *)loginTicket;
 
 - (void)getCommentListForUin:(UInt32)uin
-                 LoginTicket:(NSString *)loginTicket
                         From:(NSString *)startId
               WithCompletion:(GetCommentListCallBack)completion;
 
 - (void)getReplyListForUin:(UInt32)uin
-               LoginTicket:(NSString *)loginTicket
                  OfComment:(NSString *)commentId
             WithCompletion:(GetReplyListCallBack)completion;
 

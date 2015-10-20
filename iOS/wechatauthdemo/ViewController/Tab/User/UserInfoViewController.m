@@ -45,6 +45,7 @@ static const CGFloat kWXLoginButtonFontSize = 16.0f;
 @property (nonatomic, readonly, strong) ADUserInfo *userInfo;
 @property (nonatomic, strong) UIImageView *wxLogoImageView;
 @property (nonatomic, strong) UIButton *wxLoginButton;
+@property (nonatomic, strong) UIView *headerView;
 
 @end
 
@@ -62,16 +63,14 @@ static const CGFloat kWXLoginButtonFontSize = 16.0f;
          forCellReuseIdentifier:kUserHeadPhotoCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:@"UserNickNameCell" bundle:nil]
          forCellReuseIdentifier:kUserNickNameCellIdentifier];
+    
     self.tableView.sectionHeaderHeight = self.tableView.sectionFooterHeight = inset / 2;
+    self.tableView.tableHeaderView = self.headerView;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
-    CGRect frame = self.tableView.tableHeaderView.frame;
-    frame.size.height = inset*1.5;
-    UIView *headerView = [[UIView alloc] initWithFrame:frame];
-    [self.tableView setTableHeaderView:headerView];
 
     [self.tableView reloadData];
 }
@@ -316,6 +315,15 @@ static const CGFloat kWXLoginButtonFontSize = 16.0f;
         _wxLogoImageView.center = CGPointMake(wxLogoImageCenterX, 22);
     }
     return _wxLogoImageView;
+}
+
+- (UIView *)headerView {
+    if (_headerView == nil) {
+        CGRect frame = self.tableView.tableHeaderView.frame;
+        frame.size.height = inset*1.5;
+        _headerView = [[UIView alloc] initWithFrame:frame];
+    }
+    return _headerView;
 }
 
 @end

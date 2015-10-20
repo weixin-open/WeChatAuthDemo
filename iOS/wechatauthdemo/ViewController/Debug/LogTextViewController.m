@@ -19,6 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.title = @"日志";
     [self.view addSubview:self.textView];
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"退出"
@@ -36,7 +37,8 @@
 - (void)onClickDismiss:(UIBarButtonItem *)sender {
     if (sender != self.navigationItem.leftBarButtonItem)
         return;
-    [self dismissViewControllerAnimated:YES completion:nil];
+    self.presented = NO;
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Public Methods
@@ -46,6 +48,7 @@
     dispatch_once(&onceToken, ^{
         instance = [[LogTextViewController alloc] init];
         instance.hidesBottomBarWhenPushed = YES;
+        instance.presented = NO;
     });
     return instance;
 }

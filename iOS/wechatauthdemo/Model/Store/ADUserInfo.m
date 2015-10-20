@@ -77,6 +77,7 @@ static ADUserInfo *currentUser_ = nil;
 + (instancetype)visitorUser {
     ADUserInfo *visitorUser = [[ADUserInfo alloc] init];
     visitorUser.nickname = @"访客";
+    visitorUser.uin = [[self currentUser] uin];
     return visitorUser;
 }
 
