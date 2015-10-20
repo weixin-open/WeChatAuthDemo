@@ -161,7 +161,13 @@ class WXAuthDatabaseDemo implements WXDatabase
 	}
 	public function add_comment($comment)
 	{
-		$this->set_item('comment_list', $comment['id'], $comment);
+		// $this->set_item('comment_list', $comment['id'], $comment);
+		$list = $this->get('comment_list');
+		if (!$list) {
+			$list = array();
+		}
+		$list = array_merge(array($comment['id']=>$comment), $list);
+		$this->set('comment_list', $list);
 		return true;
 	}
 	public function get_comment($comment_id)
@@ -177,7 +183,7 @@ class WXAuthDatabaseDemo implements WXDatabase
 		$comment = $this->get_comment($comment_id);
 		$comment['reply_list'][ $reply['id'] ] = $reply;
 		$comment['reply_count'] = count($comment['reply_list']);
-		$this->set_item('comment_list', $comment['comment_id'], $comment);
+		$this->set_item('comment_list', $comment['id'], $comment);
 		return true;
 	}
 

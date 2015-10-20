@@ -290,8 +290,9 @@ class WXAuthControllerDemo
 		$count = $this->db->get_comment_count();
 		$list = $this->db->get_comment_list($start_id, $perpage);
 
-		// 处理回复，截取前3条
+		// 处理回复，并截取前3条
 		foreach ($list as $key => $comment) {
+			$list[$key]['reply_list'] = array_values($comment['reply_list']);
 			if ($comment['reply_count'] > 3) {
 				$list[$key]['reply_list'] = array_slice($comment['reply_list'], 0, 3);
 			}
@@ -399,6 +400,7 @@ class WXAuthControllerDemo
 			wxlog('no content');
 			$sdk->session_end(null, WX_ERR_INVALID_REPLY_CONTENT, 'Empty reply content');
 		}
+		$form['reply_to_id'] = $form['reply_to_id'] . '';
 
 		// 获取留言
 		$comment = $this->db->get_comment($form['comment_id']);
@@ -435,7 +437,7 @@ class WXAuthControllerDemo
 			'reply_to_id' => $form['reply_to_id'],
 			'user' => $wx_user
 		);
-		$this->db->add_reply($reply, $comment['comment_id']);
+		$this->db->add_reply($reply, $comment['id']);
 
 		$resp['reply'] = $reply;
 		
