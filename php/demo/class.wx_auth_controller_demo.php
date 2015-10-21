@@ -306,11 +306,13 @@ class WXAuthControllerDemo
 		$count = $this->db->get_comment_count();
 		$list = $this->db->get_comment_list($start_id, $perpage);
 
-		// 处理回复，截取前3条
+		// 处理回复，并截取前3条
 		foreach ($list as $key => $comment) {
+			$comment['reply_list'] = array_values($comment['reply_list']);
 			if ($comment['reply_count'] > 3) {
-				$list[$key]['reply_list'] = array_slice($comment['reply_list'], 0, 3);
+				$comment['reply_list'] = array_slice($comment['reply_list'], 0, 3);
 			}
+			$list[$key]['reply_list'] = $comment['reply_list'];
 		}
 
 		$resp = array(
@@ -408,12 +410,14 @@ class WXAuthControllerDemo
 		$req = $sdk->get_request_data();
 		$form = $req['buffer'];
 		$resp = array();
+		wxlog($form);
 
 		// 校验内容
 		if (!$form['content']) {
 			wxlog('no content');
 			$sdk->session_end(null, WX_ERR_INVALID_REPLY_CONTENT, 'Empty reply content');
 		}
+		$form['reply_to_id'] = $form['reply_to_id'] . '';
 
 		// 获取留言
 		$comment = $this->db->get_comment($form['comment_id']);
@@ -438,7 +442,7 @@ class WXAuthControllerDemo
 		// 找到被回复的人
 		if ($form['reply_to_id']) {
 			if (isset($comment['reply_list'][ $form['reply_to_id'] ])) {
-				$form['content'] = '回复 ' . $comment['reply_list'][ $form['reply_to_id'] ] . '：' . $form['content'];
+				$form['content'] = '回复 ' . $comment['reply_list'][ $form['reply_to_id'] ]['user']['nickname'] . '：' . $form['content'];
 			}
 		}
 
@@ -450,9 +454,12 @@ class WXAuthControllerDemo
 			'reply_to_id' => $form['reply_to_id'],
 			'user' => $wx_user
 		);
-		$this->db->add_reply($reply, $comment['comment_id']);
+		$this->db->add_reply($reply, $comment['id']);
 
 		$resp['reply'] = $reply;
+		$resp['reply_count'] = $comment['reply_count'] + 1;
+		$resp['reply_list'] = array_values($comment['reply_list']);
+		$resp['reply_list'][] = $reply;
 
 		wxlog($resp);
 		wxlog('addreply OK');
