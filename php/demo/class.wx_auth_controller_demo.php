@@ -394,6 +394,7 @@ class WXAuthControllerDemo
 		$req = $sdk->get_request_data();
 		$form = $req['buffer'];
 		$resp = array();
+		wxlog($form);
 
 		// 校验内容
 		if (!$form['content']) {
@@ -425,7 +426,7 @@ class WXAuthControllerDemo
 		// 找到被回复的人
 		if ($form['reply_to_id']) {
 			if (isset($comment['reply_list'][ $form['reply_to_id'] ])) {
-				$form['content'] = '回复 ' . $comment['reply_list'][ $form['reply_to_id'] ] . '：' . $form['content'];
+				$form['content'] = '回复 ' . $comment['reply_list'][ $form['reply_to_id'] ]['user']['nickname'] . '：' . $form['content'];
 			}
 		}
 
