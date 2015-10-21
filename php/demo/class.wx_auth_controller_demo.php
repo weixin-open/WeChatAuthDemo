@@ -442,6 +442,9 @@ class WXAuthControllerDemo
 		$this->db->add_reply($reply, $comment['id']);
 
 		$resp['reply'] = $reply;
+		$resp['reply_count'] = $comment['reply_count'] + 1;
+		$resp['reply_list'] = array_values($comment['reply_list']);
+		$resp['reply_list'][] = $reply;
 		
 		wxlog($resp);
 		wxlog('addreply OK');
