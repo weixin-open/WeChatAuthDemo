@@ -67,7 +67,6 @@ static const CGFloat kTimeStampWidth = 88.0f;
                                         CGRectGetMinY(self.nickName.frame),
                                         CGRectGetWidth(self.frame)-normalHeight-inset, self.reply.height);
         self.line.frame = CGRectMake(inset*4, 0, ScreenWidth-5*inset, 1);
-
     }
 }
 

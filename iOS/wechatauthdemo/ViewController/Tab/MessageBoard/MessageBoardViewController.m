@@ -20,6 +20,8 @@
 #import "NewCommentViewController.h"
 #import "InputWithTextFeildBar.h"
 #import "CommentReplyFooterView.h"
+#import "ADGetReplyListResp.h"
+#import "ADAddReplyResp.h"
 
 static NSString *const kMessageBoardViewTitle = @"留言板";
 static NSString *const kCommentViewIdentifier = @"kCommentViewIdentifier";
@@ -34,7 +36,8 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 @property (nonatomic, strong) UITextView *keyBoardTool;
 @property (nonatomic, strong) NSIndexPath *replyIndexPath;
 @property (nonatomic, weak) UIView *replyView;
-
+@property (nonatomic, strong) NSMutableDictionary *footerDict;
+@property (nonatomic, weak) CommentReplyFooterView *clickFooter;
 @end
 
 @implementation MessageBoardViewController
@@ -47,6 +50,7 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(onClickNewComment:)];
+    self.footerDict = [[NSMutableDictionary alloc] init];
     [self.view addSubview:self.messagesTable];
     [self.view addSubview:self.keyBoardTool];
 }
@@ -108,13 +112,13 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
         ADShowErrorAlert(@"内容中不能包含链接");
         return;
     }
-
-    
+    ADCommentList *comment = self.commentsArray[self.replyIndexPath.section];
     AddReplyCallBack callBack = ^(ADAddReplyResp *resp) {
         [self.replyAccessoryView.textField resignFirstResponder];
+        self.replyAccessoryView.textField.text = @"";
+        self.clickFooter = self.footerDict[@(self.replyIndexPath.section)];
         [self refreshComments];
     };
-    ADCommentList *comment = self.commentsArray[self.replyIndexPath.section];
     if (self.replyIndexPath.row == -1) {
         [[ADNetworkEngine sharedEngine] addReplyContent:content
                                               ToComment:comment.commentListIdentifier
@@ -125,7 +129,7 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     } else {
         ADReplyList *reply = comment.replyList[self.replyIndexPath.row];
         [[ADNetworkEngine sharedEngine] addReplyContent:content
-                                              ToComment:nil
+                                              ToComment:comment.commentListIdentifier
                                               OrToReply:reply.replyListIdentifier
                                                  ForUin:[ADUserInfo currentUser].uin
                                             LoginTicket:[ADUserInfo currentUser].loginTicket
@@ -136,7 +140,6 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 - (void)replyTextFinished:(UITextField *)sender {
     if (sender != self.replyAccessoryView.textField)
         return;
-    
     [self resignFirstResponder];
 }
 
@@ -175,28 +178,61 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[self.commentsArray[section] replyList] count];
+    ADCommentList *comment = self.commentsArray[section];
+    NSInteger replyCount = [comment.replyList count];
+    if (comment.replyCount > 3)
+        replyCount++;
+    return replyCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MessageBoardReplyCell *cell = [tableView dequeueReusableCellWithIdentifier:kReplyViewIdentifier];
-    if (cell == nil) {
-        cell = [[MessageBoardReplyCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                            reuseIdentifier:kReplyViewIdentifier];
+    ADCommentList *comment = self.commentsArray[indexPath.section];
+    UITableViewCell *ret;
+    if (comment.replyCount > 3 && indexPath.row == [comment.replyList count]) {
+        //footer View
+        CommentReplyFooterView *footer = [tableView dequeueReusableCellWithIdentifier:kCommentReplyFooterIdentifer
+                                                                         forIndexPath:indexPath];
+        self.footerDict[@(indexPath.section)] = footer;
+        __block typeof(footer) weakFooter = footer;
+        footer.onClick = ^{
+            if (self.clickFooter || [weakFooter.button.titleLabel.text isEqualToString:@"查看全部回复"]) {
+                [[ADNetworkEngine sharedEngine] getReplyListForUin:[ADUserInfo currentUser].uin
+                                                         OfComment:comment.commentListIdentifier
+                                                    WithCompletion:^(ADGetReplyListResp *resp) {
+                                                        comment.replyList = resp.replyList;
+                                                        [weakFooter.button setTitle:@"收起全部回复"
+                                                                           forState:UIControlStateNormal];
+                                                        [tableView reloadData];
+                                                    }];
+            } else {
+                comment.replyList = [comment.replyList subarrayWithRange:NSMakeRange(0, 3)];
+                [weakFooter.button setTitle:@"查看全部回复"
+                                   forState:UIControlStateNormal];
+                [tableView reloadData];
+            }
+        };
+        ret = footer;
+    } else {
+        MessageBoardReplyCell *cell = [tableView dequeueReusableCellWithIdentifier:kReplyViewIdentifier];
+        if (cell == nil) {
+            cell = [[MessageBoardReplyCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                reuseIdentifier:kReplyViewIdentifier];
+        }
+        ADReplyList *reply = [self.commentsArray[indexPath.section] replyList][indexPath.row];
+        [cell.replyContentView configureViewWithReply:reply];
+        
+        __block typeof (self) weakSelf = self;
+        __block MessageBoardReplyCell* weakCell = cell;
+        cell.replyContentView.clickCallBack = ^{
+            [weakSelf.keyBoardTool becomeFirstResponder];
+            weakSelf.replyIndexPath = indexPath;
+            weakSelf.replyView = weakCell;
+            weakSelf.replyAccessoryView.textField.placeholder = [NSString stringWithFormat:@"回复%@: ", reply.user.nickname];
+        };
+        
+        ret = cell;
     }
-    ADReplyList *reply = [self.commentsArray[indexPath.section] replyList][indexPath.row];
-    [cell.replyContentView configureViewWithReply:reply];
-    
-    __block typeof (self) weakSelf = self;
-    __block MessageBoardReplyCell* weakCell = cell;
-    cell.replyContentView.clickCallBack = ^{
-        [weakSelf.keyBoardTool becomeFirstResponder];
-        weakSelf.replyIndexPath = indexPath;
-        weakSelf.replyView = weakCell;
-        weakSelf.replyAccessoryView.textField.placeholder = [NSString stringWithFormat:@"回复%@: ", reply.user.nickname];
-    };
-    
-    return cell;
+    return ret;
 }
 
 #pragma mark - UITabelViewDelegate
@@ -220,26 +256,17 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     return commentView;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    CommentReplyFooterView *footerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:kCommentReplyFooterIdentifer];
-    if (footerView == nil) {
-        footerView = [[[NSBundle mainBundle] loadNibNamed:@"CommentReplyFooterView"
-                                                   owner:nil
-                                                  options:nil] firstObject];
-    }
-    return footerView;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return [MessageBoardContentView calcHeightForComment:self.commentsArray[section]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [MessageBoardContentView calcHeightForReply:[self.commentsArray[indexPath.section] replyList][indexPath.row]];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return [self.commentsArray[section] replyCount] < 3 ? 0 : normalHeight / 2;
+    ADCommentList *comment = self.commentsArray[indexPath.section];
+    if (comment.replyCount > 3 && [comment.replyList count] == indexPath.row) {
+        return 22;
+    } else {
+        return [MessageBoardContentView calcHeightForReply:comment.replyList[indexPath.row]];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -263,6 +290,12 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
                                           WithCompletion:^(ADGetCommentListResp *resp) {
                                               self.commentsArray = resp.commentList;
                                               [self.messagesTable reloadData];
+                                              if (self.clickFooter != nil) {
+                                                  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                                      self.clickFooter.onClick();
+                                                      self.clickFooter = nil;
+                                                  });
+                                              }
                                           }];
 }
 
@@ -270,13 +303,13 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 - (UITableView *)messagesTable {
     if (_messagesTable == nil) {
         CGRect frame = self.view.frame;
-        frame.size.height -= navigationBarHeight+statusBarHeight+normalHeight;
+        frame.size.height -= navigationBarHeight+statusBarHeight+49;
         _messagesTable = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
         _messagesTable.backgroundColor = [UIColor groupTableViewBackgroundColor];
         [_messagesTable registerClass:[MessageBoardCommentView class] forHeaderFooterViewReuseIdentifier:kCommentViewIdentifier];
         [_messagesTable registerClass:[MessageBoardReplyCell class] forCellReuseIdentifier:kReplyViewIdentifier];
         [_messagesTable registerNib:[UINib nibWithNibName:@"CommentReplyFooterView"
-                                                   bundle:nil] forHeaderFooterViewReuseIdentifier:kCommentReplyFooterIdentifer];
+                                                   bundle:nil] forCellReuseIdentifier:kCommentReplyFooterIdentifer];
         _messagesTable.separatorStyle = UITableViewCellSeparatorStyleNone;
         _messagesTable.dataSource = self;
         _messagesTable.delegate = self;

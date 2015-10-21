@@ -431,6 +431,7 @@ static NSString* const publickeyFileName = @"rsa_public";
                                          @"req_buffer": @{
                                                  @"uin": @(uin),
                                                  @"login_ticket": loginTicket,
+                                                 @"comment_id": commentId,
                                                  @"reply_to_id": replyId,
                                                  @"content": content
                                                  }

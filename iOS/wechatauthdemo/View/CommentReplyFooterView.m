@@ -17,5 +17,8 @@
     // Drawing code
 }
 */
+- (IBAction)onClickButton:(id)sender {
+    self.onClick != nil ? self.onClick() : nil;
+}
 
 @end

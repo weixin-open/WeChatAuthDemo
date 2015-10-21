@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CommentReplyFooterView : UITableViewHeaderFooterView
+typedef void(^ClickFooterCallBack)(void);
+
+@interface CommentReplyFooterView : UITableViewCell
+
+@property (nonatomic, strong) ClickFooterCallBack onClick;
+
+@property (weak, nonatomic) IBOutlet UIButton *button;
 
 @end
