@@ -292,10 +292,11 @@ class WXAuthControllerDemo
 
 		// 处理回复，并截取前3条
 		foreach ($list as $key => $comment) {
-			$list[$key]['reply_list'] = array_values($comment['reply_list']);
+			$comment['reply_list'] = array_values($comment['reply_list']);
 			if ($comment['reply_count'] > 3) {
-				$list[$key]['reply_list'] = array_slice($comment['reply_list'], 0, 3);
+				$comment['reply_list'] = array_slice($comment['reply_list'], 0, 3);
 			}
+			$list[$key]['reply_list'] = $comment['reply_list'];
 		}
 
 		$resp = array(
