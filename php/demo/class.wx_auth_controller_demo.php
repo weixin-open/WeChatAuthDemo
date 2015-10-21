@@ -77,6 +77,18 @@ class WXAuthControllerDemo
 
 		$resp = $this->sdk->wxlogin();
 
+		//记录登陆信息
+		$uin = $resp['uin'];
+		$api_data = $this->db->get_oauth_by_uin($uin);
+		$openid = $api_data['openid'];
+		$login_data = $this->db->get_record_by_openid($openid);
+		if(!$login_data){
+			$login_data['login_time'] = array($api_data['create_time']);
+		}else{
+			array_push($login_data['login_time'],$api_data['create_time']);
+		}
+		$this->db->set_record_by_openid($login_data, $openid);
+
 		$this->sdk->session_end($resp);
 	}
 
@@ -95,15 +107,16 @@ class WXAuthControllerDemo
 
 		$req = $sdk->get_request_data();
 		$resp = array();
+		$uin = $req['uin'];
 
-		$mail = $this->db->get_mail_by_uin($req['uin']);
+		$mail = $this->db->get_mail_by_uin($uin);
 		if ($mail) {
 			wxlog('has app_user');
 			$app_user = $this->db->get_user_by_mail($mail);
 			$resp = array_merge($resp, $app_user);
 		}
-		
-		$oauth = $this->db->get_oauth_by_uin($req['uin']);
+
+		$oauth = $this->db->get_oauth_by_uin($uin);
 		if ($oauth) {
 			wxlog('has oauth');
 			$wx_user = $sdk->request_api('/sns/userinfo', $oauth, array());
@@ -119,10 +132,13 @@ class WXAuthControllerDemo
 			$resp = array_merge($resp, $wx_user);
 		}
 
-		$resp['access_log'] = array(
-			array('login_time'=>time(), 'login_type'=>1)
-		);
-		
+		$login_time = $this->db->get_record_by_openid($resp['openid'])['login_time'];
+		$resp['access_log'] = array();
+		for($i = count($login_time) - 1; $i > -1; $i--){
+			array_push($resp['access_log'], array('login_time' => $login_time[$i]));
+		}
+		wxlog($login_time);
+
 		wxlog($resp);
 		wxlog('getuserinfo OK');
 		$sdk->session_end($resp);
@@ -133,7 +149,7 @@ class WXAuthControllerDemo
 		wxlog("\n\t\t\tregsiter");
 		$sdk = $this->sdk;
 		$sdk->session_start();
-		
+
 		// 获取app提交的数据
 		$req = $sdk->get_request_data();
 		$form = $req['buffer'];
@@ -163,7 +179,7 @@ class WXAuthControllerDemo
 
 		// 生成登录凭据
 		$login_ticket = $sdk->do_login($uin);
-		
+
 		$resp = array(
 			'uin' => $uin,
 			'login_ticket' => $login_ticket
@@ -198,7 +214,7 @@ class WXAuthControllerDemo
 
 		// 生成登录凭据
 		$login_ticket = $sdk->do_login($uin);
-		
+
 		$resp = array(
 			'uin' => $uin,
 			'login_ticket' => $login_ticket
@@ -302,11 +318,10 @@ class WXAuthControllerDemo
 			'comment_count' => $count,
 			'comment_list' => $list
 		);
-		
+
 		wxlog($resp);
 		wxlog('commentlist OK');
 		$sdk->session_end($resp);
-
 	}
 
 	public function action_replylist()
@@ -317,7 +332,7 @@ class WXAuthControllerDemo
 
 		$req = $sdk->get_request_data();
 		$comment_id = $req['buffer']['comment_id'];
-		
+
 		$comment = $this->db->get_comment($comment_id);
 		if (!$comment) {
 			wxlog('no comment');
@@ -327,7 +342,7 @@ class WXAuthControllerDemo
 		$resp = array(
 			'reply_list' => array_values($comment['reply_list'])
 		);
-		
+
 		wxlog($resp);
 		wxlog('replylist OK');
 		$sdk->session_end($resp);
@@ -350,7 +365,7 @@ class WXAuthControllerDemo
 			wxlog('no content');
 			$sdk->session_end(null, WX_ERR_INVALID_COMMENT_CONTENT, 'Empty comment content');
 		}
-		
+
 		// 获取用户
 		$wx_user = $this->db->get_wxuser_by_uin($req['uin']);
 		if (!$wx_user) {
@@ -376,7 +391,7 @@ class WXAuthControllerDemo
 		$this->db->add_comment($comment);
 
 		$resp['comment'] = $comment;
-		
+
 		wxlog($resp);
 		wxlog('addcomment OK');
 		$sdk->session_end($resp);
@@ -406,7 +421,7 @@ class WXAuthControllerDemo
 			wxlog('no comment');
 			$sdk->session_end(null, WX_ERR_NO_COMMENT, 'Cannot get comment by comment_id');
 		}
-		
+
 		// 获取用户
 		$wx_user = $this->db->get_wxuser_by_uin($req['uin']);
 		if (!$wx_user) {
@@ -438,7 +453,7 @@ class WXAuthControllerDemo
 		$this->db->add_reply($reply, $comment['comment_id']);
 
 		$resp['reply'] = $reply;
-		
+
 		wxlog($resp);
 		wxlog('addreply OK');
 		$sdk->session_end($resp);

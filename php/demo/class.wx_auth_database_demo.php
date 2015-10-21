@@ -68,6 +68,19 @@ class WXAuthDatabaseDemo implements WXDatabase
 		return $this->delete_item('uin_login_map', 'uin_'.$uin);
 	}
 
+	public function set_record_by_openid($record_data, $openid)
+	{
+		$this->set_item('openid_record_map', 'openid_'.$openid, $record_data);
+	}
+	public function get_record_by_openid($openid)
+	{
+		return $this->get_item('openid_record_map', 'openid_'.$openid);
+	}
+	public function delete_record_by_openid($openid)
+	{
+		return $this->delete_item('openid_record_map', 'openid_'.$openid);
+	}
+
 	public function set_oauth_by_uin($data, $uin)
 	{
 		$this->set_item('uin_oauth_map', 'uin_'.$uin, $data);
