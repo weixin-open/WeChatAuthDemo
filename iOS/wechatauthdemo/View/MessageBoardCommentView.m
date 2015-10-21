@@ -15,6 +15,7 @@
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
+        self.contentView.backgroundColor = [UIColor whiteColor];
         [self.contentView addSubview:self.commentContent];
     }
     return self;

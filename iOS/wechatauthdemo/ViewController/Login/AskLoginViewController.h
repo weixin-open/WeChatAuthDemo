@@ -10,4 +10,6 @@
 
 @interface AskLoginViewController : UIViewController
 
+@property (nonatomic, strong) NSString *founctionName;
+
 @end

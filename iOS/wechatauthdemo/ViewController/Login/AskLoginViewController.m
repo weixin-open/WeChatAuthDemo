@@ -19,7 +19,7 @@
 /* Text Message */
 static NSString* const kWXAuthDenyTitle = @"授权失败";
 static NSString* const kWXLoginErrorTitle = @"微信登录失败";
-static NSString* const kTitleLabelText = @"如需使用Debug Log功能，请先登录";
+static NSString* const kTitleLabelText = @"如需使用%@功能，请先登录";
 /* Font */
 static const CGFloat kTitleLabelFontSize = 16.0f;
 static const CGFloat kWXLoginButtonFontSize = 16.0f;
@@ -159,7 +159,7 @@ static const int kWXLogoImageHeight = 20;
 - (UILabel *)titleLabel {
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.text = kTitleLabelText;
+        _titleLabel.text = [NSString stringWithFormat:kTitleLabelText, self.founctionName];
         _titleLabel.font = [UIFont fontWithName:kChineseFont
                                            size:kTitleLabelFontSize];
         _titleLabel.textAlignment = NSTextAlignmentCenter;

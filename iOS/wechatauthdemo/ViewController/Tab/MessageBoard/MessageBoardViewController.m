@@ -22,6 +22,8 @@
 #import "CommentReplyFooterView.h"
 #import "ADGetReplyListResp.h"
 #import "ADAddReplyResp.h"
+#import "MessageboardHeaderView.h"
+#import "AskLoginViewController.h"
 
 static NSString *const kMessageBoardViewTitle = @"留言板";
 static NSString *const kCommentViewIdentifier = @"kCommentViewIdentifier";
@@ -38,6 +40,8 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 @property (nonatomic, weak) UIView *replyView;
 @property (nonatomic, strong) NSMutableDictionary *footerDict;
 @property (nonatomic, weak) CommentReplyFooterView *clickFooter;
+@property (nonatomic, strong) MessageboardHeaderView *tableHeader;
+
 @end
 
 @implementation MessageBoardViewController
@@ -46,13 +50,17 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.title = kMessageBoardViewTitle;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"写留言"
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"newCommentIcon"]
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(onClickNewComment:)];
     self.footerDict = [[NSMutableDictionary alloc] init];
     [self.view addSubview:self.messagesTable];
     [self.view addSubview:self.keyBoardTool];
+    
+    if ([[UIDevice currentDevice].systemVersion doubleValue] < 8.0) {
+        self.navigationController.navigationBar.translucent = NO;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -87,9 +95,17 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 - (void)onClickNewComment: (UIBarButtonItem *)sender {
     if (sender != self.navigationItem.rightBarButtonItem)
         return;
-    NewCommentViewController *newCommentView = [[NewCommentViewController alloc] init];
-    newCommentView.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:newCommentView animated:YES];
+    if ([ADUserInfo currentUser].sessionExpireTime > 0) {
+        NewCommentViewController *newCommentView = [[NewCommentViewController alloc] init];
+        newCommentView.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:newCommentView animated:YES];
+    } else {
+        AskLoginViewController *askLoginView = [[AskLoginViewController alloc] init];
+        askLoginView.founctionName = @"发布留言";
+        askLoginView.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:askLoginView
+                                             animated:YES];
+    }
 }
 
 - (void)onClickSendReply:(UIBarButtonItem *)sender {
@@ -192,6 +208,7 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
         //footer View
         CommentReplyFooterView *footer = [tableView dequeueReusableCellWithIdentifier:kCommentReplyFooterIdentifer
                                                                          forIndexPath:indexPath];
+        footer.selectionStyle = UITableViewCellSelectionStyleNone;
         self.footerDict[@(indexPath.section)] = footer;
         __block typeof(footer) weakFooter = footer;
         footer.onClick = ^{
@@ -224,10 +241,12 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
         __block typeof (self) weakSelf = self;
         __block MessageBoardReplyCell* weakCell = cell;
         cell.replyContentView.clickCallBack = ^{
-            [weakSelf.keyBoardTool becomeFirstResponder];
-            weakSelf.replyIndexPath = indexPath;
-            weakSelf.replyView = weakCell;
-            weakSelf.replyAccessoryView.textField.placeholder = [NSString stringWithFormat:@"回复%@: ", reply.user.nickname];
+            if ([ADUserInfo currentUser].sessionExpireTime > 0) {
+                [weakSelf.keyBoardTool becomeFirstResponder];
+                weakSelf.replyIndexPath = indexPath;
+                weakSelf.replyView = weakCell;
+                weakSelf.replyAccessoryView.textField.placeholder = [NSString stringWithFormat:@"回复%@: ", reply.user.nickname];
+            }
         };
         
         ret = cell;
@@ -247,10 +266,12 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     __block typeof(self) weakSelf = self;
     __block typeof(commentView) weakCommentView = commentView;
     commentView.commentContent.clickCallBack = ^{
-        [weakSelf.keyBoardTool becomeFirstResponder];
-        weakSelf.replyIndexPath = [NSIndexPath indexPathForRow:-1 inSection:section];
-        weakSelf.replyAccessoryView.textField.placeholder = [NSString stringWithFormat:@"回复%@: ", comment.user.nickname];
-        weakSelf.replyView = weakCommentView;
+        if ([ADUserInfo currentUser].sessionExpireTime > 0) {
+            [weakSelf.keyBoardTool becomeFirstResponder];
+            weakSelf.replyIndexPath = [NSIndexPath indexPathForRow:-1 inSection:section];
+            weakSelf.replyAccessoryView.textField.placeholder = [NSString stringWithFormat:@"回复%@: ", comment.user.nickname];
+            weakSelf.replyView = weakCommentView;
+        }
     };
     
     return commentView;
@@ -263,7 +284,7 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     ADCommentList *comment = self.commentsArray[indexPath.section];
     if (comment.replyCount > 3 && [comment.replyList count] == indexPath.row) {
-        return 22;
+        return normalHeight;
     } else {
         return [MessageBoardContentView calcHeightForReply:comment.replyList[indexPath.row]];
     }
@@ -313,9 +334,17 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
         _messagesTable.separatorStyle = UITableViewCellSeparatorStyleNone;
         _messagesTable.dataSource = self;
         _messagesTable.delegate = self;
+        _messagesTable.tableHeaderView = self.tableHeader;
     }
     return _messagesTable;
 }
+
+- (MessageboardHeaderView *)tableHeader {
+    if (_tableHeader == nil) {
+        _tableHeader = [[[NSBundle mainBundle] loadNibNamed:@"MessageboardHeaderView" owner:nil options:nil] firstObject];
+    }
+    return _tableHeader;
+};
 
 - (InputWithTextFeildBar *)replyAccessoryView {
     if (_replyAccessoryView == nil) {

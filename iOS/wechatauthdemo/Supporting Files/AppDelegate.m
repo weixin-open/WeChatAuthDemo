@@ -40,25 +40,25 @@ static const NSInteger kDefaultTabIndex = 0;
     self.messageBoardView = [[MessageBoardViewController alloc] init];
     UINavigationController *messageBoardNav = [[UINavigationController alloc] initWithRootViewController:self.messageBoardView];
     messageBoardNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:kMessageBoardViewTitle
-                                                               image:[UIImage imageNamed:@"messageBoardIcon"]
-                                                       tag:0];
+                                                               image:[[UIImage imageNamed:@"messageBoardIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                       selectedImage:[[UIImage imageNamed:@"messageBoardSelectedIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
     self.documentsView = [[DocumentsViewController alloc] init];
     UINavigationController *documentsNav = [[UINavigationController alloc] initWithRootViewController:self.documentsView];
     documentsNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:kDocumentsViewTitle
-                                                            image:[UIImage imageNamed:@"documentsIcon"]
-                                                    tag:1];
+                                                            image:[[UIImage imageNamed:@"documentsIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                    selectedImage:[[UIImage imageNamed:@"documentsSelectIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
     self.userInfoView = [[UserInfoViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *userInfoNav = [[UINavigationController alloc] initWithRootViewController:self.userInfoView];
     userInfoNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:kUserInfoViewTitle
-                                                           image:[UIImage imageNamed:@"userInfoIcon"]
-                                                   tag:2];
+                                                           image:[[UIImage imageNamed:@"userIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                   selectedImage:[[UIImage imageNamed:@"userSelectedIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
     UITabBarController *rootTabBarView = [[UITabBarController alloc] init];
     rootTabBarView.viewControllers = @[messageBoardNav, documentsNav, userInfoNav];
     rootTabBarView.tabBar.tintColor = [UIColor colorWithRed:0.07 green:0.73 blue:0.02 alpha:1.0];
-//    rootTabBarView.tabBar.translucent = NO;
+    rootTabBarView.tabBar.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
     rootTabBarView.selectedIndex = kDefaultTabIndex;
     
     UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:rootTabBarView];
@@ -75,11 +75,11 @@ static const NSInteger kDefaultTabIndex = 0;
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.23 green:0.24 blue:0.25 alpha:1.0f]];
     [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setTranslucent:NO];
     
     rootNav.navigationBar.hidden = YES;
     UILabel *alertAppear = nil;
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0) {
+        [UINavigationBar appearance].translucent = NO;
         alertAppear = [UILabel appearanceWhenContainedIn:[UIAlertController class], nil];
     } else {
         alertAppear = [UILabel appearanceWhenContainedIn:[UIActionSheet class], nil];

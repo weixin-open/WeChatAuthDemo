@@ -81,6 +81,8 @@
 		7AD826B11B820107008CA90C /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826AE1B820107008CA90C /* RSA.m */; };
 		7ADBE6BF1BCF5DDF006A8046 /* DocumentsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ADBE6BD1BCF5DDF006A8046 /* DocumentsCell.m */; settings = {ASSET_TAGS = (); }; };
 		7ADBE6C01BCF5DDF006A8046 /* DocumentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ADBE6BE1BCF5DDF006A8046 /* DocumentsCell.xib */; settings = {ASSET_TAGS = (); }; };
+		7ADF84401BD775370087E30A /* MessageboardHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ADF843E1BD775370087E30A /* MessageboardHeaderView.m */; settings = {ASSET_TAGS = (); }; };
+		7ADF84411BD775370087E30A /* MessageboardHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ADF843F1BD775370087E30A /* MessageboardHeaderView.xib */; settings = {ASSET_TAGS = (); }; };
 		7AE8155E1BA1B7AB00B5C7C8 /* rsa_public.key in Resources */ = {isa = PBXBuildFile; fileRef = 7A00ADC31B83369B0013A0B2 /* rsa_public.key */; };
 		7AE8C7541B9473560091CE4C /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C74D1B9473560091CE4C /* ErrorHandler.m */; };
 		7AE8C7551B9473560091CE4C /* ErrorTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C74F1B9473560091CE4C /* ErrorTitle.m */; };
@@ -236,6 +238,9 @@
 		7ADBE6BC1BCF5DDF006A8046 /* DocumentsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentsCell.h; sourceTree = "<group>"; };
 		7ADBE6BD1BCF5DDF006A8046 /* DocumentsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentsCell.m; sourceTree = "<group>"; };
 		7ADBE6BE1BCF5DDF006A8046 /* DocumentsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocumentsCell.xib; sourceTree = "<group>"; };
+		7ADF843D1BD775360087E30A /* MessageboardHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageboardHeaderView.h; sourceTree = "<group>"; };
+		7ADF843E1BD775370087E30A /* MessageboardHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageboardHeaderView.m; sourceTree = "<group>"; };
+		7ADF843F1BD775370087E30A /* MessageboardHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageboardHeaderView.xib; sourceTree = "<group>"; };
 		7AE8C74C1B9473560091CE4C /* ErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorHandler.h; sourceTree = "<group>"; };
 		7AE8C74D1B9473560091CE4C /* ErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorHandler.m; sourceTree = "<group>"; };
 		7AE8C74E1B9473560091CE4C /* ErrorTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorTitle.h; sourceTree = "<group>"; };
@@ -487,6 +492,9 @@
 				7A5E836C1BD679290025EFD7 /* CommentReplyFooterView.h */,
 				7A5E836D1BD679290025EFD7 /* CommentReplyFooterView.m */,
 				7A5E836F1BD679410025EFD7 /* CommentReplyFooterView.xib */,
+				7ADF843D1BD775360087E30A /* MessageboardHeaderView.h */,
+				7ADF843E1BD775370087E30A /* MessageboardHeaderView.m */,
+				7ADF843F1BD775370087E30A /* MessageboardHeaderView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -673,6 +681,7 @@
 				TargetAttributes = {
 					73BED5E61B3AA48600CA4C4D = {
 						CreatedOnToolsVersion = 6.3.2;
+						DevelopmentTeam = N4BU3F8P5C;
 					};
 				};
 			};
@@ -708,6 +717,7 @@
 				7AA163621B85DA9A00E54AAC /* UserInfoDisplayCell.xib in Resources */,
 				7A89F6AA1B8B1CBF0007ACA7 /* InputWithPickerBar.xib in Resources */,
 				7A2914711BCFC0E5006D6952 /* UserHeadPhotoCell.xib in Resources */,
+				7ADF84411BD775370087E30A /* MessageboardHeaderView.xib in Resources */,
 				7AD6CE661B8DA1E4001EFB40 /* RegisterHeaderView.xib in Resources */,
 				7ADBE6C01BCF5DDF006A8046 /* DocumentsCell.xib in Resources */,
 				7A2914761BCFCAE1006D6952 /* UserNickNameCell.xib in Resources */,
@@ -769,6 +779,7 @@
 				7AB058381BCF4F6900B11365 /* UserInfoViewController.m in Sources */,
 				7A5E836E1BD679290025EFD7 /* CommentReplyFooterView.m in Sources */,
 				7AE8C76A1B9473C70091CE4C /* ADLoginViewController.m in Sources */,
+				7ADF84401BD775370087E30A /* MessageboardHeaderView.m in Sources */,
 				7AD8269D1B8200BD008CA90C /* ADAPPBindWXResp.m in Sources */,
 				7AA1635C1B85D49700E54AAC /* InputWithTextFieldCell.m in Sources */,
 				7A0440DA1BA7BEF000574AA2 /* DebugViewController.m in Sources */,
@@ -913,8 +924,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: ss.jeason@icloud.com (7GV2X9RE88)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ss.jeason@icloud.com (7GV2X9RE88)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: iOS Dev Team Wechat (T2559DMRBL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: iOS Dev Team Wechat (T2559DMRBL)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/Util/Definition/Definition.h";
 				HEADER_SEARCH_PATHS = (

@@ -202,6 +202,7 @@ static const CGFloat kWXLoginButtonFontSize = 16.0f;
                                                  animated:YES];
         } else {
             AskLoginViewController *askLoginView = [[AskLoginViewController alloc] init];
+            askLoginView.founctionName = @"Access Log";
             askLoginView.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:askLoginView
                                                  animated:YES];

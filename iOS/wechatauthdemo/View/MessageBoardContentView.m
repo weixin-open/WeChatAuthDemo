@@ -61,12 +61,12 @@ static const CGFloat kTimeStampWidth = 88.0f;
         self.content.frame = CGRectMake(CGRectGetMinX(self.nickName.frame),
                                         CGRectGetMaxY(self.nickName.frame),
                                         CGRectGetWidth(self.frame)-normalHeight-inset, self.comment.height);
-        self.line.frame = CGRectMake(inset, 0, ScreenWidth-2*inset, 1);
+        self.line.frame = CGRectMake(inset, 0, ScreenWidth-inset, 1);
     } else if (self.reply) {
         self.content.frame = CGRectMake(CGRectGetMinX(self.nickName.frame),
-                                        CGRectGetMinY(self.nickName.frame),
+                                        CGRectGetMinY(self.nickName.frame)+33,
                                         CGRectGetWidth(self.frame)-normalHeight-inset, self.reply.height);
-        self.line.frame = CGRectMake(inset*4, 0, ScreenWidth-5*inset, 1);
+        self.line.frame = CGRectMake(inset, 0, ScreenWidth-4*inset, 1);
     }
 }
 
@@ -96,17 +96,15 @@ static const CGFloat kTimeStampWidth = 88.0f;
     if (comment.height == 0) {
         comment.height = [self calcHeightForContent:comment.content WithWidth:ScreenWidth-normalHeight-inset];
     }
-    return comment.height + normalHeight;
-
+    return comment.height + normalHeight + inset;
 }
 
 + (CGFloat)calcHeightForReply:(ADReplyList *)reply {
     if (reply.height == 0) {
-        return reply.height = [self calcHeightForContent:reply.content
-                                               WithWidth: ScreenWidth-4*inset-normalHeight-inset]+normalHeight+inset;
-    } else {
-        return reply.height;
+        reply.height = [self calcHeightForContent:reply.content
+                                        WithWidth: ScreenWidth-4*inset-normalHeight-inset];
     }
+    return reply.height + normalHeight + inset;
 }
 
 #pragma mark - Private Methods
@@ -141,8 +139,8 @@ static const CGFloat kTimeStampWidth = 88.0f;
 - (UIImageView *)headImage {
     if (_headImage == nil) {
         _headImage = [[UIImageView alloc] init];
-        _headImage.layer.cornerRadius = 33/2;
-        _headImage.layer.masksToBounds = YES;
+//        _headImage.layer.cornerRadius = 33/2;
+//        _headImage.layer.masksToBounds = YES;
     }
     return _headImage;
 }
@@ -189,7 +187,10 @@ static const CGFloat kTimeStampWidth = 88.0f;
 - (UIView *)line {
     if (_line == nil) {
         _line = [[UIView alloc] init];
-        _line.backgroundColor = [UIColor groupTableViewBackgroundColor];// you can also put image here
+        _line.backgroundColor = [UIColor colorWithRed:0.8
+                                                green:0.8
+                                                 blue:0.8
+                                                alpha:0.7f];
     }
     return _line;
 }

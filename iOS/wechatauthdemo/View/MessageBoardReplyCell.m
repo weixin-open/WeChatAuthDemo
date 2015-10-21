@@ -16,7 +16,6 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor groupTableViewBackgroundColor];
         self.replyContentView = [[MessageBoardContentView alloc] init];
         [self.contentView addSubview:self.replyContentView];
     }

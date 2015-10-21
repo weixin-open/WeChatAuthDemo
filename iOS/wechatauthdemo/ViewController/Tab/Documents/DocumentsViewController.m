@@ -47,6 +47,9 @@ static const CGFloat kDescriptionHeight = 100;
     
     [self.view addSubview:self.titleDescriptionText];
     [self.view addSubview:self.documentsCollection];
+    if ([[UIDevice currentDevice].systemVersion doubleValue] < 8.0) {
+        self.navigationController.navigationBar.translucent = NO;
+    }
 }
 
 - (void)viewWillLayoutSubviews {
