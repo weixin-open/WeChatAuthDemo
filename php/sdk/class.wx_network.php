@@ -1,12 +1,17 @@
 <?php
-
+/**
+ * 安全通信库
+ *
+ * @author Weixin
+ * @version 2015-11-01
+ */
 class WXNetwork
 {
 
 	public function get_request($is_json = true)
 	{
+		// 获取整个request的body，因为body加密过，所以不能通过$_GET等方法获取参数
 		$req = file_get_contents('php://input');
-		// wxlog('get_request:'.$req);
 		if ($req == false) {
 			return null;
 		}
@@ -44,7 +49,6 @@ class WXNetwork
 			'resp_buffer' => $buffer
 		);
 		$output = json_encode($resp_buffer);
-		// wxlog($output);
 		echo $output;
 		exit(0);
 	}
@@ -69,7 +73,6 @@ class WXNetwork
 	public function AES_encode($data, $key)
 	{
 		$data = json_encode($data);
-		wxlog($data);
 		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
 		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 		$encode = $this->AES256_cbc_encrypt($data, $key, $iv);
@@ -83,9 +86,7 @@ class WXNetwork
 		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
 		$iv = substr($data, 0, $iv_size);
 		$encode = substr($data, $iv_size);
-		// wxlog('iv: '.$iv);
 		$decode = $this->AES256_cbc_decrypt($encode, $key, $iv);
-		// wxlog('encode: '.$encode);
 		if (!$decode) {
 			return null;
 		}

@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * 微信开放平台API接口
+ *
+ * @author Weixin
+ * @version 2015-11-01
+ */
 class WXOpenAPI
 {
 	protected $app_id;
@@ -14,7 +19,6 @@ class WXOpenAPI
 	public function get_wx_api($path, $query)
 	{
 		$url = 'https://api.weixin.qq.com/' . ltrim($path, '/') . '?' . http_build_query($query);
-		wxlog($url);
 		$data = file_get_contents($url);
 		if (!$data) {
 			return null;

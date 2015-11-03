@@ -1,6 +1,7 @@
 <?php if (!defined('WX_AUTH_DEMO')) { die('Unauthorized Access!'); }
 
 /**
+ * 授权登录控制器Demo
  * @version 2015-09-15
  */
 class WXAuthControllerDemo
@@ -28,6 +29,7 @@ class WXAuthControllerDemo
 			$this->show_server_error('Database is not available.');
 		}
 
+		// 初始化SDK
 		$opt = array(
 			'app_id' => WX_APP_ID,
 			'app_secret' => WX_APP_SECRET,
@@ -56,12 +58,6 @@ class WXAuthControllerDemo
 	 * Actions
 	 ***************************************************************/
 
-	public function action_test()
-	{
-		$encode = 'MTIzNDU2NzgxMjM0NTY3OPJrgIkDx0G4ixfGpZgGHf89zFuCrochdfhmloA04QHTT27HmMHYG2mUeRkQp3HpFO7tO1heCSlkGZZblPOJ77o=';
-		echo base64_decode($encode);
-	}
-
 	/**
 	 * 建立登录前安全信道
 	 * 获取密钥psk，并生成temp_uin
@@ -75,7 +71,7 @@ class WXAuthControllerDemo
 	{
 		$this->sdk->session_start();
 
-		$resp = $this->sdk->wxlogin();
+		$resp = $this->sdk->$this->wxlogin();
 
 		//记录登陆信息
 		$uin = $resp['uin'];
@@ -99,11 +95,10 @@ class WXAuthControllerDemo
 
 	public function action_getuserinfo()
 	{
-		wxlog("\n\t\t\tgetuserinfo");
+		$this->wxlog("\n\t\t\tgetuserinfo");
 		$sdk = $this->sdk;
 		$sdk->session_start();
 		$sdk->need_login();
-		// $sdk->need_oauth();
 
 		$req = $sdk->get_request_data();
 		$resp = array();
@@ -111,18 +106,18 @@ class WXAuthControllerDemo
 
 		$mail = $this->db->get_mail_by_uin($uin);
 		if ($mail) {
-			wxlog('has app_user');
+			$this->wxlog('has app_user');
 			$app_user = $this->db->get_user_by_mail($mail);
 			$resp = array_merge($resp, $app_user);
 		}
 
 		$oauth = $this->db->get_oauth_by_uin($uin);
 		if ($oauth) {
-			wxlog('has oauth');
+			$this->wxlog('has oauth');
 			$wx_user = $sdk->request_api('/sns/userinfo', $oauth, array());
-			wxlog($wx_user);
+			$this->wxlog($wx_user);
 			if (!$wx_user or isset($wx_user['errcode'])) {
-				wxlog('ERR: Got API with errcode: '.$wx_user['errcode']);
+				$this->wxlog('ERR: Got API with errcode: '.$wx_user['errcode']);
 				$sdk->session_end(null, $wx_user['errcode'], 'Fail to get API');
 			}
 
@@ -137,170 +132,169 @@ class WXAuthControllerDemo
 		for($i = count($login_time) - 1; $i > -1; $i--){
 			array_push($resp['access_log'], array('login_time' => $login_time[$i]));
 		}
-		wxlog($login_time);
+		$this->wxlog($login_time);
 
-		wxlog($resp);
-		wxlog('getuserinfo OK');
+		$this->wxlog($resp);
+		$this->wxlog('getuserinfo OK');
 		$sdk->session_end($resp);
 	}
 
-	public function action_register()
-	{
-		wxlog("\n\t\t\tregsiter");
-		$sdk = $this->sdk;
-		$sdk->session_start();
+	// public function action_register()
+	// {
+	// 	$this->wxlog("\n\t\t\tregsiter");
+	// 	$sdk = $this->sdk;
+	// 	$sdk->session_start();
 
-		// 获取app提交的数据
-		$req = $sdk->get_request_data();
-		$form = $req['buffer'];
-		wxlog($form);
+	// 	// 获取app提交的数据
+	// 	$req = $sdk->get_request_data();
+	// 	$form = $req['buffer'];
+	// 	$this->wxlog($form);
 
-		// 检查是否已注册
-		$exist_user = $this->db->get_user_by_mail($form['mail']);
-		if ($exist_user) {
-			$sdk->session_end(null, -1, 'Mail already exists');
-		}
+	// 	// 检查是否已注册
+	// 	$exist_user = $this->db->get_user_by_mail($form['mail']);
+	// 	if ($exist_user) {
+	// 		$sdk->session_end(null, -1, 'Mail already exists');
+	// 	}
 
-		// 生成新用户id
-		$uin = $sdk->generate_uin();
+	// 	// 生成新用户id
+	// 	$uin = $sdk->generate_uin();
 
-		// 根据提交的数据，配置新用户的各属性
-		$user = array(
-			'mail' => $form['mail'],
-			'nickname' => $form['nickname'],
-			'sex' => $form['sex'],
-			'headimgurl' => '',
-			'pwd' => md5($form['pwd_h1'] . WX_AUTH_SALT)
-		);
+	// 	// 根据提交的数据，配置新用户的各属性
+	// 	$user = array(
+	// 		'mail' => $form['mail'],
+	// 		'nickname' => $form['nickname'],
+	// 		'sex' => $form['sex'],
+	// 		'headimgurl' => '',
+	// 		'pwd' => md5($form['pwd_h1'] . WX_AUTH_SALT)
+	// 	);
 
-		// 写入数据库
-		$this->db->set_mail_by_uin($form['mail'], $uin);
-		$this->db->set_user_by_mail($user, $form['mail']);
+	// 	// 写入数据库
+	// 	$this->db->set_mail_by_uin($form['mail'], $uin);
+	// 	$this->db->set_user_by_mail($user, $form['mail']);
 
-		// 生成登录凭据
-		$login_ticket = $sdk->do_login($uin);
+	// 	// 生成登录凭据
+	// 	$login_ticket = $sdk->do_login($uin);
 
-		$resp = array(
-			'uin' => $uin,
-			'login_ticket' => $login_ticket
-		);
-		wxlog($resp);
-		$sdk->session_end($resp);
-	}
+	// 	$resp = array(
+	// 		'uin' => $uin,
+	// 		'login_ticket' => $login_ticket
+	// 	);
+	// 	$this->wxlog($resp);
+	// 	$sdk->session_end($resp);
+	// }
 
-	public function action_login()
-	{
-		wxlog("\n\t\t\tlogin");
-		$sdk = $this->sdk;
-		$sdk->session_start();
+	// public function action_login()
+	// {
+	// 	$this->wxlog("\n\t\t\tlogin");
+	// 	$sdk = $this->sdk;
+	// 	$sdk->session_start();
 
-		$req = $sdk->get_request_data();
-		$form = $req['buffer'];
-		wxlog($req);
+	// 	$req = $sdk->get_request_data();
+	// 	$form = $req['buffer'];
+	// 	$this->wxlog($req);
 
-		$app_user = $this->db->get_user_by_mail($form['mail']);
-		if (!$app_user) {
-			$sdk->session_end(null, -1, 'No user');
-		}
-		if ($this->pwd_encode($form['pwd_h1']) != $app_user['pwd']) {
-			$sdk->session_end(null, -1, 'Wrong password');
-		}
+	// 	$app_user = $this->db->get_user_by_mail($form['mail']);
+	// 	if (!$app_user) {
+	// 		$sdk->session_end(null, -1, 'No user');
+	// 	}
+	// 	if ($this->pwd_encode($form['pwd_h1']) != $app_user['pwd']) {
+	// 		$sdk->session_end(null, -1, 'Wrong password');
+	// 	}
 
-		$uin = $this->db->get_mail_by_uin($form['mail']);
-		if (!$uin) {
-			$uin = $sdk->generate_uin();
-			$this->db->set_mail_by_uin($form['mail'], $uin);
-		}
+	// 	$uin = $this->db->get_mail_by_uin($form['mail']);
+	// 	if (!$uin) {
+	// 		$uin = $sdk->generate_uin();
+	// 		$this->db->set_mail_by_uin($form['mail'], $uin);
+	// 	}
 
-		// 生成登录凭据
-		$login_ticket = $sdk->do_login($uin);
+	// 	// 生成登录凭据
+	// 	$login_ticket = $sdk->do_login($uin);
 
-		$resp = array(
-			'uin' => $uin,
-			'login_ticket' => $login_ticket
-		);
-		wxlog($resp);
-		$sdk->session_end($resp);
-	}
+	// 	$resp = array(
+	// 		'uin' => $uin,
+	// 		'login_ticket' => $login_ticket
+	// 	);
+	// 	$this->wxlog($resp);
+	// 	$sdk->session_end($resp);
+	// }
 
-	public function action_wxbindapp()
-	{
-		wxlog("\n\t\t\twxbindapp");
-		$sdk = $this->sdk;
-		$sdk->session_start();
-		$sdk->need_oauth();
+	// public function action_wxbindapp()
+	// {
+	// 	$this->wxlog("\n\t\t\twxbindapp");
+	// 	$sdk = $this->sdk;
+	// 	$sdk->session_start();
+	// 	$sdk->need_oauth();
 
-		$req = $sdk->get_request_data();
-		$uin = $req['uin'];
-		$form = $req['buffer'];
-		wxlog($form);
+	// 	$req = $sdk->get_request_data();
+	// 	$uin = $req['uin'];
+	// 	$form = $req['buffer'];
+	// 	$this->wxlog($form);
 
-		if ($form['is_to_create']) {
-			// 注册新帐号
-			// 检查是否已注册
-			$exist_user = $this->db->get_user_by_mail($form['mail']);
-			if ($exist_user) {
-				$sdk->session_end(null, -1, 'Mail already exists');
-			}
+	// 	if ($form['is_to_create']) {
+	// 		// 注册新帐号
+	// 		// 检查是否已注册
+	// 		$exist_user = $this->db->get_user_by_mail($form['mail']);
+	// 		if ($exist_user) {
+	// 			$sdk->session_end(null, -1, 'Mail already exists');
+	// 		}
 
-			// 根据提交的数据，配置新用户的各属性
-			$user = array(
-				'mail' => $form['mail'],
-				'nickname' => $form['nickname'],
-				'sex' => $form['sex'],
-				'headimgurl' => '',
-				'pwd' => md5($form['pwd_h1'] . WX_AUTH_SALT)
-			);
+	// 		// 根据提交的数据，配置新用户的各属性
+	// 		$user = array(
+	// 			'mail' => $form['mail'],
+	// 			'nickname' => $form['nickname'],
+	// 			'sex' => $form['sex'],
+	// 			'headimgurl' => '',
+	// 			'pwd' => md5($form['pwd_h1'] . WX_AUTH_SALT)
+	// 		);
 
-			// 写入数据库
-			$this->db->set_user_by_mail($user, $form['mail']);
-		} else {
-			// 登录已有帐号
-			$app_user = $this->db->get_user_by_mail($form['mail']);
-			if (!$app_user) {
-				$sdk->session_end(null, -1, 'No user');
-			}
-			if ($this->pwd_encode($form['pwd_h1']) != $app_user['pwd']) {
-				$sdk->session_end(null, -1, 'Wrong password');
-			}
-		}
+	// 		// 写入数据库
+	// 		$this->db->set_user_by_mail($user, $form['mail']);
+	// 	} else {
+	// 		// 登录已有帐号
+	// 		$app_user = $this->db->get_user_by_mail($form['mail']);
+	// 		if (!$app_user) {
+	// 			$sdk->session_end(null, -1, 'No user');
+	// 		}
+	// 		if ($this->pwd_encode($form['pwd_h1']) != $app_user['pwd']) {
+	// 			$sdk->session_end(null, -1, 'Wrong password');
+	// 		}
+	// 	}
 
-		// 记录关联关系
-		$this->db->set_mail_by_uin($form['mail'], $uin);
+	// 	// 记录关联关系
+	// 	$this->db->set_mail_by_uin($form['mail'], $uin);
 
-		$login_ticket = $sdk->do_login($uin);
+	// 	$login_ticket = $sdk->do_login($uin);
 
-		$resp = array(
-			'uin' => $uin,
-			'login_ticket' => $login_ticket
-		);
-		wxlog('wxbindapp OK');
-		wxlog($resp);
-		$sdk->session_end($resp);
-	}
+	// 	$resp = array(
+	// 		'uin' => $uin,
+	// 		'login_ticket' => $login_ticket
+	// 	);
+	// 	$this->wxlog('wxbindapp OK');
+	// 	$this->wxlog($resp);
+	// 	$sdk->session_end($resp);
+	// }
 
-	public function action_appbindwx()
-	{
-		wxlog("\n\t\t\tappbindwx");
-		$sdk = $this->sdk;
-		$sdk->session_start();
-		$sdk->need_login();
+	// public function action_appbindwx()
+	// {
+	// 	$this->wxlog("\n\t\t\tappbindwx");
+	// 	$sdk = $this->sdk;
+	// 	$sdk->session_start();
+	// 	$sdk->need_login();
 
-		$resp = $sdk->wxlogin();
+	// 	$resp = $sdk->$this->wxlogin();
 
-		$sdk->session_end($resp);
-
-	}
+	// 	$sdk->session_end($resp);
+	// }
 
 	public function action_commentlist()
 	{
-		wxlog("\n\t\t\tcommentlist");
+		$this->wxlog("\n\t\t\tcommentlist");
 		$sdk = $this->sdk;
 		$sdk->session_start();
 
 		$req = $sdk->get_request_data();
 		$start_id = $req['buffer']['start_id'] . '';
-		wxlog('start_id: ' . $start_id);
+		$this->wxlog('start_id: ' . $start_id);
 
 		$perpage = 20;
 		$count = $this->db->get_comment_count();
@@ -321,14 +315,14 @@ class WXAuthControllerDemo
 			'comment_list' => $list
 		);
 
-		wxlog($resp);
-		wxlog('commentlist OK');
+		$this->wxlog($resp);
+		$this->wxlog('commentlist OK');
 		$sdk->session_end($resp);
 	}
 
 	public function action_replylist()
 	{
-		wxlog("\n\t\t\tcommentlist");
+		$this->wxlog("\n\t\t\tcommentlist");
 		$sdk = $this->sdk;
 		$sdk->session_start();
 
@@ -337,7 +331,7 @@ class WXAuthControllerDemo
 
 		$comment = $this->db->get_comment($comment_id);
 		if (!$comment) {
-			wxlog('no comment');
+			$this->wxlog('no comment');
 			$sdk->session_end(null, WX_ERR_NO_COMMENT, 'Cannot get comment by comment_id');
 		}
 
@@ -345,14 +339,14 @@ class WXAuthControllerDemo
 			'reply_list' => array_values($comment['reply_list'])
 		);
 
-		wxlog($resp);
-		wxlog('replylist OK');
+		$this->wxlog($resp);
+		$this->wxlog('replylist OK');
 		$sdk->session_end($resp);
 	}
 
 	public function action_addcomment()
 	{
-		wxlog("\n\t\t\taddcomment");
+		$this->wxlog("\n\t\t\taddcomment");
 		$sdk = $this->sdk;
 		$sdk->session_start();
 		$sdk->need_login();
@@ -364,18 +358,18 @@ class WXAuthControllerDemo
 
 		// 校验内容
 		if (!$form['content']) {
-			wxlog('no content');
+			$this->wxlog('no content');
 			$sdk->session_end(null, WX_ERR_INVALID_COMMENT_CONTENT, 'Empty comment content');
 		}
 
 		// 获取用户
 		$wx_user = $this->db->get_wxuser_by_uin($req['uin']);
 		if (!$wx_user) {
-			wxlog('no wx_user');
+			$this->wxlog('no wx_user');
 			$oauth = $this->db->get_oauth_by_uin($req['uin']);
 			$wx_user = $sdk->request_api('/sns/userinfo', $oauth, array());
 			if (!$wx_user or isset($wx_user['errcode'])) {
-				wxlog('ERR: Got API with errcode: '.$wx_user['errcode']);
+				$this->wxlog('ERR: Got API with errcode: '.$wx_user['errcode']);
 				$sdk->session_end(null, $wx_user['errcode'], 'Fail to get API');
 			}
 			$this->db->set_wxuser_by_uin($wx_user, $req['uin']);
@@ -394,14 +388,14 @@ class WXAuthControllerDemo
 
 		$resp['comment'] = $comment;
 
-		wxlog($resp);
-		wxlog('addcomment OK');
+		$this->wxlog($resp);
+		$this->wxlog('addcomment OK');
 		$sdk->session_end($resp);
 	}
 
 	public function action_addreply()
 	{
-		wxlog("\n\t\t\taddreply");
+		$this->wxlog("\n\t\t\taddreply");
 		$sdk = $this->sdk;
 		$sdk->session_start();
 		$sdk->need_login();
@@ -410,11 +404,11 @@ class WXAuthControllerDemo
 		$req = $sdk->get_request_data();
 		$form = $req['buffer'];
 		$resp = array();
-		wxlog($form);
+		$this->wxlog($form);
 
 		// 校验内容
 		if (!$form['content']) {
-			wxlog('no content');
+			$this->wxlog('no content');
 			$sdk->session_end(null, WX_ERR_INVALID_REPLY_CONTENT, 'Empty reply content');
 		}
 		$form['reply_to_id'] = $form['reply_to_id'] . '';
@@ -422,18 +416,18 @@ class WXAuthControllerDemo
 		// 获取留言
 		$comment = $this->db->get_comment($form['comment_id']);
 		if (!$comment) {
-			wxlog('no comment');
+			$this->wxlog('no comment');
 			$sdk->session_end(null, WX_ERR_NO_COMMENT, 'Cannot get comment by comment_id');
 		}
 
 		// 获取用户
 		$wx_user = $this->db->get_wxuser_by_uin($req['uin']);
 		if (!$wx_user) {
-			wxlog('no wx_user');
+			$this->wxlog('no wx_user');
 			$oauth = $this->db->get_oauth_by_uin($req['uin']);
 			$wx_user = $sdk->request_api('/sns/userinfo', $oauth, array());
 			if (!$wx_user or isset($wx_user['errcode'])) {
-				wxlog('ERR: Got API with errcode: '.$wx_user['errcode']);
+				$this->wxlog('ERR: Got API with errcode: '.$wx_user['errcode']);
 				$sdk->session_end(null, $wx_user['errcode'], 'Fail to get API');
 			}
 			$this->db->set_wxuser_by_uin($wx_user, $req['uin']);
@@ -461,8 +455,8 @@ class WXAuthControllerDemo
 		$resp['reply_list'] = array_values($comment['reply_list']);
 		$resp['reply_list'][] = $reply;
 
-		wxlog($resp);
-		wxlog('addreply OK');
+		$this->wxlog($resp);
+		$this->wxlog('addreply OK');
 		$sdk->session_end($resp);
 	}
 
@@ -470,6 +464,7 @@ class WXAuthControllerDemo
 	 * Helpers
 	 ***************************************************************/
 
+	// 加解密前遇到错误，直接500返回
 	protected function show_server_error($msg)
 	{
 		header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
@@ -477,9 +472,19 @@ class WXAuthControllerDemo
 		die($msg);
 	}
 
-	protected function pwd_encode($pwd)
-	{
-		return md5($pwd . WX_AUTH_SALT);
+	// protected function pwd_encode($pwd)
+	// {
+	// 	return md5($pwd . WX_AUTH_SALT);
+	// }
+
+	// 打log
+	protected function wxlog($str) {
+		if (!is_string($str)) {
+			$str = json_encode($str);
+		}
+		$fp = fopen(WX_AUTH_STORE_PATH.'/log.txt', 'a');
+		fwrite($fp, date('[m-d H:i:s]')." ".$str."\n");
+		fclose($fp);
 	}
 
 

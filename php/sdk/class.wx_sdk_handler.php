@@ -77,8 +77,6 @@ class WXSDKHandler
 		$resp = array(
 			'tmp_uin' => $tmp_uin
 		);
-		wxlog('psk: '.$psk);
-		wxlog('tmp_uin: '.$tmp_uin);
 		$this->network->response($psk, $resp);
 	}
 
@@ -87,26 +85,17 @@ class WXSDKHandler
 	 */
 	public function wxlogin()
 	{
-		wxlog("\n\t\t\t\t==wxlogin==");
 		$code = $this->request_data['buffer']['code'];
-		wxlog('code: '.$code);
 
 		$api_data = $this->api->request_access_token($code);
-		wxlog($api_data);
 		if (!$api_data) {
-			wxlog('Cannot connect to WxOpenServer');
 			$this->session_end(null, WX_ERR_CANNOT_ACCESS_OPENSERVER, 'Cannot access to WxOpenServer');
 		} else if (isset($api_data['errcode'])) {
-			wxlog('ERR: Fail to get access_token with errcode: '.$api_data['errcode']);
 			$this->session_end(null, $api_data['errcode'], 'Fail to get access_token with errcode: '.$api_data['errcode']);
 		}
 		$api_data['create_time'] = time();
 
-		// $uin = $this->db->get_uin_by_openid($api_data['openid']);
-		// if (!$uin) {
-			$uin = $this->request_data['uin'];
-		// }
-		// $this->db->set_uin_by_openid($uin, $api_data['openid']);
+		$uin = $this->request_data['uin'];
 		$this->db->set_oauth_by_uin($api_data, $uin);
 
 		$login_ticket = $this->do_login($uin);
@@ -115,23 +104,18 @@ class WXSDKHandler
 			'uin' => $uin,
 			'login_ticket' => $login_ticket
 		);
-		wxlog('wxlogin ok');
 		return $resp;
 	}
 
 	public function checklogin()
 	{
-		wxlog("\n\t\t\t\t==checklogin==");
 		$req = $this->network->get_request(false);
-		wxlog($req);
 		if (!$req) {
 			$this->network->response_error(WX_ERR_FAIL_TO_READ_REQUEST);
 		}
 
 		$req_data = $this->network->RSA_decode($req, $this->opt['rsa_private_key'], 'json');
-		// wxlog($req_data);
 		if (!$req_data) {
-			wxlog('Fail to decode request');
 			$this->network->response_error(WX_ERR_FAIL_TO_READ_REQUEST);
 		}
 		$uin = $req_data['uin'];
@@ -139,24 +123,18 @@ class WXSDKHandler
 		$login_ticket = $this->encode_token($req_data['login_ticket'], $this->opt['salt']);
 
 		$login_data = $this->db->get_login_by_uin($uin);
-		wxlog($login_data);
-		wxlog($login_ticket);
 		if (!$login_data) {
-			wxlog('ERR: Fail to get login_ticket by uin');
 			$this->network->response($tmp_key, null, WX_ERR_LOGINTICKET_UIN_MISMATCHED, 'Fail to get login_ticket by uin');
 		}
 		if ($login_data['login_ticket'] != $login_ticket) {
-			wxlog('ERR: Mismatch of login_ticket and uin');
 			$this->network->response($tmp_key, null, WX_ERR_LOGINTICKET_UIN_MISMATCHED, 'Mismatch of login_ticket and uin');
 		}
 
 		if ($login_data['create_time'] < time() - WX_LOGIN_TOKEN_EXPIRE_CREATE_TIME) {
-			wxlog('ERR: Expired login_ticket (create_time)');
 			$this->db->delete_login_by_uin($uin);
 			$this->network->response($tmp_key, null, WX_ERR_LOGINTICKET_EXPIRED, 'Expired login_ticket');
 		}
 		if ($login_data['last_login_time'] > 0 and $login_data['last_login_time'] < time() - WX_LOGIN_TOKEN_EXPIRE_LAST_LOGIN_TIME) {
-			wxlog('ERR: Expired login_ticket (last_login_time)');
 			$this->db->delete_login_by_uin($uin);
 			$this->network->response($tmp_key, null, WX_ERR_LOGINTICKET_EXPIRED, 'Expired login_ticket');
 		}
@@ -170,7 +148,6 @@ class WXSDKHandler
 			'expire_time' => $expire_time
 		), $uin);
 
-		wxlog('checklogin OK');
 		$resp = array(
 			'session_key' => $session_key,
 			'expire_time' => $expire_time
@@ -190,7 +167,6 @@ class WXSDKHandler
 	public function session_start()
 	{
 		$req = $this->network->get_request(true);
-		// wxlog($req);
 		if (!$req) {
 			$this->network->response_error(WX_ERR_FAIL_TO_READ_REQUEST);
 		}
@@ -198,15 +174,11 @@ class WXSDKHandler
 		// 获取uin，这个uin可能是正式uin也可能是tmp_uin
 		$uin = $req['uin'];
 		$this->session_data['uin'] = $uin;
-		wxlog('uin: '.$uin);
 
 		// 尝试获取session_key
 		$session = $this->db->get_session_by_uin($uin);
-		// wxlog($session);
 		if ($session) {
 			// 使用正式session_key
-			wxlog('use session_key');
-			// wxlog($session);
 			if ($session['expire_time'] < time()) {
 				wxlog('ERR: Expired session_key');
 				$this->db->delete_session_by_uin($uin);
@@ -216,23 +188,18 @@ class WXSDKHandler
 			$this->session_data['session'] = $session;
 		} else {
 			// 使用临时pre_session_key
-			wxlog('use psk');
 			$psk = $this->db->get_psk_by_uin($uin);
 			$aes_key = $psk;
 			$this->session_data['psk'] = $psk;
 		}
 		if (!$aes_key) {
-			wxlog('ERR: No session_key or pre_session_key');
 			$this->network->response_error(WX_ERR_FAIL_TO_READ_REQUEST);
 		}
 		$this->session_key = $aes_key;
 
 		// 解包
 		$buffer = $this->network->AES_decode($req['req_buffer'], $aes_key, 'json');
-		// wxlog($req_data);
 		if (!$buffer) {
-			wxlog('Fail to decode req_buffer');
-			wxlog($req['req_buffer']);
 			$this->network->response($aes_key, null, WX_ERR_FAIL_TO_READ_REQUEST, 'Fail to decode req_buffer');
 		}
 		$this->request_data = array(
@@ -251,14 +218,10 @@ class WXSDKHandler
 		$uin = $this->request_data['uin'];
 		$login_ticket = $this->encode_token($this->request_data['buffer']['login_ticket'], $this->opt['salt']);
 		$login_data = $this->db->get_login_by_uin($uin);
-		// wxlog($login_data['login_ticket'].','.$req_data['login_ticket']);
-		wxlog($login_data);
 		if (!$login_data) {
-			wxlog('Fail to get login_ticket by iun');
 			$this->session_end(null, WX_ERR_LOGINTICKET_UIN_MISMATCHED, 'Mismatch of login_ticket and uin');
 		}
 		if ($login_data['login_ticket'] != $login_ticket) {
-			wxlog('ERR: Mismatch of login_ticket and uin');
 			$this->session_end(null, WX_ERR_LOGINTICKET_UIN_MISMATCHED, 'Mismatch of login_ticket and uin');
 		}
 		$this->session_data['login'] = $login_data;
@@ -268,9 +231,7 @@ class WXSDKHandler
 	{
 		$uin = $this->request_data['uin'];
 		$oauth = $this->db->get_oauth_by_uin($uin);
-		wxlog($oauth);
 		if (!$oauth) {
-			wxlog('ERR: Missing OAuth info');
 			$this->session_end(null, WX_ERR_NO_OAUTH_INFO, 'Missing OAuth info');
 		}
 		$this->session_data['oauth'] = $oauth;
@@ -285,9 +246,7 @@ class WXSDKHandler
 			return null;
 		}
 		if (isset($data['errcode']) and $data['errcode'] == 42001) {
-			wxlog('refresh_token');
 			$result = $this->api->request_refresh_token($oauth['refresh_token']);
-			wxlog($result);
 			if (!$result) {
 				return $data;
 			}
@@ -302,7 +261,6 @@ class WXSDKHandler
 
 			$query['access_token'] = $oauth['access_token'];
 			$data = $this->api->get_wx_api($api_path, $query);
-			wxlog($data);
 		}
 		return $data;
 	}
@@ -335,10 +293,14 @@ class WXSDKHandler
 	 ***************************************************************/
 
 
+	// 生成10位长度uin
 	public function generate_uin()
 	{
-		// TODO: Stronger UIN
-		return intval( microtime(true)*1 );
+		$uin = mt_rand(1, 9) . '';
+		for ($i=0; $i<9; $i++) {
+			$uin .= mt_rand(0, 9);
+		}
+		return intval($uin);
 	}
 
 	public function generate_login_ticket()

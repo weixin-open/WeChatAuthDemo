@@ -21,6 +21,12 @@ class WXAuthDatabaseDemo implements WXDatabase
 
 	}
 
+
+	/****************************************************************
+	 * 实现 WXDatabase 接口
+	 * 下面这些方法是微信授权登录要用到的存储接口
+	 ****************************************************************/
+
 	public function uin_exists($uin)
 	{
 		if ($this->get_psk_by_uin($uin)) {
@@ -68,19 +74,6 @@ class WXAuthDatabaseDemo implements WXDatabase
 		return $this->delete_item('uin_login_map', 'uin_'.$uin);
 	}
 
-	public function set_record_by_openid($record_data, $openid)
-	{
-		$this->set_item('openid_record_map', 'openid_'.$openid, $record_data);
-	}
-	public function get_record_by_openid($openid)
-	{
-		return $this->get_item('openid_record_map', 'openid_'.$openid);
-	}
-	public function delete_record_by_openid($openid)
-	{
-		return $this->delete_item('openid_record_map', 'openid_'.$openid);
-	}
-
 	public function set_oauth_by_uin($data, $uin)
 	{
 		$this->set_item('uin_oauth_map', 'uin_'.$uin, $data);
@@ -108,24 +101,6 @@ class WXAuthDatabaseDemo implements WXDatabase
 	}
 
 
-	public function set_mail_by_uin($mail, $uin)
-	{
-		$this->set_item('uin_mail_map', 'uin_'.$uin, $mail);
-	}
-	public function get_mail_by_uin($uin)
-	{
-		return $this->get_item('uin_mail_map', 'uin_'.$uin);
-	}
-
-	public function set_user_by_mail($user, $mail)
-	{
-		$this->set_item('mail_user_map', $mail, $user);
-	}
-	public function get_user_by_mail($mail)
-	{
-		return $this->get_item('mail_user_map', $mail);
-	}
-
 	public function set_wxuser_by_uin($user, $uin)
 	{
 		$this->set_item('uin_wxuser_map', 'uin_'.$uin, $user);
@@ -136,13 +111,17 @@ class WXAuthDatabaseDemo implements WXDatabase
 	}
 
 
-	// 第三方业务
+
+
+	/****************************************************************
+	 * 第三方业务方法
+	 * 下面这些方法是demo app用到的存储接口
+	 ****************************************************************/
 
 	public function get_comment_list($start_id = '', $limit = 10)
 	{
 		$comment_list = $this->get('comment_list');
 		if (!$comment_list) {
-			wxlog('no comment_list');
 			return array();
 		}
 		$list = array();
@@ -174,7 +153,6 @@ class WXAuthDatabaseDemo implements WXDatabase
 	}
 	public function add_comment($comment)
 	{
-		// $this->set_item('comment_list', $comment['id'], $comment);
 		$list = $this->get('comment_list');
 		if (!$list) {
 			$list = array();
@@ -200,9 +178,44 @@ class WXAuthDatabaseDemo implements WXDatabase
 		return true;
 	}
 
+	public function set_record_by_openid($record_data, $openid)
+	{
+		$this->set_item('openid_record_map', 'openid_'.$openid, $record_data);
+	}
+	public function get_record_by_openid($openid)
+	{
+		return $this->get_item('openid_record_map', 'openid_'.$openid);
+	}
+	public function delete_record_by_openid($openid)
+	{
+		return $this->delete_item('openid_record_map', 'openid_'.$openid);
+	}
+
+	public function set_mail_by_uin($mail, $uin)
+	{
+		$this->set_item('uin_mail_map', 'uin_'.$uin, $mail);
+	}
+	public function get_mail_by_uin($uin)
+	{
+		return $this->get_item('uin_mail_map', 'uin_'.$uin);
+	}
+
+	public function set_user_by_mail($user, $mail)
+	{
+		$this->set_item('mail_user_map', $mail, $user);
+	}
+	public function get_user_by_mail($mail)
+	{
+		return $this->get_item('mail_user_map', $mail);
+	}
 
 
 
+
+
+	/****************************************************************
+	 * 本存储模块用到的数据操作方法
+	 ****************************************************************/
 
 	public function is_available()
 	{
