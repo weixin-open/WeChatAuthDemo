@@ -27,7 +27,7 @@ class WXNetwork
 		$resp = array(
 			'errcode' => $errcode
 		);
-		echo json_encode($resp_buffer);
+		echo json_encode($resp);
 		exit(0);
 	}
 
