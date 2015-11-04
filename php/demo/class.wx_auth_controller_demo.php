@@ -71,7 +71,7 @@ class WXAuthControllerDemo
 	{
 		$this->sdk->session_start();
 
-		$resp = $this->sdk->$this->wxlogin();
+		$resp = $this->sdk->wxlogin();
 
 		//记录登陆信息
 		$uin = $resp['uin'];
