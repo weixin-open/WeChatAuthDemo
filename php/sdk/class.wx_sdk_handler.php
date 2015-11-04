@@ -54,17 +54,14 @@ class WXSDKHandler
 	 */
 	public function connect()
 	{
-		wxlog("\n\t\t\t\t==connect==");
 		$psk_encode = $this->network->get_request(false);
 
 		if (!$psk_encode) {
-			// wxlog('no psk');
 			$this->network->response_error(-1);
 		}
 
 		$psk = $this->network->RSA_decode($psk_encode, $this->opt['rsa_private_key'], 'json');
 		if (!$psk or !$psk['psk']) {
-			// wxlog('fail to decode psk');
 			$this->network->response_error(-1);
 		}
 		$psk = $psk['psk'];
@@ -180,7 +177,6 @@ class WXSDKHandler
 		if ($session) {
 			// 使用正式session_key
 			if ($session['expire_time'] < time()) {
-				wxlog('ERR: Expired session_key');
 				$this->db->delete_session_by_uin($uin);
 				$this->network->response($session['session_key'], null, WX_ERR_SESSIONKEY_EXPIRED, 'Expired session_key');
 			}
