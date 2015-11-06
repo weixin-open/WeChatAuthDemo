@@ -294,7 +294,7 @@ class WXSDKHandler
 	// 生成10位长度uin
 	public function generate_uin()
 	{
-		$uin = mt_rand(1, 9) . '';
+		$uin = mt_rand(1, 3) . '';
 		for ($i=0; $i<9; $i++) {
 			$uin .= mt_rand(0, 9);
 		}
