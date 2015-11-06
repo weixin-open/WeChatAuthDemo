@@ -485,7 +485,11 @@ class WXAuthControllerDemo
 		if (!is_string($str)) {
 			$str = json_encode($str);
 		}
-		$fp = fopen(WX_AUTH_STORE_PATH.'/log.txt', 'a');
+		$file = WX_AUTH_STORE_PATH.'/log.txt';
+		if (file_exists($file)) {
+			file_put_contents($file, '');
+		}
+		$fp = fopen($file, 'a');
 		fwrite($fp, date('[m-d H:i:s]')." ".$str."\n");
 		fclose($fp);
 	}
