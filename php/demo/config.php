@@ -41,7 +41,7 @@ function wxlog($str) {
 		$str = json_encode($str);
 	}
 	$file = WX_AUTH_STORE_PATH.'/log.txt';
-	if (file_exists($file)) {
+	if (!file_exists($file)) {
 		file_put_contents($file, '');
 	}
 	$fp = fopen($file, 'a');
