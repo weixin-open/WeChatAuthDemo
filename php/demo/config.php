@@ -36,6 +36,18 @@ define('WX_ERR_NO_COMMENT',							-40003);	//留言不存在
 /* !!! 请配置以上信息 !!! */
 
 
+function wxlog($str) {
+	if (!is_string($str)) {
+		$str = json_encode($str);
+	}
+	$file = WX_AUTH_STORE_PATH.'/log.txt';
+	if (file_exists($file)) {
+		file_put_contents($file, '');
+	}
+	$fp = fopen($file, 'a');
+	fwrite($fp, date('[m-d H:i:s]')." ".$str."\n");
+	fclose($fp);
+}
 
 
 /* END file */

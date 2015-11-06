@@ -86,8 +86,10 @@ class WXSDKHandler
 
 		$api_data = $this->api->request_access_token($code);
 		if (!$api_data) {
+			wxlog('Cannot access to WxOpenServer');
 			$this->session_end(null, WX_ERR_CANNOT_ACCESS_OPENSERVER, 'Cannot access to WxOpenServer');
 		} else if (isset($api_data['errcode'])) {
+			wxlog('Fail to get access_token with errcode: '.$api_data['errcode']);
 			$this->session_end(null, $api_data['errcode'], 'Fail to get access_token with errcode: '.$api_data['errcode']);
 		}
 		$api_data['create_time'] = time();
