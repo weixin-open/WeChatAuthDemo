@@ -127,10 +127,13 @@ class WXAuthControllerDemo
 			$resp = array_merge($resp, $wx_user);
 		}
 
-		$login_time = $this->db->get_record_by_openid($resp['openid'])['login_time'];
+		$record = $this->db->get_record_by_openid($resp['openid']);
+		$login_time = $record['login_time'];
 		$resp['access_log'] = array();
-		for($i = count($login_time) - 1; $i > -1; $i--){
-			array_push($resp['access_log'], array('login_time' => $login_time[$i]));
+		for ($i = count($login_time) - 1; $i > -1; $i--) {
+			$resp['access_log'][] = array(
+				'login_time' => $login_time[$i]
+			);
 		}
 		$this->wxlog($login_time);
 
