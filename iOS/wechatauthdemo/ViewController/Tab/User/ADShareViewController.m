@@ -13,7 +13,7 @@ static NSString* const kShareButtonText = @"分享  ";
 static NSString* const kShareDescText = @"分享一个链接";
 static NSString* const kShareFailedText = @"分享失败";
 
-@interface ADShareViewController ()<WXAuthDelegate, UIActionSheetDelegate>
+@interface ADShareViewController ()<UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) NSURLRequest *urlRequest;
@@ -69,13 +69,13 @@ static NSString* const kShareFailedText = @"分享失败";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0: // 转发到会话
-            [[WXApiManager sharedManager] sendLinkContent:self.urlString
+            [[WXApiManager sharedManager] sendLinkContent:[[self.webView.request URL] absoluteString]
                                                     Title:self.title
                                               Description:kShareDescText
                                                   AtScene:WXSceneSession];
             break;
         case 1: //分享到朋友圈
-            [[WXApiManager sharedManager] sendLinkContent:self.urlString
+            [[WXApiManager sharedManager] sendLinkContent:[[self.webView.request URL] absoluteString]
                                                     Title:self.title
                                               Description:kShareDescText
                                                   AtScene:WXSceneTimeline];

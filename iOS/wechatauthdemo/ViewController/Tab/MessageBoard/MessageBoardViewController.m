@@ -3,7 +3,7 @@
 //  wechatauthdemo
 //
 //  Created by Jeason on 15/10/2015.
-//  Copyright © 2015 boshao. All rights reserved.
+//  Copyright © 2015 Tencent. All rights reserved.
 //
 
 #import "MessageBoardViewController.h"
@@ -24,6 +24,7 @@
 #import "ADAddReplyResp.h"
 #import "MessageboardHeaderView.h"
 #import "AskLoginViewController.h"
+#import "AppDelegate.h"
 
 static NSString *const kMessageBoardViewTitle = @"留言板";
 static NSString *const kCommentViewIdentifier = @"kCommentViewIdentifier";
@@ -33,6 +34,7 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 @interface MessageBoardViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) UITableView *messagesTable;
+@property (nonatomic, strong) MessageboardHeaderView *tableHeader;
 @property (nonatomic, strong) NSArray *commentsArray;
 @property (nonatomic, strong) InputWithTextFeildBar *replyAccessoryView;
 @property (nonatomic, strong) UITextView *keyBoardTool;
@@ -40,7 +42,7 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 @property (nonatomic, weak) UIView *replyView;
 @property (nonatomic, strong) NSMutableDictionary *footerDict;
 @property (nonatomic, weak) CommentReplyFooterView *clickFooter;
-@property (nonatomic, strong) MessageboardHeaderView *tableHeader;
+@property (nonatomic, assign) BOOL keyboardWasShown;
 
 @end
 
@@ -162,6 +164,8 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 #pragma mark - Notification
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification {
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    delegate.keyboardWasShown = YES;
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
@@ -171,21 +175,24 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     
     // If active cell is hidden by keyboard, scroll it so it's visible
     CGRect aRect = self.view.frame;
-    aRect.size.height -= kbSize.height;
-    if (!CGRectContainsPoint(aRect, self.replyView.frame.origin)) {
+    aRect.size.height -= kbSize.height+self.replyAccessoryView.frame.size.height;
+    CGPoint aPoint = self.replyView.frame.origin;
+    aPoint.y += self.replyView.frame.size.height;
+    if (!CGRectContainsPoint(aRect, aPoint)) {
         [self.messagesTable scrollRectToVisible:self.replyView.frame
                                        animated:YES];
-        [self scrollViewDidScroll:self.messagesTable];
     }
     [self.replyAccessoryView.textField becomeFirstResponder];
+    self.keyboardWasShown = YES;
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification {
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    contentInsets.bottom = 49;
     self.messagesTable.contentInset = contentInsets;
     self.messagesTable.scrollIndicatorInsets = contentInsets;
-    [self scrollViewDidScroll:self.messagesTable];
+    self.keyboardWasShown = NO;
 }
 
 #pragma mark - UITableViewDataSource
@@ -212,6 +219,10 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
         self.footerDict[@(indexPath.section)] = footer;
         __block typeof(footer) weakFooter = footer;
         footer.onClick = ^{
+            if (self.keyboardWasShown) {
+                [self.replyAccessoryView.textField resignFirstResponder];
+                return;
+            }
             if (self.clickFooter || [weakFooter.button.titleLabel.text isEqualToString:@"查看全部回复"]) {
                 [[ADNetworkEngine sharedEngine] getReplyListForUin:[ADUserInfo currentUser].uin
                                                          OfComment:comment.commentListIdentifier
@@ -241,6 +252,11 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
         __block typeof (self) weakSelf = self;
         __block MessageBoardReplyCell* weakCell = cell;
         cell.replyContentView.clickCallBack = ^{
+            if (self.keyboardWasShown) {
+                [self.replyAccessoryView.textField resignFirstResponder];
+                return;
+            }
+
             if ([ADUserInfo currentUser].sessionExpireTime > 0) {
                 [weakSelf.keyBoardTool becomeFirstResponder];
                 weakSelf.replyIndexPath = indexPath;
@@ -266,6 +282,11 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     __block typeof(self) weakSelf = self;
     __block typeof(commentView) weakCommentView = commentView;
     commentView.commentContent.clickCallBack = ^{
+        if (weakSelf.keyboardWasShown) {
+            [self.replyAccessoryView.textField resignFirstResponder];
+            return;
+        }
+
         if ([ADUserInfo currentUser].sessionExpireTime > 0) {
             [weakSelf.keyBoardTool becomeFirstResponder];
             weakSelf.replyIndexPath = [NSIndexPath indexPathForRow:-1 inSection:section];
@@ -290,20 +311,6 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     }
 }
 
-#pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSArray *indexPathArray = self.messagesTable.indexPathsForVisibleRows;
-    if ([indexPathArray count] == 0)
-        return;
-    
-    CGFloat sectionHeaderHeight = [self tableView:self.messagesTable heightForHeaderInSection:[indexPathArray[0] section]];
-    if (scrollView.contentOffset.y <= sectionHeaderHeight && scrollView.contentOffset.y >= 0) {
-        scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-    } else if (scrollView.contentOffset.y >= sectionHeaderHeight) {
-        scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
-    }
-}
-
 #pragma mark -Private Methods
 - (void)refreshComments {
     [[ADNetworkEngine sharedEngine] getCommentListForUin:[ADUserInfo currentUser].uin
@@ -323,15 +330,14 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 #pragma mark -Lazy Initializer
 - (UITableView *)messagesTable {
     if (_messagesTable == nil) {
-        CGRect frame = self.view.frame;
-        frame.size.height -= navigationBarHeight+statusBarHeight+49;
-        _messagesTable = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+        _messagesTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight-normalHeight) style:UITableViewStyleGrouped];
         _messagesTable.backgroundColor = [UIColor groupTableViewBackgroundColor];
         [_messagesTable registerClass:[MessageBoardCommentView class] forHeaderFooterViewReuseIdentifier:kCommentViewIdentifier];
         [_messagesTable registerClass:[MessageBoardReplyCell class] forCellReuseIdentifier:kReplyViewIdentifier];
         [_messagesTable registerNib:[UINib nibWithNibName:@"CommentReplyFooterView"
                                                    bundle:nil] forCellReuseIdentifier:kCommentReplyFooterIdentifer];
         _messagesTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _messagesTable.sectionFooterHeight = 0;
         _messagesTable.dataSource = self;
         _messagesTable.delegate = self;
         _messagesTable.tableHeaderView = self.tableHeader;

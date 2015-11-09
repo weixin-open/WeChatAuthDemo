@@ -38,7 +38,7 @@ static const CGFloat kButtonCellHeight = 40.0f;
     [super viewDidLoad];
     
     // Uncomment the following line to preserve selection between presentations.
-    self.title = @"Debug Log";
+    self.title = @"授权信息";
     [self.tableView registerNib:[UINib nibWithNibName:@"UserInfoDisplayCell"
                                                bundle:nil]
          forCellReuseIdentifier:kDebugInfoCellIdentifier];

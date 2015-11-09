@@ -10,13 +10,9 @@
 @class ADNetworkConfigItem;
 
 AUTH_DEMO_EXTERN const NSString *kConnectCGIName;
-AUTH_DEMO_EXTERN const NSString *kRegisterCGIName;
-AUTH_DEMO_EXTERN const NSString *kLoginCGIName;
 AUTH_DEMO_EXTERN const NSString *kWXLoginCGIName;
 AUTH_DEMO_EXTERN const NSString *kCheckLoginCGIName;
 AUTH_DEMO_EXTERN const NSString *kGetUserInfoCGIName;
-AUTH_DEMO_EXTERN const NSString *kWXBindAppCGIName;
-AUTH_DEMO_EXTERN const NSString *kAppBindWXCGIName;
 AUTH_DEMO_EXTERN const NSString *kMakeExpiredCGIName;
 AUTH_DEMO_EXTERN const NSString *kGetCommentListCGIName;
 AUTH_DEMO_EXTERN const NSString *kGetReplyListCGIName;

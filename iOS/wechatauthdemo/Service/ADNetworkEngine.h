@@ -9,12 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @class ADConnectResp;
-@class ADRegisterResp;
 @class ADCheckLoginResp;
-@class ADLoginResp;
 @class ADGetUserInfoResp;
-@class ADWXBindAPPResp;
-@class ADAPPBindWXResp;
 @class ADWXLoginResp;
 @class ADGetCommentListResp;
 @class ADGetReplyListResp;
@@ -22,12 +18,8 @@
 @class ADAddReplyResp;
 
 typedef void(^ConnectCallBack)(ADConnectResp *resp);
-typedef void(^RegisterCallBack)(ADRegisterResp *resp);
 typedef void(^CheckLoginCallBack)(ADCheckLoginResp *resp);
-typedef void(^LoginCallBack)(ADLoginResp *resp);
 typedef void(^GetUserInfoCallBack)(ADGetUserInfoResp *resp);
-typedef void(^WXBindAppCallBack)(ADWXBindAPPResp *resp);
-typedef void(^AppBindWXCallBack)(ADAPPBindWXResp *resp);
 typedef void(^WXLoginCallBack)(ADWXLoginResp *resp);
 typedef void(^DownloadImageCallBack)(UIImage *image);
 typedef void(^GetCommentListCallBack)(ADGetCommentListResp *resp);
@@ -55,38 +47,6 @@ typedef void(^AddReplyCallBack)(ADAddReplyResp *resp);
  *  @param completion 握手完成的回调，参数包括一个临时的Uin，以后的请求都需要带上这个Uin以让服务器可以索引到对应的psk.
  */
 - (void)connectToServerWithCompletion:(ConnectCallBack)completion;
-
-/**
- *  注册账号.
- *
- *  @restrict 必须在登陆前安全通道进行.
- *
- *  @param mail       邮箱账号
- *  @param pwd        密码（明文MD5后）
- *  @param nickName   昵称
- *  @param imageData  头像数据
- *  @param sex        性别
- *  @param completion 注册完成的回调，参数包括一个正式的Uin和登陆票据
- */
-- (void)registerForMail:(NSString *)mail
-               Password:(NSString *)pwd
-               NickName:(NSString *)nickName
-              HeadImage:(NSData *)imageData
-                    Sex:(ADSexType)sex
-         WithCompletion:(RegisterCallBack)completion;
-
-/**
- *  登录.
- *
- *  @restrict 必须在登陆前安全通道进行.
- *
- *  @param mail       邮箱账号
- *  @param pwd        密码（明文MD5后）
- *  @param completion 登陆完成的回调，参数包括一个正式的Uin和登陆票据
- */
-- (void)loginForMail:(NSString *)mail
-            Password:(NSString *)pwd
-      WithCompletion:(LoginCallBack)completion;
 
 /**
  *  微信登录.
@@ -126,46 +86,6 @@ typedef void(^AddReplyCallBack)(ADAddReplyResp *resp);
 - (void)getUserInfoForUin:(UInt32)uin
               LoginTicket:(NSString *)loginTicket
            WithCompletion:(GetUserInfoCallBack)completion;
-
-/**
- *  微信登录后绑定App账号.
- *
- *  @restrict 必须在正式安全通道里进行.
- *
- *  @param uin          正式的Uin
- *  @param loginTicket  登录票据
- *  @param mail         邮箱账号
- *  @param pwd          密码（明文MD5后）
- *  @param nickName     昵称
- *  @param sex          性别
- *  @param headImageUrl 头像Url
- *  @param isToCreate   邮箱是否是未注册的新用户
- *  @param completion   绑定完成的回调，参数包括新的Uin和登陆票据
- */
-- (void)wxBindAppForUin:(UInt32)uin
-            LoginTicket:(NSString *)loginTicket
-                   Mail:(NSString *)mail
-               Password:(NSString *)pwd
-               NickName:(NSString *)nickName
-                    Sex:(ADSexType)sex
-           HeadImageUrl:(NSString *)headImageUrl
-             IsToCreate:(BOOL)isToCreate
-         WithCompletion:(WXBindAppCallBack)completion;
-
-/**
- *  App登录后绑定微信号.
- *
- *  @restrict 必须在正式安全通道里进行.
- *
- *  @param uin         正式的Uin
- *  @param loginTicket 登录票据
- *  @param code        微信授权获得的Code
- *  @param completion  绑定完成的回调，参数包括新的Uin和登陆票据.
- */
-- (void)appBindWxForUin:(UInt32)uin
-            LoginTicket:(NSString *)loginTicket
-               AuthCode:(NSString *)code
-         WithCompletion:(AppBindWXCallBack)completion;
 
 /**
  *  退出登录.

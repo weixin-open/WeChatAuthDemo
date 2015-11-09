@@ -29,6 +29,7 @@ static NSString* const kDocumentsViewTitle = @"开发文档";
 
 static const CGFloat kAlertTitleFontSize = 16;
 static const NSInteger kDefaultTabIndex = 0;
+static const CGFloat kNavigationTitleFontSize = 17.0f;
 
 @implementation AppDelegate
 
@@ -71,12 +72,20 @@ static const NSInteger kDefaultTabIndex = 0;
     [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
                                                            [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
                                                            shadow, NSShadowAttributeName,
-                                                           [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:16.0f], NSFontAttributeName, nil]];
+                                                           [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:kNavigationTitleFontSize], NSFontAttributeName, nil]];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.23 green:0.24 blue:0.25 alpha:1.0f]];
     [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil]
+     setTitleTextAttributes:
+     @{
+       NSFontAttributeName:[UIFont fontWithName:kChineseFont size:15]
+       }
+     forState:UIControlStateNormal];
+
     rootNav.navigationBar.hidden = YES;
+    
+    /* Setup AlertView */
     UILabel *alertAppear = nil;
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0) {
         [UINavigationBar appearance].translucent = NO;

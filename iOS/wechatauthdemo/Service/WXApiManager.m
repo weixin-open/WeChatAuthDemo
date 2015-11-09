@@ -75,9 +75,38 @@ static NSString* const kWXNotInstallErrorTitle = @"您还没有安装微信，�
     return [WXApi sendReq:req];
 }
 
+- (BOOL)sendFileData:(NSData *)fileData
+       fileExtension:(NSString *)extension
+               Title:(NSString *)title
+         Description:(NSString *)description
+          ThumbImage:(UIImage *)thumbImage
+             AtScene:(enum WXScene)scene {
+    if (![WXApi isWXAppInstalled]) {
+        ADShowErrorAlert(kWXNotInstallErrorTitle);
+        return NO;
+    }
+
+    WXFileObject *ext = [WXFileObject object];
+    ext.fileExtension = extension;
+    ext.fileData = fileData;
+
+    WXMediaMessage *message = [WXMediaMessage message];
+    message.mediaObject = ext;
+    message.title = title;
+    message.description = description;
+    [message setThumbImage:thumbImage];
+    
+    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+    req.message = message;
+    req.bText = NO;
+    req.scene = scene;
+    
+    return [WXApi sendReq:req];
+}
+
 #pragma mark - WXApiDelegate
 -(void)onReq:(BaseReq*)req {
-    // just leave it here, wechat will not call our app
+    // just leave it here, WeChat will not call our app
 }
 
 -(void)onResp:(BaseResp*)resp {    

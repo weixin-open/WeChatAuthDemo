@@ -13,7 +13,6 @@
 #import "DataModels.h"
 #import "ImageCache.h"
 
-//static NSString* const defaultHost = @"http://qytest.weixin.qq.com";
 static NSString* const defaultHost = @"http://demo.maizify.com";
 static NSString* const publickeyFileName = @"rsa_public";
 
@@ -62,50 +61,6 @@ static NSString* const publickeyFileName = @"rsa_public";
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
                         if (completion)
                             completion (error == nil ? [ADConnectResp modelObjectWithDictionary:dict] : nil);
-                    }] resume];
-}
-
-- (void)registerForMail:(NSString *)mail
-               Password:(NSString *)pwd
-               NickName:(NSString *)nickName
-              HeadImage:(NSData *)imageData
-                    Sex:(ADSexType)sex
-         WithCompletion:(RegisterCallBack)completion {
-    NSParameterAssert(mail && pwd && nickName && imageData);
-    [[self.session JSONTaskForHost:self.host
-                              Para:@{
-                                      @"uin": @([ADUserInfo currentUser].uin),
-                                      @"req_buffer": @{
-                                              @"headimg_buf":[imageData base64EncodedStringWithOptions:0],
-                                              @"mail": mail,
-                                              @"pwd_h1": pwd,
-                                              @"nickname": nickName,
-                                              @"sex": @(sex),
-                                      }
-                              }
-                     ConfigKeyPath:(NSString *)kRegisterCGIName
-                    WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        if (completion)
-                            completion (error == nil ? [ADRegisterResp modelObjectWithDictionary:dict] : nil);
-                    }] resume];
-}
-
-- (void)loginForMail:(NSString *)mail
-            Password:(NSString *)pwd
-      WithCompletion:(LoginCallBack)completion {
-    NSParameterAssert(mail);
-    [[self.session JSONTaskForHost:self.host
-                              Para:@{
-                                      @"uin": @([ADUserInfo currentUser].uin),
-                                      @"req_buffer": @{
-                                              @"mail": mail,
-                                              @"pwd_h1": pwd
-                                      }
-                              }
-                     ConfigKeyPath:(NSString *)kLoginCGIName
-                    WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        if (completion)
-                            completion (error == nil ? [ADLoginResp modelObjectWithDictionary:dict] : nil);
                     }] resume];
 }
 
@@ -171,83 +126,6 @@ static NSString* const publickeyFileName = @"rsa_public";
                                                     [self getUserInfoForUin:uin
                                                                 LoginTicket:loginTicket
                                                              WithCompletion:completion];
-                                                } else {
-                                                    completion != nil ? completion (resp) : nil;
-                                                }
-                                            }];
-                    }] resume];
-}
-
-- (void)wxBindAppForUin:(UInt32)uin
-            LoginTicket:(NSString *)loginTicket
-                   Mail:(NSString *)mail
-               Password:(NSString *)pwd
-               NickName:(NSString *)nickName
-                    Sex:(ADSexType)sex
-           HeadImageUrl:(NSString *)headImageUrl
-             IsToCreate:(BOOL)isToCreate
-         WithCompletion:(WXBindAppCallBack)completion {
-    NSParameterAssert(loginTicket && mail && pwd && nickName && headImageUrl);
-    [[self.session JSONTaskForHost:self.host
-                              Para:@{
-                                      @"uin": @(uin),
-                                      @"req_buffer": @{
-                                              @"uin": @(uin),
-                                              @"login_ticket": loginTicket,
-                                              @"mail": mail,
-                                              @"pwd_h1": pwd,
-                                              @"nickname": nickName,
-                                              @"sex": @(sex),
-                                              @"headimgurl": headImageUrl,
-                                              @"is_to_create": @(isToCreate)
-                                      }
-                              }
-                     ConfigKeyPath:(NSString *)kWXBindAppCGIName
-                    WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        ADWXBindAPPResp *resp = [ADWXBindAPPResp modelObjectWithDictionary:dict];
-                        [ErrorHandler handleNetworkExpiredError:resp.baseResp
-                                            WhileCatchErrorCode:^(ADErrorCode code) {
-                                                if (code == ADErrorCodeSessionKeyExpired) {
-                                                    [self wxBindAppForUin:uin
-                                                              LoginTicket:loginTicket
-                                                                     Mail:mail
-                                                                 Password:pwd
-                                                                 NickName:nickName
-                                                                      Sex:sex
-                                                             HeadImageUrl:headImageUrl
-                                                               IsToCreate:isToCreate
-                                                           WithCompletion:completion];
-                                                } else {
-                                                    completion != nil ? completion (resp) : nil;
-                                                }
-                                            }];
-                    }] resume];
-}
-
-- (void)appBindWxForUin:(UInt32)uin
-            LoginTicket:(NSString *)loginTicket
-               AuthCode:(NSString *)code
-         WithCompletion:(AppBindWXCallBack)completion {
-    NSParameterAssert(loginTicket && code);
-    [[self.session JSONTaskForHost:self.host
-                              Para:@{
-                                      @"uin": @(uin),
-                                      @"req_buffer": @{
-                                              @"uin": @(uin),
-                                              @"login_ticket": loginTicket,
-                                              @"code": code
-                                      }
-                              }
-                     ConfigKeyPath:(NSString *)kAppBindWXCGIName
-                    WithCompletion:^(NSDictionary *dict, NSError *error) {
-                        ADAPPBindWXResp *resp = [ADAPPBindWXResp modelObjectWithDictionary:dict];
-                        [ErrorHandler handleNetworkExpiredError:resp.baseResp
-                                            WhileCatchErrorCode:^(ADErrorCode errorCode) {
-                                                if (errorCode == ADErrorCodeSessionKeyExpired) {
-                                                    [self appBindWxForUin:uin
-                                                              LoginTicket:loginTicket
-                                                                 AuthCode:code
-                                                           WithCompletion:completion];
                                                 } else {
                                                     completion != nil ? completion (resp) : nil;
                                                 }

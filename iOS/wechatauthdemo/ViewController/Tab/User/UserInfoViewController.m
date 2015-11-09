@@ -137,9 +137,9 @@ static const CGFloat kWXLoginButtonFontSize = 16.0f;
         case 1: {
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kUserInfoCellIdentifier
                                                                     forIndexPath:indexPath];
-            cell.textLabel.font = [UIFont fontWithName:kEnglishNumberFont
+            cell.textLabel.font = [UIFont fontWithName:kChineseFont
                                                   size:16.0f];
-            cell.textLabel.text = @"Debug Log";
+            cell.textLabel.text = @"授权信息";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -202,7 +202,7 @@ static const CGFloat kWXLoginButtonFontSize = 16.0f;
                                                  animated:YES];
         } else {
             AskLoginViewController *askLoginView = [[AskLoginViewController alloc] init];
-            askLoginView.founctionName = @"Access Log";
+            askLoginView.founctionName = @"授权信息";
             askLoginView.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:askLoginView
                                                  animated:YES];

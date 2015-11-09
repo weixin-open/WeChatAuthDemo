@@ -7,6 +7,7 @@
 //
 
 #import "LogTextViewController.h"
+#import "WXApiManager.h"
 
 @interface LogTextViewController ()
 
@@ -26,10 +27,14 @@
                                                                              style:UIBarButtonItemStyleDone
                                                                             target:self
                                                                             action:@selector(onClickDismiss:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"分享"
+                                                                              style:UIBarButtonItemStyleDone
+                                                                             target:self
+                                                                             action:@selector(onClickShare:)];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
     self.textView.frame = self.view.frame;
 }
 
@@ -39,6 +44,18 @@
         return;
     self.presented = NO;
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)onClickShare:(UIBarButtonItem *)sender {
+    if (sender != self.navigationItem.rightBarButtonItem)
+        return;
+    
+    [[WXApiManager sharedManager] sendFileData:[self.textView.text dataUsingEncoding:NSUTF8StringEncoding]
+                                 fileExtension:@".txt"
+                                         Title:@"来自WeDemo的日志信息"
+                                   Description:@"来自WeDemo的日志信息"
+                                    ThumbImage:nil
+                                       AtScene:WXSceneSession];
 }
 
 #pragma mark - Public Methods

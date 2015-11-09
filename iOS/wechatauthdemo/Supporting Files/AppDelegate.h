@@ -18,6 +18,7 @@
 @property (nonatomic, strong) DocumentsViewController *documentsView;
 @property (nonatomic, strong) UserInfoViewController *userInfoView;
 @property (nonatomic, strong) MessageBoardViewController *messageBoardView;
+@property (nonatomic, assign) BOOL keyboardWasShown;
 
 @end
 

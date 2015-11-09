@@ -121,16 +121,27 @@ static const CGFloat kTimeStampWidth = 88.0f;
     }
     self.nickName.text = user.nickname;
     self.timeStamp.text = [self.formatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:date]];
-    self.content.text = contentString;
+    
+    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
+    paraStyle.minimumLineHeight = inset * 2;
+    NSMutableAttributedString *attrContent = [[NSMutableAttributedString alloc] initWithString:contentString attributes:@{
+            NSFontAttributeName: [UIFont fontWithName:kChineseFont
+                                                 size:kContentFontSize],
+            NSParagraphStyleAttributeName: paraStyle                                                                                                                    }];
+    self.content.attributedText = attrContent;
 }
 
 + (CGFloat)calcHeightForContent:(NSString *)contentString
                       WithWidth:(CGFloat)width {
+    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
+    paraStyle.minimumLineHeight = inset * 2;
+
     return CGRectGetHeight([contentString boundingRectWithSize:CGSizeMake(width, MAXFLOAT)
                                                        options:NSStringDrawingUsesLineFragmentOrigin
                                                     attributes:@{
                                                                  NSFontAttributeName: [UIFont fontWithName:kChineseFont
                                                                                                       size:kContentFontSize],
+                                                                 NSParagraphStyleAttributeName: paraStyle
                                                                  }
                                                        context:nil]);
 }
@@ -139,8 +150,6 @@ static const CGFloat kTimeStampWidth = 88.0f;
 - (UIImageView *)headImage {
     if (_headImage == nil) {
         _headImage = [[UIImageView alloc] init];
-//        _headImage.layer.cornerRadius = 33/2;
-//        _headImage.layer.masksToBounds = YES;
     }
     return _headImage;
 }

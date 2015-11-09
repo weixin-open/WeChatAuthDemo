@@ -7,7 +7,6 @@
 //
 
 #import "WXLoginViewController.h"
-#import "ADLoginViewController.h"
 #import "DebugViewController.h"
 #import "ADNetworkEngine.h"
 #import "WXApiManager.h"
@@ -24,11 +23,11 @@ static NSString* const kVisitorLoginTitle = @"游客模式进入";
 static NSString* const kConnectErrorTitle = @"连接服务器失败";
 static NSString* const kWXAuthDenyTitle = @"授权失败";
 static NSString* const kWXLoginErrorTitle = @"微信登录失败";
-static NSString* const kTitleLabelText = @"微信登录Demo";
+static NSString* const kTitleLabelText = @"WeDemo";
 /* Font */
 static const CGFloat kTitleLabelFontSize = 18.0f;
 static const CGFloat kWXLoginButtonFontSize = 16.0f;
-static const CGFloat kNormalButtonFontSize = 12.0f;
+static const CGFloat kVisitorButtonFontSize = 12.0f;
 /* Size */
 static const int kLogoImageWidth = 75;
 static const int kLogoImageHeight = 52;
@@ -38,8 +37,8 @@ static const int kWXLoginButtonWidth = 280;
 static const int kWXLoginButtonHeight = 44;
 static const int kWXLogoImageWidth = 25;
 static const int kWXLogoImageHeight = 20;
-static const int kNormalLoginButtonWidth = 200;
-static const int kNormalLoginButtonHeight = 44;
+static const int kVisitorLoginButtonWidth = 200;
+static const int kVisitorLoginButtonHeight = 44;
 
 @interface WXLoginViewController ()<WXAuthDelegate>
 
@@ -70,11 +69,14 @@ static const int kNormalLoginButtonHeight = 44;
 #ifdef DEBUG
     [self.view addSubview:self.debugButton];
 #endif
-    
     /* Setup Network */
     [[ADNetworkEngine sharedEngine] connectToServerWithCompletion:^(ADConnectResp *resp) {
         [self handleConnectResponse:resp];
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -98,9 +100,9 @@ static const int kNormalLoginButtonHeight = 44;
     self.wxLogoImageView.frame = CGRectMake(0, 0, kWXLogoImageWidth, kWXLogoImageHeight);
     self.wxLogoImageView.center = CGPointMake(wxLogoImageCenterX, loginButtonCenterY);
     
-    CGFloat normalBtnCenterY = ScreenHeight-kNormalLoginButtonHeight/2-inset;
-    self.visitorLoginButton.frame = CGRectMake(0, 0, kNormalLoginButtonWidth, kNormalLoginButtonHeight);
-    self.visitorLoginButton.center = CGPointMake(self.view.center.x, normalBtnCenterY);
+    CGFloat visitorBtnCenterY = ScreenHeight-kVisitorLoginButtonHeight/2-inset;
+    self.visitorLoginButton.frame = CGRectMake(0, 0, kVisitorLoginButtonWidth, kVisitorLoginButtonHeight);
+    self.visitorLoginButton.center = CGPointMake(self.view.center.x, visitorBtnCenterY);
     
     CGFloat debugBtnCenterX = ScreenWidth - inset * 3;
     CGFloat debugBtnCenterY = statusBarHeight + inset * 2;
@@ -263,7 +265,7 @@ static const int kNormalLoginButtonHeight = 44;
         [_visitorLoginButton setTitleColor:[UIColor linkButtonColor]
                                   forState:UIControlStateNormal];
         _visitorLoginButton.titleLabel.font = [UIFont fontWithName:kChineseFont
-                                                             size:kNormalButtonFontSize];
+                                                             size:kVisitorButtonFontSize];
     }
     return _visitorLoginButton;
 }

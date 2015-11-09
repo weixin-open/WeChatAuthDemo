@@ -48,7 +48,7 @@ static const int kWXLogoImageHeight = 20;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    self.title = @"Debug Log";
+    self.title = @"授权信息";
     [self.view addSubview:self.logoImageView];
     [self.view addSubview:self.titleLabel];
     [self.view addSubview:self.wxLoginButton];

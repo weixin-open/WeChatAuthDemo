@@ -16,7 +16,7 @@
 
 /* Title Message */
 static NSString *const kDocumentsViewTitle = @"开发文档";
-static NSString *const kDocumentsDescription = @"WeChat Demo提供微信登录、微信分享功能demo及开发文档。请选择一个功能详细了解。";
+static NSString *const kDocumentsDescription = @"WeDemo提供微信登录、微信分享功能demo及开发文档。请选择一个功能详细了解。";
 static NSString *const kDocumentsCellIdentifier = @"kDocumentsCellIdentifier";
 
 /* Font */
@@ -138,18 +138,9 @@ static const CGFloat kDescriptionHeight = 100;
              @{
                  @"documentIcon": @"weChatShareDocumentIcon",
                  @"documentTitle": @"微信分享",
-                 @"documentUrl": @"",
-                 },
-             @{
-                 @"documentIcon": @"weChatPayDocumentIcon",
-                 @"documentTitle": @"微信支付",
-                 @"documentUrl": @"",
-                },
-             @{
-                 @"documentIcon": @"weChatMoreDocumentIcon",
-                 @"documentTitle": @"其他",
-                 @"documentUrl": @"",
-                 }];
+                 @"documentUrl": @"http://mp.weixin.qq.com/s?__biz=MjM5NDAxMDg4MA==&mid=400435288&idx=1&sn=90ac09845a9f8d4034a2d9168a0a0858&scene=0#rd",
+                 }
+             ];
 }
 
 @end
