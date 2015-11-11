@@ -11,6 +11,12 @@
 
 static NSString* const kWXNotInstallErrorTitle = @"您还没有安装微信，不能使用微信分享功能";
 
+@interface WXApiManager ()
+
+@property (nonatomic, strong) NSString *authState;
+
+@end
+
 @implementation WXApiManager
 
 #pragma mark - Life Cycle
@@ -43,7 +49,7 @@ static NSString* const kWXNotInstallErrorTitle = @"您还没有安装微信，�
 - (void)sendAuthRequestWithController:(UIViewController*)viewController
                              delegate:(id<WXAuthDelegate>)delegate {
     SendAuthReq* req = [[SendAuthReq alloc] init];
-    req.scope = @"snsapi_userinfo" ;
+    req.scope = @"snsapi_userinfo";
     req.state = [NSString randomKey];
     self.delegate = delegate;
     [WXApi sendAuthReq:req viewController:viewController delegate:self];
@@ -112,6 +118,13 @@ static NSString* const kWXNotInstallErrorTitle = @"您还没有安装微信，�
 -(void)onResp:(BaseResp*)resp {    
     if([resp isKindOfClass:[SendAuthResp class]]) {
         SendAuthResp* authResp = (SendAuthResp*)resp;
+        /* Prevent Cross Site Request Forgery */
+        if (![authResp.state isEqualToString:self.authState]) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(wxAuthDenied)])
+                [self.delegate wxAuthDenied];
+            return;
+        }
+        
         switch (resp.errCode) {
             case WXSuccess:
                 NSLog(@"RESP:code:%@,state:%@\n", authResp.code, authResp.state);
