@@ -61,8 +61,17 @@ AUTH_DEMO_EXTERN const NSString *kAddReplyCGIName;
  */
 - (ADNetworkConfigItem *)getConfigForKeyPath:(NSString *)keyPath;
 
+/**
+ *  获得所有配置Key
+ *
+ *  @return 所有配置Key的数组
+ */
 - (NSArray *)allConfigKeys;
 
+
+/**
+ *  保存所有配置
+ */
 - (void)save;
 
 @end

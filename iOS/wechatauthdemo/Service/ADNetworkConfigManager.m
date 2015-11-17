@@ -65,10 +65,10 @@ static const int kCGICountNum = 9;
 
 #pragma mark - Public Methods
 - (void)setup {
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"ADNetworkConfigAll"] == nil) {
+    NSData *configData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ADNetworkConfigAll"];
+    if (configData == nil) {
         [self registerAllPrepareConfigAndSave];
     } else {
-        NSData *configData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ADNetworkConfigAll"];
         allConfig = [NSKeyedUnarchiver unarchiveObjectWithData:configData];
         if ([[self allConfigKeys] count] != kCGICountNum) {
             [allConfig removeAllObjects];

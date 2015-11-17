@@ -39,8 +39,6 @@
 
 
 #pragma mark - Class Methods
-#pragma mark `defaultPlaceholderColor`
-
 + (UIColor *)defaultPlaceholderColor {
     static UIColor *color = nil;
     static dispatch_once_t onceToken;
@@ -51,9 +49,6 @@
     });
     return color;
 }
-
-
-#pragma mark - `observingKeys`
 
 + (NSArray *)observingKeys {
     return @[@"attributedText",
@@ -67,8 +62,6 @@
 
 
 #pragma mark - Properties
-#pragma mark `placeholderLabel`
-
 - (UILabel *)placeholderLabel {
     UILabel *label = objc_getAssociatedObject(self, @selector(placeholderLabel));
     if (!label) {
@@ -94,9 +87,6 @@
     return label;
 }
 
-
-#pragma mark `placeholder`
-
 - (NSString *)placeholder {
     return self.placeholderLabel.text;
 }
@@ -115,8 +105,6 @@
     [self updatePlaceholderLabel];
 }
 
-#pragma mark `placeholderColor`
-
 - (UIColor *)placeholderColor {
     return self.placeholderLabel.textColor;
 }
@@ -127,7 +115,6 @@
 
 
 #pragma mark - KVO
-
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
@@ -137,7 +124,6 @@
 
 
 #pragma mark - Update
-
 - (void)updatePlaceholderLabel {
     if (self.text.length) {
         [self.placeholderLabel removeFromSuperview];

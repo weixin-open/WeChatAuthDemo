@@ -33,6 +33,7 @@
 		7A5E83701BD679410025EFD7 /* CommentReplyFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A5E836F1BD679410025EFD7 /* CommentReplyFooterView.xib */; };
 		7A6F17C21BF07D81008834FB /* InputWithTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F17C01BF07D81008834FB /* InputWithTextFieldCell.m */; };
 		7A6F17C31BF07D81008834FB /* InputWithTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A6F17C11BF07D81008834FB /* InputWithTextFieldCell.xib */; };
+		7A7280631BFA01FE00AB83A1 /* LineColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7280621BFA01FE00AB83A1 /* LineColor.m */; };
 		7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */; };
 		7A8D06181BD5115A0002D804 /* ADCommentList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8D06151BD5115A0002D804 /* ADCommentList.m */; };
 		7A8D06191BD5115A0002D804 /* ADGetCommentListResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8D06171BD5115A0002D804 /* ADGetCommentListResp.m */; };
@@ -133,6 +134,8 @@
 		7A6F17BF1BF07D81008834FB /* InputWithTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputWithTextFieldCell.h; sourceTree = "<group>"; };
 		7A6F17C01BF07D81008834FB /* InputWithTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputWithTextFieldCell.m; sourceTree = "<group>"; };
 		7A6F17C11BF07D81008834FB /* InputWithTextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputWithTextFieldCell.xib; sourceTree = "<group>"; };
+		7A7280611BFA01FE00AB83A1 /* LineColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineColor.h; sourceTree = "<group>"; };
+		7A7280621BFA01FE00AB83A1 /* LineColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineColor.m; sourceTree = "<group>"; };
 		7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonColor.h; sourceTree = "<group>"; };
 		7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonColor.m; sourceTree = "<group>"; };
 		7A8D06141BD5115A0002D804 /* ADCommentList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADCommentList.h; sourceTree = "<group>"; };
@@ -305,6 +308,115 @@
 			name = Debug;
 			sourceTree = "<group>";
 		};
+		7A7280581BF9FF2A00AB83A1 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				7A6F17BF1BF07D81008834FB /* InputWithTextFieldCell.h */,
+				7A6F17C01BF07D81008834FB /* InputWithTextFieldCell.m */,
+				7A6F17C11BF07D81008834FB /* InputWithTextFieldCell.xib */,
+				7A998CC11BD5E7BF005AC4D8 /* InputWithTextFeildBar.h */,
+				7A998CC21BD5E7BF005AC4D8 /* InputWithTextFeildBar.m */,
+				7A998CC41BD5E7F7005AC4D8 /* InputWithTextFieldBar.xib */,
+			);
+			name = Input;
+			sourceTree = "<group>";
+		};
+		7A7280591BF9FF3F00AB83A1 /* MessageBoard */ = {
+			isa = PBXGroup;
+			children = (
+				7A5E836C1BD679290025EFD7 /* CommentReplyFooterView.h */,
+				7A5E836D1BD679290025EFD7 /* CommentReplyFooterView.m */,
+				7A5E836F1BD679410025EFD7 /* CommentReplyFooterView.xib */,
+				7ABF02891BD49ABE006D62D0 /* MessageBoardCommentView.h */,
+				7ABF028A1BD49ABE006D62D0 /* MessageBoardCommentView.m */,
+				7ABF028E1BD4AE26006D62D0 /* MessageBoardContentView.h */,
+				7ABF028F1BD4AE26006D62D0 /* MessageBoardContentView.m */,
+				7ABF02911BD4B1A4006D62D0 /* MessageBoardReplyCell.h */,
+				7ABF02921BD4B1A4006D62D0 /* MessageBoardReplyCell.m */,
+				7ADF843D1BD775360087E30A /* MessageboardHeaderView.h */,
+				7ADF843E1BD775370087E30A /* MessageboardHeaderView.m */,
+				7ADF843F1BD775370087E30A /* MessageboardHeaderView.xib */,
+			);
+			name = MessageBoard;
+			sourceTree = "<group>";
+		};
+		7A72805A1BF9FF5600AB83A1 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				7A2914721BCFCAE1006D6952 /* UserNickNameCell.h */,
+				7A2914731BCFCAE1006D6952 /* UserNickNameCell.m */,
+				7A2914741BCFCAE1006D6952 /* UserNickNameCell.xib */,
+				7A29146D1BCFC0E5006D6952 /* UserHeadPhotoCell.h */,
+				7A29146E1BCFC0E5006D6952 /* UserHeadPhotoCell.m */,
+				7A29146F1BCFC0E5006D6952 /* UserHeadPhotoCell.xib */,
+				7AA1635E1B85DA9A00E54AAC /* UserInfoDisplayCell.h */,
+				7AA1635F1B85DA9A00E54AAC /* UserInfoDisplayCell.m */,
+				7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */,
+			);
+			name = User;
+			sourceTree = "<group>";
+		};
+		7A72805B1BF9FF6E00AB83A1 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				7ADBE6BC1BCF5DDF006A8046 /* DocumentsCell.h */,
+				7ADBE6BD1BCF5DDF006A8046 /* DocumentsCell.m */,
+				7ADBE6BE1BCF5DDF006A8046 /* DocumentsCell.xib */,
+			);
+			name = Documents;
+			sourceTree = "<group>";
+		};
+		7A72805C1BF9FF9600AB83A1 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				7A8D061D1BD527D60002D804 /* UITextView+Placeholder.h */,
+				7A8D061E1BD527D60002D804 /* UITextView+Placeholder.m */,
+				7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */,
+				7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */,
+				7A0923861BA19FA00099A904 /* AlertTitleFont.h */,
+				7A0923871BA19FA00099A904 /* AlertTitleFont.m */,
+				7A7280611BFA01FE00AB83A1 /* LineColor.h */,
+				7A7280621BFA01FE00AB83A1 /* LineColor.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		7A72805D1BF9FFA400AB83A1 /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				7A045E641BAC264000332AC1 /* ShakeDebug.h */,
+				7A045E651BAC264000332AC1 /* ShakeDebug.m */,
+			);
+			name = Debug;
+			sourceTree = "<group>";
+		};
+		7A72805E1BF9FFB700AB83A1 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				7AD8262B1B81FDF9008CA90C /* ADNetworkEngine.h */,
+				7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		7A72805F1BF9FFC000AB83A1 /* WX */ = {
+			isa = PBXGroup;
+			children = (
+				7AD8262D1B81FDF9008CA90C /* WXApiManager.h */,
+				7AD8262E1B81FDF9008CA90C /* WXApiManager.m */,
+			);
+			name = WX;
+			sourceTree = "<group>";
+		};
+		7A7280601BF9FFC600AB83A1 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				7AA163461B85A90E00E54AAC /* ADNetworkConfigManager.h */,
+				7AA163471B85A90E00E54AAC /* ADNetworkConfigManager.m */,
+			);
+			name = Config;
+			sourceTree = "<group>";
+		};
 		7AB058261BCF4DCC00B11365 /* Tab */ = {
 			isa = PBXGroup;
 			children = (
@@ -375,12 +487,9 @@
 		7AD8262A1B81FDF9008CA90C /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				7AD8262B1B81FDF9008CA90C /* ADNetworkEngine.h */,
-				7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */,
-				7AD8262D1B81FDF9008CA90C /* WXApiManager.h */,
-				7AD8262E1B81FDF9008CA90C /* WXApiManager.m */,
-				7AA163461B85A90E00E54AAC /* ADNetworkConfigManager.h */,
-				7AA163471B85A90E00E54AAC /* ADNetworkConfigManager.m */,
+				7A72805E1BF9FFB700AB83A1 /* API */,
+				7A72805F1BF9FFC000AB83A1 /* WX */,
+				7A7280601BF9FFC600AB83A1 /* Config */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -404,14 +513,8 @@
 				7AD826A51B820103008CA90C /* Definition */,
 				7AD826A81B820107008CA90C /* Encrypt */,
 				7AE8C74B1B9473560091CE4C /* NetworkHandler */,
-				7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */,
-				7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */,
-				7A0923861BA19FA00099A904 /* AlertTitleFont.h */,
-				7A0923871BA19FA00099A904 /* AlertTitleFont.m */,
-				7A045E641BAC264000332AC1 /* ShakeDebug.h */,
-				7A045E651BAC264000332AC1 /* ShakeDebug.m */,
-				7A8D061D1BD527D60002D804 /* UITextView+Placeholder.h */,
-				7A8D061E1BD527D60002D804 /* UITextView+Placeholder.m */,
+				7A72805C1BF9FF9600AB83A1 /* UI */,
+				7A72805D1BF9FFA400AB83A1 /* Debug */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -419,36 +522,10 @@
 		7AD826461B81FDF9008CA90C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				7A6F17BF1BF07D81008834FB /* InputWithTextFieldCell.h */,
-				7A6F17C01BF07D81008834FB /* InputWithTextFieldCell.m */,
-				7A6F17C11BF07D81008834FB /* InputWithTextFieldCell.xib */,
-				7AA1635E1B85DA9A00E54AAC /* UserInfoDisplayCell.h */,
-				7AA1635F1B85DA9A00E54AAC /* UserInfoDisplayCell.m */,
-				7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */,
-				7ADBE6BC1BCF5DDF006A8046 /* DocumentsCell.h */,
-				7ADBE6BD1BCF5DDF006A8046 /* DocumentsCell.m */,
-				7ADBE6BE1BCF5DDF006A8046 /* DocumentsCell.xib */,
-				7A29146D1BCFC0E5006D6952 /* UserHeadPhotoCell.h */,
-				7A29146E1BCFC0E5006D6952 /* UserHeadPhotoCell.m */,
-				7A29146F1BCFC0E5006D6952 /* UserHeadPhotoCell.xib */,
-				7A2914721BCFCAE1006D6952 /* UserNickNameCell.h */,
-				7A2914731BCFCAE1006D6952 /* UserNickNameCell.m */,
-				7A2914741BCFCAE1006D6952 /* UserNickNameCell.xib */,
-				7ABF02891BD49ABE006D62D0 /* MessageBoardCommentView.h */,
-				7ABF028A1BD49ABE006D62D0 /* MessageBoardCommentView.m */,
-				7ABF028E1BD4AE26006D62D0 /* MessageBoardContentView.h */,
-				7ABF028F1BD4AE26006D62D0 /* MessageBoardContentView.m */,
-				7ABF02911BD4B1A4006D62D0 /* MessageBoardReplyCell.h */,
-				7ABF02921BD4B1A4006D62D0 /* MessageBoardReplyCell.m */,
-				7A998CC11BD5E7BF005AC4D8 /* InputWithTextFeildBar.h */,
-				7A998CC21BD5E7BF005AC4D8 /* InputWithTextFeildBar.m */,
-				7A998CC41BD5E7F7005AC4D8 /* InputWithTextFieldBar.xib */,
-				7A5E836C1BD679290025EFD7 /* CommentReplyFooterView.h */,
-				7A5E836D1BD679290025EFD7 /* CommentReplyFooterView.m */,
-				7A5E836F1BD679410025EFD7 /* CommentReplyFooterView.xib */,
-				7ADF843D1BD775360087E30A /* MessageboardHeaderView.h */,
-				7ADF843E1BD775370087E30A /* MessageboardHeaderView.m */,
-				7ADF843F1BD775370087E30A /* MessageboardHeaderView.xib */,
+				7A7280581BF9FF2A00AB83A1 /* Input */,
+				7A72805A1BF9FF5600AB83A1 /* User */,
+				7A72805B1BF9FF6E00AB83A1 /* Documents */,
+				7A7280591BF9FF3F00AB83A1 /* MessageBoard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -693,6 +770,7 @@
 				7AF953631BF0479600C3CCCD /* ADAboutViewController.m in Sources */,
 				7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */,
 				7AB0582F1BCF4F0600B11365 /* DocumentsViewController.m in Sources */,
+				7A7280631BFA01FE00AB83A1 /* LineColor.m in Sources */,
 				7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */,
 				7A5587D91BD0FE5700549118 /* ADUser.m in Sources */,
 				7AD826621B81FDF9008CA90C /* WXApiManager.m in Sources */,

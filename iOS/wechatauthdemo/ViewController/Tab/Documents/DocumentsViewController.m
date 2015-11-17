@@ -18,6 +18,10 @@
 static NSString *const kDocumentsViewTitle = @"开发文档";
 static NSString *const kDocumentsDescription = @"WeDemo提供微信登录、微信分享功能demo及开发文档。请选择一个功能详细了解。";
 static NSString *const kDocumentsCellIdentifier = @"kDocumentsCellIdentifier";
+static NSString *const kDocumentItemIconKey = @"documentIcon";
+static NSString *const kDocumentItemTitleKey = @"documentTitle";
+static NSString *const kDocumentItemUrlKey = @"documentUrl";
+static NSString *const kDocumentItemNotExistErrorTitle = @"暂无";
 
 /* Font */
 static const CGFloat kDescriptionFontSize = 14.0f;
@@ -73,8 +77,8 @@ static const CGFloat kDescriptionHeight = 100;
     DocumentsCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kDocumentsCellIdentifier
                                                                     forIndexPath:indexPath];
     NSDictionary *cellModel = self.documentsArray[indexPath.row];
-    cell.documentsIcon.image = [UIImage imageNamed:cellModel[@"documentIcon"]];
-    cell.documentsTitle.text = cellModel[@"documentTitle"];
+    cell.documentsIcon.image = [UIImage imageNamed:cellModel[kDocumentItemIconKey]];
+    cell.documentsTitle.text = cellModel[kDocumentItemTitleKey];
     
     return cell;
 }
@@ -82,15 +86,15 @@ static const CGFloat kDescriptionHeight = 100;
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *cellModel = self.documentsArray[indexPath.row];
-    if ([cellModel[@"documentUrl"] length] > 0) {
+    if ([cellModel[kDocumentItemUrlKey] length] > 0) {
         ADShareViewController *shareView = [[ADShareViewController alloc] init];
-        shareView.urlString = cellModel[@"documentUrl"];
-        shareView.title = cellModel[@"documentTitle"];
+        shareView.urlString = cellModel[kDocumentItemUrlKey];
+        shareView.title = cellModel[kDocumentItemTitleKey];
         shareView.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:shareView
                                              animated:YES];
     } else {
-        ADShowErrorAlert(@"暂无");
+        ADShowErrorAlert(kDocumentItemNotExistErrorTitle);
     }
 }
 
@@ -131,14 +135,14 @@ static const CGFloat kDescriptionHeight = 100;
 
 - (NSArray *)documentsArray {
     return @[@{
-                 @"documentIcon": @"weChatLoginDocumentIcon",
-                 @"documentTitle": @"登录授权",
-                 @"documentUrl": @"http://mp.weixin.qq.com/s?__biz=MjM5NDAxMDg4MA==&mid=208833692&idx=1&sn=daa41a5b34ce7ffeb48985964e613941&scene=1&srcid=TnXuoDUuLCjDSJoLqkdG&from=singlemessage&isappinstalled=0#rd",
+                 kDocumentItemIconKey: @"weChatLoginDocumentIcon",
+                 kDocumentItemTitleKey: @"登录授权",
+                 kDocumentItemUrlKey: @"http://mp.weixin.qq.com/s?__biz=MjM5NDAxMDg4MA==&mid=208833692&idx=1&sn=daa41a5b34ce7ffeb48985964e613941&scene=1&srcid=TnXuoDUuLCjDSJoLqkdG&from=singlemessage&isappinstalled=0#rd",
                  },
              @{
-                 @"documentIcon": @"weChatShareDocumentIcon",
-                 @"documentTitle": @"微信分享",
-                 @"documentUrl": @"http://mp.weixin.qq.com/s?__biz=MjM5NDAxMDg4MA==&mid=400435288&idx=1&sn=90ac09845a9f8d4034a2d9168a0a0858&scene=0#rd",
+                 kDocumentItemIconKey: @"weChatShareDocumentIcon",
+                 kDocumentItemTitleKey: @"微信分享",
+                 kDocumentItemUrlKey: @"http://mp.weixin.qq.com/s?__biz=MjM5NDAxMDg4MA==&mid=400435288&idx=1&sn=90ac09845a9f8d4034a2d9168a0a0858&scene=0#rd",
                  }
              ];
 }

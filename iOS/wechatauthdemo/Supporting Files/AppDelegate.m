@@ -132,10 +132,10 @@ static const CGFloat kNavigationTitleFontSize = 17.0f;
                                               [self.window makeKeyAndVisible];
                                           }];
     }
+    
     return YES;
 }
 
-#pragma warnings You MUST implement these two delegate to handle opening WeChat.
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
     return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];

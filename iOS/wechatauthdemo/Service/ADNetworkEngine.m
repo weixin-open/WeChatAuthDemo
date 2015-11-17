@@ -288,7 +288,6 @@ static NSString* const publickeyFileName = @"rsa_public";
                                 }
                             }];
     };
-    
     if (replyId == nil) {
         [[self.session JSONTaskForHost:self.host
                                   Para:@{

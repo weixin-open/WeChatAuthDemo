@@ -8,6 +8,7 @@
 
 #import "MessageBoardContentView.h"
 #import "ImageCache.h"
+#import "LineColor.h"
 #import "ADCommentList.h"
 #import "ADReplyList.h"
 #import "ADUser.h"
@@ -21,6 +22,11 @@ static const CGFloat kContentFontSize = 15.0f;
 /* Size */
 static const CGFloat kNickNameWidth = 176.0f;
 static const CGFloat kTimeStampWidth = 88.0f;
+static const CGFloat kNickNameHeight = 33.0f;
+static const CGFloat kLineHeight = 1.0f;
+
+/* Text */
+static NSString* const kTimeStampFormat = @"yyyy-MM-dd";
 
 @interface MessageBoardContentView ()
 
@@ -50,23 +56,23 @@ static const CGFloat kTimeStampWidth = 88.0f;
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.headImage.frame = CGRectMake(inset, inset, 33, 33);
+    self.headImage.frame = CGRectMake(inset, inset, kNickNameHeight, kNickNameHeight);
     self.nickName.frame = CGRectMake(CGRectGetMaxX(self.headImage.frame)+inset,
                                      inset*0.5,
-                                     kNickNameWidth, 33);
+                                     kNickNameWidth, kNickNameHeight);
     self.timeStamp.frame = CGRectMake(CGRectGetWidth(self.frame)-inset-kTimeStampWidth,
                                       inset*0.5,
-                                      kTimeStampWidth, 33);
+                                      kTimeStampWidth, kNickNameHeight);
     if (self.comment) {
         self.content.frame = CGRectMake(CGRectGetMinX(self.nickName.frame),
                                         CGRectGetMaxY(self.nickName.frame),
                                         CGRectGetWidth(self.frame)-normalHeight-inset, self.comment.height);
-        self.line.frame = CGRectMake(inset, 0, ScreenWidth-inset, 1);
+        self.line.frame = CGRectMake(inset, 0, ScreenWidth-inset, kLineHeight);
     } else if (self.reply) {
         self.content.frame = CGRectMake(CGRectGetMinX(self.nickName.frame),
-                                        CGRectGetMinY(self.nickName.frame)+33,
+                                        CGRectGetMinY(self.nickName.frame)+kNickNameHeight,
                                         CGRectGetWidth(self.frame)-normalHeight-inset, self.reply.height);
-        self.line.frame = CGRectMake(inset, 0, ScreenWidth-4*inset, 1);
+        self.line.frame = CGRectMake(inset, 0, ScreenWidth-4*inset, kLineHeight);
     }
 }
 
@@ -188,7 +194,7 @@ static const CGFloat kTimeStampWidth = 88.0f;
 - (NSDateFormatter *)formatter {
     if (_formatter == nil) {
         _formatter = [[NSDateFormatter alloc] init];
-        _formatter.dateFormat = @"yyyy-MM-dd";
+        _formatter.dateFormat = kTimeStampFormat;
     }
     return _formatter;
 }
@@ -196,10 +202,7 @@ static const CGFloat kTimeStampWidth = 88.0f;
 - (UIView *)line {
     if (_line == nil) {
         _line = [[UIView alloc] init];
-        _line.backgroundColor = [UIColor colorWithRed:0.8
-                                                green:0.8
-                                                 blue:0.8
-                                                alpha:0.7f];
+        _line.backgroundColor = [UIColor lineColor];
     }
     return _line;
 }
