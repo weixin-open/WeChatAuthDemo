@@ -95,7 +95,7 @@ class WXNetwork
 		}
 		return $decode;
 	}
-	
+
 	protected function AES256_cbc_encrypt($data, $key, $iv) {
 		if (32 !== strlen($key)) $key = hash('SHA256', $key, true);
 		if (16 !== strlen($iv)) $iv = hash('MD5', $iv, true);

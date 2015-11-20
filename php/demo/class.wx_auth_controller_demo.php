@@ -494,7 +494,6 @@ class WXAuthControllerDemo
 		fclose($fp);
 	}
 
-
 } // END
 
 /* END file */

@@ -126,6 +126,15 @@ class WXAuthDatabaseDemo implements WXDatabase
 		}
 		$list = array();
 		$start = false;
+
+		// 删除三天前的评论
+		foreach($comment_list as $comment_id => $comment) {
+			if(time() - $comment['date'] > 259200) {
+				unset($comment_list[$comment_id]);
+			}
+		}
+		$this->set('comment_list', $comment_list);
+
 		if ($start_id == '') {
 			$start = true;
 		}
