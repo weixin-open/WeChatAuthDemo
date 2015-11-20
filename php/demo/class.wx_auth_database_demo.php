@@ -128,8 +128,8 @@ class WXAuthDatabaseDemo implements WXDatabase
 		$start = false;
 
 		// 删除三天前的评论
-		foreach($comment_list as $comment_id => $comment) {
-			if(time() - $comment['date'] > 259200) {
+		foreach ($comment_list as $comment_id => $comment) {
+			if (time() - $comment['date'] > 259200) { // 259200 = 60 * 60 * 24 * 3，即三天的秒数
 				unset($comment_list[$comment_id]);
 			}
 		}
@@ -139,7 +139,7 @@ class WXAuthDatabaseDemo implements WXDatabase
 			$start = true;
 		}
 		foreach ($comment_list as $comment_id => $comment) {
-			if ($comment['id'] == $start_id) {
+			if ($comment['id'] == $start_id) { // 找到开始id
 				$start = true;
 				continue;
 			}
