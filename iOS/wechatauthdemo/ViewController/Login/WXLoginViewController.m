@@ -7,7 +7,6 @@
 //
 
 #import "WXLoginViewController.h"
-#import "ADLoginViewController.h"
 #import "DebugViewController.h"
 #import "ADNetworkEngine.h"
 #import "WXApiManager.h"
@@ -15,17 +14,20 @@
 #import "ADCheckLoginResp.h"
 #import "ADUserInfo.h"
 #import "ADConnectResp.h"
+#import "ADGetUserInfoResp.h"
+#import "UserInfoViewController.h"
+#import "AppDelegate.h"
 
 /* Title Message */
-static NSString* const kNormalLoginTitle = @"普通账号登录";
+static NSString* const kVisitorLoginTitle = @"游客模式进入";
 static NSString* const kConnectErrorTitle = @"连接服务器失败";
 static NSString* const kWXAuthDenyTitle = @"授权失败";
-static NSString* const kWXLoginErrorTitle = @"微信登陆失败";
-static NSString* const kTitleLabelText = @"微信登录Demo";
+static NSString* const kWXLoginErrorTitle = @"微信登录失败";
+static NSString* const kTitleLabelText = @"WeDemo";
 /* Font */
 static const CGFloat kTitleLabelFontSize = 18.0f;
 static const CGFloat kWXLoginButtonFontSize = 16.0f;
-static const CGFloat kNormalButtonFontSize = 12.0f;
+static const CGFloat kVisitorButtonFontSize = 12.0f;
 /* Size */
 static const int kLogoImageWidth = 75;
 static const int kLogoImageHeight = 52;
@@ -35,8 +37,8 @@ static const int kWXLoginButtonWidth = 280;
 static const int kWXLoginButtonHeight = 44;
 static const int kWXLogoImageWidth = 25;
 static const int kWXLogoImageHeight = 20;
-static const int kNormalLoginButtonWidth = 200;
-static const int kNormalLoginButtonHeight = 44;
+static const int kVisitorLoginButtonWidth = 200;
+static const int kVisitorLoginButtonHeight = 44;
 
 @interface WXLoginViewController ()<WXAuthDelegate>
 
@@ -45,7 +47,7 @@ static const int kNormalLoginButtonHeight = 44;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIImageView *wxLogoImageView;
 @property (nonatomic, strong) UIButton *wxLoginButton;
-@property (nonatomic, strong) UIButton *normalLoginButton;
+@property (nonatomic, strong) UIButton *visitorLoginButton;
 @property (nonatomic, strong) UIButton *debugButton;
 
 @end
@@ -63,13 +65,18 @@ static const int kNormalLoginButtonHeight = 44;
     [self.view addSubview:self.titleLabel];
     [self.view addSubview:self.wxLoginButton];
     [self.view addSubview:self.wxLogoImageView];
-    [self.view addSubview:self.normalLoginButton];
+    [self.view addSubview:self.visitorLoginButton];
+#ifdef DEBUG
     [self.view addSubview:self.debugButton];
-    
+#endif
     /* Setup Network */
     [[ADNetworkEngine sharedEngine] connectToServerWithCompletion:^(ADConnectResp *resp) {
         [self handleConnectResponse:resp];
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -93,9 +100,9 @@ static const int kNormalLoginButtonHeight = 44;
     self.wxLogoImageView.frame = CGRectMake(0, 0, kWXLogoImageWidth, kWXLogoImageHeight);
     self.wxLogoImageView.center = CGPointMake(wxLogoImageCenterX, loginButtonCenterY);
     
-    CGFloat normalBtnCenterY = ScreenHeight-kNormalLoginButtonHeight/2-inset;
-    self.normalLoginButton.frame = CGRectMake(0, 0, kNormalLoginButtonWidth, kNormalLoginButtonHeight);
-    self.normalLoginButton.center = CGPointMake(self.view.center.x, normalBtnCenterY);
+    CGFloat visitorBtnCenterY = ScreenHeight-kVisitorLoginButtonHeight/2-inset;
+    self.visitorLoginButton.frame = CGRectMake(0, 0, kVisitorLoginButtonWidth, kVisitorLoginButtonHeight);
+    self.visitorLoginButton.center = CGPointMake(self.view.center.x, visitorBtnCenterY);
     
     CGFloat debugBtnCenterX = ScreenWidth - inset * 3;
     CGFloat debugBtnCenterY = statusBarHeight + inset * 2;
@@ -111,12 +118,11 @@ static const int kNormalLoginButtonHeight = 44;
                                                         delegate:self];
 }
 
-- (void)onClickNormalLogin: (UIButton *)sender {
-    if (sender != self.normalLoginButton)
+- (void)onClickVisitorLogin: (UIButton *)sender {
+    if (sender != self.visitorLoginButton)
         return;
     
-    ADLoginViewController *normalLoginView = [[ADLoginViewController alloc] init];
-    [self.navigationController pushViewController:normalLoginView animated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)onClickDebug: (UIButton *)sender {
@@ -144,6 +150,7 @@ static const int kNormalLoginButtonHeight = 44;
 - (void)handleConnectResponse: (ADConnectResp *)resp {
     if (resp && resp.baseResp.errcode == 0) {
         [ADUserInfo currentUser].uin = (UInt32)resp.tempUin;
+        [ADUserInfo visitorUser].uin = (UInt32)resp.tempUin;
         NSLog(@"Connect Success");
     } else {
         NSLog(@"Connect Failed");
@@ -177,6 +184,18 @@ static const int kNormalLoginButtonHeight = 44;
         NSLog(@"Check Login Success");
         [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
         [[ADUserInfo currentUser] save];
+        [[ADNetworkEngine sharedEngine] getUserInfoForUin:[ADUserInfo currentUser].uin
+                                              LoginTicket:[ADUserInfo currentUser].loginTicket
+                                           WithCompletion:^(ADGetUserInfoResp *resp) {
+                                               [ADUserInfo currentUser].nickname = resp.nickname;
+                                               [ADUserInfo currentUser].headimgurl = resp.headimgurl;
+                                               AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+                                               delegate.userInfoView.userInfoResp = resp;
+                                               [[ADNetworkEngine sharedEngine] downloadImageForUrl:resp.headimgurl
+                                                                                    WithCompletion:^(UIImage *image) {
+                                                                                        [delegate.userInfoView.tableView reloadData];
+                                                                                    }];
+                                           }];
         [self.navigationController popToRootViewControllerAnimated:YES];
     } else {
         NSLog(@"Check Login Fail");
@@ -235,20 +254,20 @@ static const int kNormalLoginButtonHeight = 44;
     return _wxLogoImageView;
 }
 
-- (UIButton *)normalLoginButton {
-    if (_normalLoginButton == nil) {
-        _normalLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_normalLoginButton addTarget:self
-                               action:@selector(onClickNormalLogin:)
-                     forControlEvents:UIControlEventTouchUpInside];
-        [_normalLoginButton setTitle:kNormalLoginTitle
-                            forState:UIControlStateNormal];
-        [_normalLoginButton setTitleColor:[UIColor linkButtonColor]
-                                 forState:UIControlStateNormal];
-        _normalLoginButton.titleLabel.font = [UIFont fontWithName:kChineseFont
-                                                             size:kNormalButtonFontSize];
+- (UIButton *)visitorLoginButton {
+    if (_visitorLoginButton == nil) {
+        _visitorLoginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_visitorLoginButton addTarget:self
+                                action:@selector(onClickVisitorLogin:)
+                      forControlEvents:UIControlEventTouchUpInside];
+        [_visitorLoginButton setTitle:kVisitorLoginTitle
+                             forState:UIControlStateNormal];
+        [_visitorLoginButton setTitleColor:[UIColor linkButtonColor]
+                                  forState:UIControlStateNormal];
+        _visitorLoginButton.titleLabel.font = [UIFont fontWithName:kChineseFont
+                                                             size:kVisitorButtonFontSize];
     }
-    return _normalLoginButton;
+    return _visitorLoginButton;
 }
 
 - (UIButton *)debugButton {

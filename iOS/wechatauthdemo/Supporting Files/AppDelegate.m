@@ -9,17 +9,27 @@
 #import "AppDelegate.h"
 #import "AlertTitleFont.h"
 #import "WXLoginViewController.h"
-#import "ADUserInfoViewController.h"
+#import "DocumentsViewController.h"
+#import "MessageBoardViewController.h"
+#import "UserInfoViewController.h"
 #import "WXApi.h"
 #import "WXApiManager.h"
 #import "ADNetworkEngine.h"
 #import "ADNetworkConfigManager.h"
 #import "ADUserInfo.h"
 #import "ADCheckLoginResp.h"
+#import "ADGetUserInfoResp.h"
+#import "MessageBoardViewController.h"
 
 static NSString* const YourAppIdInWeChat = @"wxbeafe42095e03edf";
 static NSString* const kYourAppDescription = @"AuthDemo 2.0";
+static NSString* const kMessageBoardViewTitle = @"留言板";
+static NSString* const kUserInfoViewTitle = @"我";
+static NSString* const kDocumentsViewTitle = @"开发文档";
+
 static const CGFloat kAlertTitleFontSize = 16;
+static const NSInteger kDefaultTabIndex = 0;
+static const CGFloat kNavigationTitleFontSize = 17.0f;
 
 @implementation AppDelegate
 
@@ -28,23 +38,57 @@ static const CGFloat kAlertTitleFontSize = 16;
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     
     /* Setup RootViewController */
-    ADUserInfoViewController *userInfoView = [[ADUserInfoViewController alloc] init];
-    UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:userInfoView];
+    self.messageBoardView = [[MessageBoardViewController alloc] init];
+    UINavigationController *messageBoardNav = [[UINavigationController alloc] initWithRootViewController:self.messageBoardView];
+    messageBoardNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:kMessageBoardViewTitle
+                                                               image:[[UIImage imageNamed:@"messageBoardIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                       selectedImage:[[UIImage imageNamed:@"messageBoardSelectedIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    
+    self.documentsView = [[DocumentsViewController alloc] init];
+    UINavigationController *documentsNav = [[UINavigationController alloc] initWithRootViewController:self.documentsView];
+    documentsNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:kDocumentsViewTitle
+                                                            image:[[UIImage imageNamed:@"documentsIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                    selectedImage:[[UIImage imageNamed:@"documentsSelectIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    
+    self.userInfoView = [[UserInfoViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *userInfoNav = [[UINavigationController alloc] initWithRootViewController:self.userInfoView];
+    userInfoNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:kUserInfoViewTitle
+                                                           image:[[UIImage imageNamed:@"userIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                                                   selectedImage:[[UIImage imageNamed:@"userSelectedIcon"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    
+    UITabBarController *rootTabBarView = [[UITabBarController alloc] init];
+    rootTabBarView.viewControllers = @[messageBoardNav, documentsNav, userInfoNav];
+    rootTabBarView.tabBar.tintColor = [UIColor colorWithRed:0.07 green:0.73 blue:0.02 alpha:1.0];
+    rootTabBarView.tabBar.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
+    rootTabBarView.selectedIndex = kDefaultTabIndex;
+    
+    UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:rootTabBarView];
     self.window.rootViewController = rootNav;
-
+    
     /* Setup NavigationBar */
-    rootNav.navigationBar.tintColor = [UIColor blackColor];
-    UIFont *barFont = [UIFont fontWithName:kChineseFont
-                                      size:16];
-    NSDictionary *barAttributes = @{
-                                    NSFontAttributeName: barFont
-                                    };
-    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:barAttributes
-                                                                                            forState:UIControlStateNormal];
-    [[UINavigationBar appearance] setTitleTextAttributes:barAttributes];
+    NSShadow *shadow = [[NSShadow alloc] init];
+    shadow.shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
+    shadow.shadowOffset = CGSizeMake(0, 1);
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                                                           shadow, NSShadowAttributeName,
+                                                           [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:kNavigationTitleFontSize], NSFontAttributeName, nil]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.23 green:0.24 blue:0.25 alpha:1.0f]];
+    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlackOpaque];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil]
+     setTitleTextAttributes:
+     @{
+       NSFontAttributeName:[UIFont fontWithName:kChineseFont size:15]
+       }
+     forState:UIControlStateNormal];
+
     rootNav.navigationBar.hidden = YES;
+    
+    /* Setup AlertView */
     UILabel *alertAppear = nil;
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 8.0) {
+        [UINavigationBar appearance].translucent = NO;
         alertAppear = [UILabel appearanceWhenContainedIn:[UIAlertController class], nil];
     } else {
         alertAppear = [UILabel appearanceWhenContainedIn:[UIActionSheet class], nil];
@@ -72,6 +116,15 @@ static const CGFloat kAlertTitleFontSize = 16;
                                                   NSLog(@"Check Login Success");
                                                   [ADUserInfo currentUser].sessionExpireTime = resp.expireTime;
                                                   [[ADUserInfo currentUser] save];
+                                                  [[ADNetworkEngine sharedEngine] getUserInfoForUin:[ADUserInfo currentUser].uin
+                                                                                        LoginTicket:[ADUserInfo currentUser].loginTicket
+                                                                                     WithCompletion:^(ADGetUserInfoResp *resp) {
+                                                                                         [ADUserInfo currentUser].nickname = resp.nickname;
+                                                                                         [ADUserInfo currentUser].headimgurl = resp.headimgurl;
+                                                                                         [[ADNetworkEngine sharedEngine] downloadImageForUrl:resp.headimgurl
+                                                                                                                              WithCompletion:nil];
+                                                                                         self.userInfoView.userInfoResp = resp;
+                                                                                     }];
                                               } else {
                                                   NSLog(@"Check Login Fail");
                                                   [rootNav pushViewController:wxLoginView animated:NO];
@@ -79,10 +132,10 @@ static const CGFloat kAlertTitleFontSize = 16;
                                               [self.window makeKeyAndVisible];
                                           }];
     }
+    
     return YES;
 }
 
-#pragma warnings You MUST implement these two delegate to handle opening WeChat.
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
     return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
@@ -114,5 +167,10 @@ static const CGFloat kAlertTitleFontSize = 16;
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 
 @end

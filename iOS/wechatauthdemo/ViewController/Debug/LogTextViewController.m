@@ -7,6 +7,7 @@
 //
 
 #import "LogTextViewController.h"
+#import "WXApiManager.h"
 
 @interface LogTextViewController ()
 
@@ -19,15 +20,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.title = @"日志";
     [self.view addSubview:self.textView];
     self.view.backgroundColor = [UIColor blackColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"退出"
                                                                              style:UIBarButtonItemStyleDone
                                                                             target:self
                                                                             action:@selector(onClickDismiss:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"分享"
+                                                                              style:UIBarButtonItemStyleDone
+                                                                             target:self
+                                                                             action:@selector(onClickShare:)];
 }
 
 - (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
     self.textView.frame = self.view.frame;
 }
 
@@ -35,7 +42,20 @@
 - (void)onClickDismiss:(UIBarButtonItem *)sender {
     if (sender != self.navigationItem.leftBarButtonItem)
         return;
-    [self dismissViewControllerAnimated:YES completion:nil];
+    self.presented = NO;
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)onClickShare:(UIBarButtonItem *)sender {
+    if (sender != self.navigationItem.rightBarButtonItem)
+        return;
+    
+    [[WXApiManager sharedManager] sendFileData:[self.textView.text dataUsingEncoding:NSUTF8StringEncoding]
+                                 fileExtension:@".txt"
+                                         Title:@"来自WeDemo的日志信息"
+                                   Description:@"来自WeDemo的日志信息"
+                                    ThumbImage:nil
+                                       AtScene:WXSceneSession];
 }
 
 #pragma mark - Public Methods
@@ -44,6 +64,8 @@
     static LogTextViewController *instance;
     dispatch_once(&onceToken, ^{
         instance = [[LogTextViewController alloc] init];
+        instance.hidesBottomBarWhenPushed = YES;
+        instance.presented = NO;
     });
     return instance;
 }
@@ -74,6 +96,5 @@
     }
     return _textView;
 }
-
 
 @end

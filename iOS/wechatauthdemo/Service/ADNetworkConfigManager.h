@@ -10,14 +10,14 @@
 @class ADNetworkConfigItem;
 
 AUTH_DEMO_EXTERN const NSString *kConnectCGIName;
-AUTH_DEMO_EXTERN const NSString *kRegisterCGIName;
-AUTH_DEMO_EXTERN const NSString *kLoginCGIName;
 AUTH_DEMO_EXTERN const NSString *kWXLoginCGIName;
 AUTH_DEMO_EXTERN const NSString *kCheckLoginCGIName;
 AUTH_DEMO_EXTERN const NSString *kGetUserInfoCGIName;
-AUTH_DEMO_EXTERN const NSString *kWXBindAppCGIName;
-AUTH_DEMO_EXTERN const NSString *kAppBindWXCGIName;
 AUTH_DEMO_EXTERN const NSString *kMakeExpiredCGIName;
+AUTH_DEMO_EXTERN const NSString *kGetCommentListCGIName;
+AUTH_DEMO_EXTERN const NSString *kGetReplyListCGIName;
+AUTH_DEMO_EXTERN const NSString *kAddCommentCGIName;
+AUTH_DEMO_EXTERN const NSString *kAddReplyCGIName;
 
 @interface ADNetworkConfigManager : NSObject
 
@@ -61,8 +61,17 @@ AUTH_DEMO_EXTERN const NSString *kMakeExpiredCGIName;
  */
 - (ADNetworkConfigItem *)getConfigForKeyPath:(NSString *)keyPath;
 
+/**
+ *  获得所有配置Key
+ *
+ *  @return 所有配置Key的数组
+ */
 - (NSArray *)allConfigKeys;
 
+
+/**
+ *  保存所有配置
+ */
 - (void)save;
 
 @end

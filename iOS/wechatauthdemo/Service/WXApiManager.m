@@ -11,6 +11,12 @@
 
 static NSString* const kWXNotInstallErrorTitle = @"您还没有安装微信，不能使用微信分享功能";
 
+@interface WXApiManager ()
+
+@property (nonatomic, strong) NSString *authState;
+
+@end
+
 @implementation WXApiManager
 
 #pragma mark - Life Cycle
@@ -43,7 +49,7 @@ static NSString* const kWXNotInstallErrorTitle = @"您还没有安装微信，�
 - (void)sendAuthRequestWithController:(UIViewController*)viewController
                              delegate:(id<WXAuthDelegate>)delegate {
     SendAuthReq* req = [[SendAuthReq alloc] init];
-    req.scope = @"snsapi_userinfo" ;
+    req.scope = @"snsapi_userinfo";
     req.state = [NSString randomKey];
     self.delegate = delegate;
     [WXApi sendAuthReq:req viewController:viewController delegate:self];
@@ -75,14 +81,50 @@ static NSString* const kWXNotInstallErrorTitle = @"您还没有安装微信，�
     return [WXApi sendReq:req];
 }
 
+- (BOOL)sendFileData:(NSData *)fileData
+       fileExtension:(NSString *)extension
+               Title:(NSString *)title
+         Description:(NSString *)description
+          ThumbImage:(UIImage *)thumbImage
+             AtScene:(enum WXScene)scene {
+    if (![WXApi isWXAppInstalled]) {
+        ADShowErrorAlert(kWXNotInstallErrorTitle);
+        return NO;
+    }
+
+    WXFileObject *ext = [WXFileObject object];
+    ext.fileExtension = extension;
+    ext.fileData = fileData;
+
+    WXMediaMessage *message = [WXMediaMessage message];
+    message.mediaObject = ext;
+    message.title = title;
+    message.description = description;
+    [message setThumbImage:thumbImage];
+    
+    SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+    req.message = message;
+    req.bText = NO;
+    req.scene = scene;
+    
+    return [WXApi sendReq:req];
+}
+
 #pragma mark - WXApiDelegate
 -(void)onReq:(BaseReq*)req {
-    // just leave it here, wechat will not call our app
+    // just leave it here, WeChat will not call our app
 }
 
 -(void)onResp:(BaseResp*)resp {    
     if([resp isKindOfClass:[SendAuthResp class]]) {
         SendAuthResp* authResp = (SendAuthResp*)resp;
+        /* Prevent Cross Site Request Forgery */
+        if (![authResp.state isEqualToString:self.authState]) {
+            if (self.delegate && [self.delegate respondsToSelector:@selector(wxAuthDenied)])
+                [self.delegate wxAuthDenied];
+            return;
+        }
+        
         switch (resp.errCode) {
             case WXSuccess:
                 NSLog(@"RESP:code:%@,state:%@\n", authResp.code, authResp.state);

@@ -4,7 +4,7 @@
 
 开发者可以自由使用并传播本代码，但需要保留原作者信息。
 
-联系我们：weixin-open@qq.com
+联系我们：dev@wechat.com
 
 ##Document
 

@@ -58,5 +58,25 @@
                   Title:(NSString *)title
             Description:(NSString *)desc
                 AtScene:(enum WXScene)scene;
+/**
+ *  发送文件到微信.
+ *
+ *  @restrict 该方法要求用户一定要安装微信.
+ *
+ *  @param fileData   文件的数据
+ *  @param extension  文件扩展名
+ *  @param title      文件的Title
+ *  @param desc       文件的描述
+ *  @param thumbImage 文件缩略图
+ *  @param scene      发送的场景，分为朋友圈, 会话和收藏
+ *
+ *  @return 发送成功返回YES
+ */
+- (BOOL)sendFileData:(NSData *)fileData
+       fileExtension:(NSString *)extension
+               Title:(NSString *)title
+         Description:(NSString *)desc
+          ThumbImage:(UIImage *)thumbImage
+             AtScene:(enum WXScene)scene;
 
 @end

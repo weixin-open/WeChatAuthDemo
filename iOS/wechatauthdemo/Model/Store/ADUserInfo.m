@@ -66,12 +66,24 @@ NSString *const kADUserInfoSex = @"sex";
     
 }
 
-static ADUserInfo *currentUser_ = nil;
 + (instancetype)currentUser {
-    if (currentUser_ == nil) {
+    static dispatch_once_t onceToken;
+    static ADUserInfo *currentUser_ = nil;
+    dispatch_once(&onceToken, ^{
         currentUser_ = [[ADUserInfo alloc] init];
-    }
+    });
     return currentUser_;
+}
+
+- (void)setUin:(UInt32)uin {
+    _uin = uin;
+}
+
++ (instancetype)visitorUser {
+    ADUserInfo *visitorUser = [[ADUserInfo alloc] init];
+    visitorUser.nickname = @"访客";
+    visitorUser.uin = [[ADUserInfo currentUser] uin];
+    return visitorUser;
 }
 
 - (BOOL)save {
@@ -103,6 +115,7 @@ static ADUserInfo *currentUser_ = nil;
     self.authCode = nil;
     self.headimgurl = nil;
     self.sex = ADSexTypeUnknown;
+    self.sessionExpireTime = 0;
 }
 
 - (NSDictionary *)dictionaryRepresentation
