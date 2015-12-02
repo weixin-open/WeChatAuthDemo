@@ -24,6 +24,10 @@
     return [[NSString stringWithFormat:@"%@%f", UUIDString, time] MD5];
 }
 
+@end
+
+@implementation NSData (RandomData)
+
 + (NSData *)randomDataWithLength:(NSUInteger)length {
     void *bytes = malloc(length);
     NSData *ret = [NSData dataWithBytes:bytes length:length];

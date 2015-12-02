@@ -15,6 +15,9 @@
  */
 + (NSString *)randomKey;
 
+@end
+
+@interface NSData (RandomData)
 /**
  *  产生随机数据.
  *  @param length 随机数据的长度

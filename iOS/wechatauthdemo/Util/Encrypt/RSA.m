@@ -117,7 +117,7 @@
     
     OSStatus status = noErr;
     status = SecKeyEncrypt(keyRef,
-                           kSecPaddingPKCS1,
+                           kSecPaddingOAEP,
                            srcbuf,
                            srclen,
                            outbuf,

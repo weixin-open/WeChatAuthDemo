@@ -108,7 +108,8 @@ note left of AppClient: 5. 用temp_key解密SK，\nexpireTime并保存。
 
 2. AppClient用HardCode在AppClient的RSA公钥加密的temp_key, Uin, LoginTicket发送给服务器.
 
-3. AppServer通过RSA私钥解密获得temp_key, Uin, LoginTicket, 之后尝试匹配Uin和LoginTicket并且检查LoginTicket是否过期。如果票据是很久之前（例如三个月之前的）生成的，或者最近没有使用过（例如一周没使用过），那么票据就是过期的。若检查都成功则生成一个密钥SK(*SessionKey*)和对应的过期时间expireTime，并建立```Uin<->SK```的映射。
+3. AppServer通过RSA私钥解密获得temp_key, Uin, LoginTicket, 之后尝试匹配Uin和LoginTicket并且检查LoginTicket是否过期。如果票据是很久之前（例如三个月之前的）生成的，或者最近没有使用过（例如一周没使用过），那么票据就是过期的。若检查都成功则生成一个密钥SK(*SessionKey*)和对应的过期时间expireTime，并建立```Uin<->SK```的映射。
+
 4. AppServer用temp_key对{SK, expireTime}进行AES加密后经过Base64 Encoding发送给AppClient。
 
 5. AppClient收到后，用temp_key作为密钥解密获得SK和expireTime并保存到内存。

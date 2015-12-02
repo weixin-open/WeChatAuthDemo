@@ -9,8 +9,10 @@
 #import "AES.h"
 #import "RandomKey.h"
 #import <CommonCrypto/CommonCryptor.h>
+#import <CommonCrypto/CommonCrypto.h>
 
-static const int AES_256_IV_SIZE = 16;  //TLS V1.2协议
+static const int AES_256_IV_SIZE = 16;
+//static const int HMAC_SHA256_SALT_SIZE = 16;
 
 @implementation NSData (AES)
 
@@ -18,7 +20,7 @@ static const int AES_256_IV_SIZE = 16;  //TLS V1.2协议
     NSUInteger dataLength = [self length];
     size_t bufferSize = dataLength + kCCBlockSizeAES128;
     void *buffer = malloc(bufferSize);
-    NSMutableData *data = [[NSString randomDataWithLength:AES_256_IV_SIZE] mutableCopy];
+    NSMutableData *data = [[NSData randomDataWithLength:AES_256_IV_SIZE] mutableCopy];
     
     size_t numBytesEncrypted = 0;
     CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt,
@@ -33,20 +35,57 @@ static const int AES_256_IV_SIZE = 16;  //TLS V1.2协议
                                           bufferSize,
                                           &numBytesEncrypted);
     
+    
     if (cryptStatus == kCCSuccess) {
         [data appendBytes:buffer length:numBytesEncrypted];
         free(buffer);
+        
+        /* Do HMac */
+        NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *hmac = [data doHmacWithKeyData:keyData];
+        [data appendData:hmac];
         return data;
     }
     free(buffer);
     return nil;
 }
 
+- (NSData *)doHmacWithKeyData:(NSData *)salt
+{
+    NSMutableData *macOut = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA256,
+           salt.bytes,
+           salt.length,
+           self.bytes,
+           self.length,
+           macOut.mutableBytes);
+    
+    return macOut;
+}
+
 - (NSData *)AES256DecryptWithKey:(NSString *)key {
+    
+    /* Server MAC */
+    unsigned char hmacSvrBuffer[CC_SHA256_DIGEST_LENGTH];
+    UInt32 hmacStartLoc = [self length]-CC_SHA256_DIGEST_LENGTH-1;
+    [self getBytes:hmacSvrBuffer
+             range:NSMakeRange(hmacStartLoc, CC_SHA256_DIGEST_LENGTH)];
+    NSData *hmacSvr = [NSData dataWithBytesNoCopy:hmacSvrBuffer
+                                           length:CC_SHA256_DIGEST_LENGTH];
+    
+    /* Client MAC */
+    NSData *messageData = [self subdataWithRange:NSMakeRange(0, hmacStartLoc)];
+    NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *hmacApp = [messageData doHmacWithKeyData:keyData];
+    if (![hmacApp isEqualToData:hmacSvr]) {
+        NSLog(@"Authentication Code From Svr[%@] != Calc by Client[%@]", hmacSvr, hmacApp);
+        return nil;
+    }
+    
     unsigned char iv[AES_256_IV_SIZE] = {0};
     memcpy(iv, [self bytes], sizeof(iv));
     
-    NSUInteger dataLength = [self length]-AES_256_IV_SIZE;
+    NSUInteger dataLength = [self length]-AES_256_IV_SIZE-CC_SHA256_DIGEST_LENGTH;
     size_t bufferSize = dataLength + kCCBlockSizeAES128;
     void *buffer = malloc(bufferSize);
     
@@ -63,7 +102,8 @@ static const int AES_256_IV_SIZE = 16;  //TLS V1.2协议
                                           bufferSize,
                                           &numBytesDecrypted);
     if (cryptStatus == kCCSuccess) {
-        return [NSData dataWithBytesNoCopy:buffer length:numBytesDecrypted];
+        return [NSData dataWithBytesNoCopy:buffer
+                                    length:numBytesDecrypted];
     }
     free(buffer);
     return nil;
@@ -88,7 +128,6 @@ static const int AES_256_IV_SIZE = 16;  //TLS V1.2协议
     return [[NSString alloc] initWithData:decryptData
                                  encoding:NSUTF8StringEncoding];
 }
-
 
 
 @end

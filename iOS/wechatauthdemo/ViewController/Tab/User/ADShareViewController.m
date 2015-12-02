@@ -13,7 +13,7 @@ static NSString* const kShareButtonText = @"分享  ";
 static NSString* const kShareDescText = @"分享一个链接";
 static NSString* const kShareFailedText = @"分享失败";
 
-@interface ADShareViewController ()<UIActionSheetDelegate>
+@interface ADShareViewController ()<UIActionSheetDelegate, UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) NSURLRequest *urlRequest;
@@ -52,6 +52,7 @@ static NSString* const kShareFailedText = @"分享失败";
 - (UIWebView *)webView {
     if (_webView == nil) {
         _webView = [[UIWebView alloc] init];
+        _webView.scrollView.delegate = self;
         [_webView loadRequest:self.urlRequest];
     }
     return _webView;
@@ -83,6 +84,12 @@ static NSString* const kShareFailedText = @"分享失败";
         default:
             break;
     }
+}
+
+#pragma mark - UIWebViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat scrollTop = scrollView.contentOffset.y;
+    NSLog(@"[DEBUG]ScrollTop=[%f]", scrollTop);
 }
 
 @end
