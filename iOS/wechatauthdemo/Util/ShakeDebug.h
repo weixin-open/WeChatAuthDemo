@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#ifdef DEBUG
 @interface UIViewController (ShakeDebug)
 
 @end
+#endif

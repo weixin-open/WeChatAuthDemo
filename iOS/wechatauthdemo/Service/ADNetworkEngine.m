@@ -19,7 +19,7 @@ static NSString* const publickeyFileName = @"rsa_public";
 
 @interface ADNetworkEngine ()
 
-@property (nonatomic, strong) NSURLSession *session;
+@property (nonatomic, strong) AFURLSessionManager *manager;
 @property (nonatomic, strong) NSString *RSAKey;
 
 @end
@@ -54,9 +54,9 @@ static NSString* const publickeyFileName = @"rsa_public";
 
 #pragma mark - Public Methods
 - (void)connectToServerWithCompletion:(ConnectCallBack)completion {
-    [[self.session JSONTaskForHost:self.host
+    [[self.manager JSONTaskForHost:self.host
                               Para:@{
-                                      @"psk": self.session.sessionKey
+                                      @"psk": self.manager.sessionKey
                                       }
                      ConfigKeyPath:(NSString *)kConnectCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
@@ -68,7 +68,7 @@ static NSString* const publickeyFileName = @"rsa_public";
 - (void)wxLoginForAuthCode:(NSString *)code
             WithCompletion:(WXLoginCallBack)completion {
     NSParameterAssert(code);
-    [[self.session JSONTaskForHost:self.host
+    [[self.manager JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @([ADUserInfo currentUser].uin),
                                       @"req_buffer": @{
@@ -86,11 +86,11 @@ static NSString* const publickeyFileName = @"rsa_public";
              LoginTicket:(NSString *)loginTicket
           WithCompletion:(CheckLoginCallBack)completion {
     NSParameterAssert(loginTicket);
-    [[self.session JSONTaskForHost:self.host
+    [[self.manager JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @(uin),
                                       @"login_ticket": loginTicket,
-                                      @"tmp_key": self.session.sessionKey
+                                      @"tmp_key": self.manager.sessionKey
                               }
                      ConfigKeyPath:(NSString *)kCheckLoginCGIName
                     WithCompletion:^(NSDictionary *dict, NSError *error) {
@@ -98,7 +98,7 @@ static NSString* const publickeyFileName = @"rsa_public";
                         if (error == nil) {
                             resp = [ADCheckLoginResp modelObjectWithDictionary:dict];
                             if (resp.baseResp.errcode == ADErrorCodeNoError) {
-                                self.session.sessionKey = resp.sessionKey;
+                                self.manager.sessionKey = resp.sessionKey;
                             }
                         }
                         if (completion)
@@ -110,7 +110,7 @@ static NSString* const publickeyFileName = @"rsa_public";
               LoginTicket:(NSString *)loginTicket
            WithCompletion:(GetUserInfoCallBack)completion {
     NSParameterAssert(loginTicket);
-    [[self.session JSONTaskForHost:self.host
+    [[self.manager JSONTaskForHost:self.host
                               Para:@{
                                       @"uin": @(uin),
                                       @"req_buffer": @{
@@ -135,7 +135,7 @@ static NSString* const publickeyFileName = @"rsa_public";
 }
 
 - (void)disConnect {
-    self.session = nil;
+    self.manager = nil;
 }
 
 - (void)downloadImageForUrl:(NSString *)urlString
@@ -162,7 +162,7 @@ static NSString* const publickeyFileName = @"rsa_public";
 
 - (void)makeRefreshTokenExpired:(UInt32)uin
                     LoginTicket:(NSString *)loginTicket {
-    [[self.session JSONTaskForHost:self.host
+    [[self.manager JSONTaskForHost:self.host
                              Para:@{
                                     @"uin": @(uin),
                                     @"req_buffer": @{
@@ -187,7 +187,7 @@ static NSString* const publickeyFileName = @"rsa_public";
     if (startId != nil) {
         requestBuffer[@"start_id"] = startId;
     }
-    [[self.session JSONTaskForHost:self.host
+    [[self.manager JSONTaskForHost:self.host
                               Para:@{
                                      @"uin": @(uin),
                                      @"req_buffer": requestBuffer
@@ -211,7 +211,7 @@ static NSString* const publickeyFileName = @"rsa_public";
 - (void)getReplyListForUin:(UInt32)uin
                  OfComment:(NSString *)commentId
             WithCompletion:(GetReplyListCallBack)completion {
-    [[self.session JSONTaskForHost:self.host
+    [[self.manager JSONTaskForHost:self.host
                               Para:@{
                                      @"uin": @(uin),
                                      @"req_buffer": @{
@@ -239,7 +239,7 @@ static NSString* const publickeyFileName = @"rsa_public";
                    ForUin:(UInt32)uin
               LoginTicket:(NSString *)loginTicket
            WithCompletion:(AddCommentCallBack)completion {
-    [[self.session JSONTaskForHost:self.host
+    [[self.manager JSONTaskForHost:self.host
                               Para:@{
                                      @"uin": @(uin),
                                      @"req_buffer": @{
@@ -290,7 +290,7 @@ static NSString* const publickeyFileName = @"rsa_public";
                             }];
     };
     if (replyId == nil) {
-        [[self.session JSONTaskForHost:self.host
+        [[self.manager JSONTaskForHost:self.host
                                   Para:@{
                                          @"uin": @(uin),
                                          @"req_buffer": @{
@@ -303,7 +303,7 @@ static NSString* const publickeyFileName = @"rsa_public";
                          ConfigKeyPath:(NSString *)kAddReplyCGIName
                         WithCompletion:callBack] resume];
     } else {
-        [[self.session JSONTaskForHost:self.host
+        [[self.manager JSONTaskForHost:self.host
                                   Para:@{
                                          @"uin": @(uin),
                                          @"req_buffer": @{
@@ -321,14 +321,14 @@ static NSString* const publickeyFileName = @"rsa_public";
 }
 
 #pragma mark - Lazy Initializer
-- (NSURLSession *)session {
-    if (_session == nil) {
+- (AFURLSessionManager *)manager {
+    if (_manager == nil) {
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-        _session = [NSURLSession sessionWithConfiguration:config];
-        _session.sessionKey = [NSString randomKey];
-        _session.publicKey = self.RSAKey;
+        _manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:config];
+        _manager.sessionKey = [NSString randomKey];
+        _manager.publicKey = self.RSAKey;
     }
-    return _session;
+    return _manager;
 }
 
 - (NSString *)RSAKey {

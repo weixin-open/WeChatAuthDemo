@@ -1,17 +1,16 @@
 //
-//  JSONRequest.h
-//  AuthSDKDemo
+//  AFHTTPSessionManager+JSONRequest.h
+//  wechatauthdemo
 //
-//  Created by Jeason on 14/08/2015.
-//  Copyright (c) 2015 Tencent. All rights reserved.
+//  Created by Jeason on 21/12/2015.
+//  Copyright © 2015 Tencent. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 
 typedef void (^JSONCallBack)(NSDictionary *dict, NSError *error);
 
-@interface NSURLSession(JSONRequest)
+@interface AFURLSessionManager (JSONRequest)
 
 /**
  *  网络请求建立的统一接口.
@@ -21,17 +20,18 @@ typedef void (^JSONCallBack)(NSDictionary *dict, NSError *error);
  *  @param configKeyPath 请求的配置ID， 详情阅读ADNetworkConfigManager
  *  @param handler       请求完成时的回调
  *
- *  @return 返回一个DataTask（需要resume）
  */
-- (NSURLSessionDataTask *)JSONTaskForHost:(NSString *)host
-                                     Para:(NSDictionary *)para
-                            ConfigKeyPath:(NSString *)configKeyPath
-                           WithCompletion:(JSONCallBack)handler;
+
+- (NSURLSessionTask *)JSONTaskForHost:(NSString *)host
+                                 Para:(NSDictionary *)para
+                        ConfigKeyPath:(NSString *)configKeyPath
+                       WithCompletion:(JSONCallBack)handler;
 @end
 
-@interface NSURLSession (SessionKey)
+@interface AFURLSessionManager (SessionKey)
 
 @property (nonatomic, retain) NSString *sessionKey;
 @property (nonatomic, retain) NSString *publicKey;
 
 @end
+

@@ -29,6 +29,7 @@
 		7A5587D81BD0FE5700549118 /* ADReplyList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5587D21BD0FE5700549118 /* ADReplyList.m */; };
 		7A5587D91BD0FE5700549118 /* ADUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5587D41BD0FE5700549118 /* ADUser.m */; };
 		7A58F3581B8B40BB00F3E241 /* ADGetUserInfoResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A58F3571B8B40BB00F3E241 /* ADGetUserInfoResp.m */; };
+		7A5D46FA1C27F71600293823 /* JSONRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5D46F91C27F71600293823 /* JSONRequest.m */; };
 		7A5E836E1BD679290025EFD7 /* CommentReplyFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5E836D1BD679290025EFD7 /* CommentReplyFooterView.m */; };
 		7A5E83701BD679410025EFD7 /* CommentReplyFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A5E836F1BD679410025EFD7 /* CommentReplyFooterView.xib */; };
 		7A6F17C21BF07D81008834FB /* InputWithTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F17C01BF07D81008834FB /* InputWithTextFieldCell.m */; };
@@ -50,6 +51,7 @@
 		7AB0582F1BCF4F0600B11365 /* DocumentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB0582E1BCF4F0600B11365 /* DocumentsViewController.m */; };
 		7AB058321BCF4F1300B11365 /* MessageBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB058311BCF4F1300B11365 /* MessageBoardViewController.m */; };
 		7AB058381BCF4F6900B11365 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB058371BCF4F6900B11365 /* UserInfoViewController.m */; };
+		7AB8CD501C2800EF0017AB29 /* ResolveDebugWarning.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB8CD4F1C2800EF0017AB29 /* ResolveDebugWarning.m */; };
 		7ABF028C1BD49ABE006D62D0 /* MessageBoardCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF028A1BD49ABE006D62D0 /* MessageBoardCommentView.m */; };
 		7ABF02901BD4AE26006D62D0 /* MessageBoardContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF028F1BD4AE26006D62D0 /* MessageBoardContentView.m */; };
 		7ABF02931BD4B1A4006D62D0 /* MessageBoardReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF02921BD4B1A4006D62D0 /* MessageBoardReplyCell.m */; };
@@ -76,7 +78,6 @@
 		7AF8D54F1C27E6EA007D49E1 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8D5481C27E6EA007D49E1 /* ErrorHandler.m */; };
 		7AF8D5501C27E6EA007D49E1 /* ErrorTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8D54A1C27E6EA007D49E1 /* ErrorTitle.m */; };
 		7AF8D5511C27E6EA007D49E1 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8D54C1C27E6EA007D49E1 /* ImageCache.m */; };
-		7AF8D5521C27E6EA007D49E1 /* JSONRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8D54E1C27E6EA007D49E1 /* JSONRequest.m */; };
 		7AF953561BECDB4400C3CCCD /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF953551BECDB4400C3CCCD /* libc++.tbd */; };
 		7AF953581BECDB4C00C3CCCD /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF953571BECDB4C00C3CCCD /* libsqlite3.0.tbd */; };
 		7AF9535A1BECDB9700C3CCCD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF953591BECDB9700C3CCCD /* libz.tbd */; };
@@ -131,6 +132,8 @@
 		7A5587D41BD0FE5700549118 /* ADUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADUser.m; sourceTree = "<group>"; };
 		7A58F3561B8B40BB00F3E241 /* ADGetUserInfoResp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADGetUserInfoResp.h; sourceTree = "<group>"; };
 		7A58F3571B8B40BB00F3E241 /* ADGetUserInfoResp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADGetUserInfoResp.m; sourceTree = "<group>"; };
+		7A5D46F81C27F71600293823 /* JSONRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONRequest.h; sourceTree = "<group>"; };
+		7A5D46F91C27F71600293823 /* JSONRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONRequest.m; sourceTree = "<group>"; };
 		7A5E836C1BD679290025EFD7 /* CommentReplyFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentReplyFooterView.h; sourceTree = "<group>"; };
 		7A5E836D1BD679290025EFD7 /* CommentReplyFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentReplyFooterView.m; sourceTree = "<group>"; };
 		7A5E836F1BD679410025EFD7 /* CommentReplyFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentReplyFooterView.xib; sourceTree = "<group>"; };
@@ -169,6 +172,8 @@
 		7AB058311BCF4F1300B11365 /* MessageBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBoardViewController.m; sourceTree = "<group>"; };
 		7AB058361BCF4F6900B11365 /* UserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
 		7AB058371BCF4F6900B11365 /* UserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoViewController.m; sourceTree = "<group>"; };
+		7AB8CD4E1C2800EF0017AB29 /* ResolveDebugWarning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolveDebugWarning.h; sourceTree = "<group>"; };
+		7AB8CD4F1C2800EF0017AB29 /* ResolveDebugWarning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolveDebugWarning.m; sourceTree = "<group>"; };
 		7ABF02891BD49ABE006D62D0 /* MessageBoardCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoardCommentView.h; sourceTree = "<group>"; };
 		7ABF028A1BD49ABE006D62D0 /* MessageBoardCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBoardCommentView.m; sourceTree = "<group>"; };
 		7ABF028E1BD4AE26006D62D0 /* MessageBoardContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoardContentView.h; sourceTree = "<group>"; };
@@ -220,8 +225,6 @@
 		7AF8D54A1C27E6EA007D49E1 /* ErrorTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorTitle.m; sourceTree = "<group>"; };
 		7AF8D54B1C27E6EA007D49E1 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
 		7AF8D54C1C27E6EA007D49E1 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
-		7AF8D54D1C27E6EA007D49E1 /* JSONRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONRequest.h; sourceTree = "<group>"; };
-		7AF8D54E1C27E6EA007D49E1 /* JSONRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONRequest.m; sourceTree = "<group>"; };
 		7AF953551BECDB4400C3CCCD /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7AF953571BECDB4C00C3CCCD /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7AF953591BECDB9700C3CCCD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -402,6 +405,8 @@
 			children = (
 				7A045E641BAC264000332AC1 /* ShakeDebug.h */,
 				7A045E651BAC264000332AC1 /* ShakeDebug.m */,
+				7AB8CD4E1C2800EF0017AB29 /* ResolveDebugWarning.h */,
+				7AB8CD4F1C2800EF0017AB29 /* ResolveDebugWarning.m */,
 			);
 			name = Debug;
 			sourceTree = "<group>";
@@ -655,8 +660,8 @@
 				7AF8D54A1C27E6EA007D49E1 /* ErrorTitle.m */,
 				7AF8D54B1C27E6EA007D49E1 /* ImageCache.h */,
 				7AF8D54C1C27E6EA007D49E1 /* ImageCache.m */,
-				7AF8D54D1C27E6EA007D49E1 /* JSONRequest.h */,
-				7AF8D54E1C27E6EA007D49E1 /* JSONRequest.m */,
+				7A5D46F81C27F71600293823 /* JSONRequest.h */,
+				7A5D46F91C27F71600293823 /* JSONRequest.m */,
 			);
 			path = NetworkHandler;
 			sourceTree = "<group>";
@@ -810,10 +815,10 @@
 				7A2914751BCFCAE1006D6952 /* UserNickNameCell.m in Sources */,
 				7AD826B01B820107008CA90C /* MD5.m in Sources */,
 				7A8D06181BD5115A0002D804 /* ADCommentList.m in Sources */,
+				7AB8CD501C2800EF0017AB29 /* ResolveDebugWarning.m in Sources */,
 				7AD826A41B8200BD008CA90C /* ADWXLoginResp.m in Sources */,
 				7A00ADC71B8353940013A0B2 /* RandomKey.m in Sources */,
 				7A8D06191BD5115A0002D804 /* ADGetCommentListResp.m in Sources */,
-				7AF8D5521C27E6EA007D49E1 /* JSONRequest.m in Sources */,
 				7A13C4C51BD0DB1B006189C9 /* AskLoginViewController.m in Sources */,
 				7A8D061C1BD521D90002D804 /* NewCommentViewController.m in Sources */,
 				7AF953601BF0477D00C3CCCD /* ADHistoryViewController.m in Sources */,
@@ -830,6 +835,7 @@
 				7AB058381BCF4F6900B11365 /* UserInfoViewController.m in Sources */,
 				7A5E836E1BD679290025EFD7 /* CommentReplyFooterView.m in Sources */,
 				7ADF84401BD775370087E30A /* MessageboardHeaderView.m in Sources */,
+				7A5D46FA1C27F71600293823 /* JSONRequest.m in Sources */,
 				7A0440DA1BA7BEF000574AA2 /* DebugViewController.m in Sources */,
 				7A045E661BAC264000332AC1 /* ShakeDebug.m in Sources */,
 				7AF953631BF0479600C3CCCD /* ADAboutViewController.m in Sources */,
