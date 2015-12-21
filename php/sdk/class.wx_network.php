@@ -94,7 +94,7 @@ class WXNetwork
 		$iv = substr($data, 0, $iv_size);
 		$mac_client = substr($data, -32);
 		$encode = substr($data, $iv_size, -32);
-		$mac_server = hash_hmac('sha256', $encode, $key); // 计算mac_server
+		$mac_server = hash_hmac('sha256', $encode, $key, true); // 计算mac_server
 
 		// 检测包的合法性
 		if ($mac_client == $mac_server){
