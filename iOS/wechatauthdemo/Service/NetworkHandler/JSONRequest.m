@@ -12,6 +12,7 @@
 #import "RSA.h"
 #import "ADNetworkConfigManager.h"
 #import "ADNetworkConfigItem.h"
+#import <AFNetworking/AFNetworking.h>
 
 /**
  *  NSURLSession 是Class Cluster，有些Private Class的不是NSURLSession的子类.
@@ -66,7 +67,6 @@ static char sessionKeyId;
     [request addValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:config.httpMethod];
     [request setHTTPBody:encryptedData];
-    
     /* Setup DataTask */
     return  [selfSession dataTaskWithRequest:request
                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {

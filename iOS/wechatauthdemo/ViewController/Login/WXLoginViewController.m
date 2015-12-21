@@ -157,6 +157,7 @@ static const int kVisitorLoginButtonHeight = 44;
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kConnectErrorTitle];
         ADShowErrorAlert(errorTitle);
+        ADHideActivity;
     }
 }
 
@@ -175,6 +176,7 @@ static const int kVisitorLoginButtonHeight = 44;
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kWXLoginErrorTitle];
         ADShowErrorAlert(errorTitle);
+        ADHideActivity;
     }
 }
 
@@ -202,6 +204,7 @@ static const int kVisitorLoginButtonHeight = 44;
         NSString *errorTitle = [NSString errorTitleFromResponse:resp.baseResp
                                                    defaultError:kWXLoginErrorTitle];
         ADShowErrorAlert(errorTitle);
+        ADHideActivity;
     }
 }
 

@@ -124,7 +124,7 @@
                            &outlen
                            );
     NSData *ret = nil;
-    if (status != 0) {
+    if (status != errSecSuccess) {
         NSLog(@"SecKeyEncrypt fail. Error Code: %d", (int)status);
     } else {
         ret = [NSData dataWithBytes:outbuf length:outlen];

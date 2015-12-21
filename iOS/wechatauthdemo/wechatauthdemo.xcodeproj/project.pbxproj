@@ -71,21 +71,24 @@
 		7ADF84401BD775370087E30A /* MessageboardHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ADF843E1BD775370087E30A /* MessageboardHeaderView.m */; };
 		7ADF84411BD775370087E30A /* MessageboardHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ADF843F1BD775370087E30A /* MessageboardHeaderView.xib */; };
 		7AE8155E1BA1B7AB00B5C7C8 /* rsa_public.key in Resources */ = {isa = PBXBuildFile; fileRef = 7A00ADC31B83369B0013A0B2 /* rsa_public.key */; };
-		7AE8C7541B9473560091CE4C /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C74D1B9473560091CE4C /* ErrorHandler.m */; };
-		7AE8C7551B9473560091CE4C /* ErrorTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C74F1B9473560091CE4C /* ErrorTitle.m */; };
-		7AE8C7561B9473560091CE4C /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7511B9473560091CE4C /* ImageCache.m */; };
-		7AE8C7571B9473560091CE4C /* JSONRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7531B9473560091CE4C /* JSONRequest.m */; };
 		7AE8C76B1B9473C70091CE4C /* WXLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */; };
 		7AF31E6B1BA9878B0007E389 /* LogTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF31E6A1BA9878B0007E389 /* LogTextViewController.m */; };
+		7AF8D54F1C27E6EA007D49E1 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8D5481C27E6EA007D49E1 /* ErrorHandler.m */; };
+		7AF8D5501C27E6EA007D49E1 /* ErrorTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8D54A1C27E6EA007D49E1 /* ErrorTitle.m */; };
+		7AF8D5511C27E6EA007D49E1 /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8D54C1C27E6EA007D49E1 /* ImageCache.m */; };
+		7AF8D5521C27E6EA007D49E1 /* JSONRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8D54E1C27E6EA007D49E1 /* JSONRequest.m */; };
 		7AF953561BECDB4400C3CCCD /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF953551BECDB4400C3CCCD /* libc++.tbd */; };
 		7AF953581BECDB4C00C3CCCD /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF953571BECDB4C00C3CCCD /* libsqlite3.0.tbd */; };
 		7AF9535A1BECDB9700C3CCCD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AF953591BECDB9700C3CCCD /* libz.tbd */; };
 		7AF9535D1BF0476700C3CCCD /* ADShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF9535C1BF0476700C3CCCD /* ADShareViewController.m */; };
 		7AF953601BF0477D00C3CCCD /* ADHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF9535F1BF0477D00C3CCCD /* ADHistoryViewController.m */; };
 		7AF953631BF0479600C3CCCD /* ADAboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF953621BF0479600C3CCCD /* ADAboutViewController.m */; };
+		F0B64BAC4C3A8D9053A47BA1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ADE14298AD0AD62C5C4E13D /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		26ADA800EBEB0F0DA3097D98 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		4ADE14298AD0AD62C5C4E13D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		735560791B45202D00B3EE93 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = Localizable.strings; path = ../Localizable.strings; sourceTree = "<group>"; };
 		7363B3131B42963000D833A5 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libWeChatSDK.a; path = WeChatSDK/libWeChatSDK.a; sourceTree = "<group>"; };
 		73BED5E71B3AA48600CA4C4D /* wechatauthdemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wechatauthdemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,18 +210,18 @@
 		7ADF843D1BD775360087E30A /* MessageboardHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageboardHeaderView.h; sourceTree = "<group>"; };
 		7ADF843E1BD775370087E30A /* MessageboardHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageboardHeaderView.m; sourceTree = "<group>"; };
 		7ADF843F1BD775370087E30A /* MessageboardHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageboardHeaderView.xib; sourceTree = "<group>"; };
-		7AE8C74C1B9473560091CE4C /* ErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorHandler.h; sourceTree = "<group>"; };
-		7AE8C74D1B9473560091CE4C /* ErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorHandler.m; sourceTree = "<group>"; };
-		7AE8C74E1B9473560091CE4C /* ErrorTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorTitle.h; sourceTree = "<group>"; };
-		7AE8C74F1B9473560091CE4C /* ErrorTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorTitle.m; sourceTree = "<group>"; };
-		7AE8C7501B9473560091CE4C /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
-		7AE8C7511B9473560091CE4C /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
-		7AE8C7521B9473560091CE4C /* JSONRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONRequest.h; sourceTree = "<group>"; };
-		7AE8C7531B9473560091CE4C /* JSONRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONRequest.m; sourceTree = "<group>"; };
 		7AE8C7681B9473C70091CE4C /* WXLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXLoginViewController.h; sourceTree = "<group>"; };
 		7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXLoginViewController.m; sourceTree = "<group>"; };
 		7AF31E691BA9878B0007E389 /* LogTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogTextViewController.h; path = Debug/LogTextViewController.h; sourceTree = "<group>"; };
 		7AF31E6A1BA9878B0007E389 /* LogTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogTextViewController.m; path = Debug/LogTextViewController.m; sourceTree = "<group>"; };
+		7AF8D5471C27E6EA007D49E1 /* ErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorHandler.h; sourceTree = "<group>"; };
+		7AF8D5481C27E6EA007D49E1 /* ErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorHandler.m; sourceTree = "<group>"; };
+		7AF8D5491C27E6EA007D49E1 /* ErrorTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorTitle.h; sourceTree = "<group>"; };
+		7AF8D54A1C27E6EA007D49E1 /* ErrorTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorTitle.m; sourceTree = "<group>"; };
+		7AF8D54B1C27E6EA007D49E1 /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
+		7AF8D54C1C27E6EA007D49E1 /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
+		7AF8D54D1C27E6EA007D49E1 /* JSONRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONRequest.h; sourceTree = "<group>"; };
+		7AF8D54E1C27E6EA007D49E1 /* JSONRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONRequest.m; sourceTree = "<group>"; };
 		7AF953551BECDB4400C3CCCD /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		7AF953571BECDB4C00C3CCCD /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7AF953591BECDB9700C3CCCD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -228,6 +231,7 @@
 		7AF9535F1BF0477D00C3CCCD /* ADHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADHistoryViewController.m; sourceTree = "<group>"; };
 		7AF953611BF0479600C3CCCD /* ADAboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADAboutViewController.h; sourceTree = "<group>"; };
 		7AF953621BF0479600C3CCCD /* ADAboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADAboutViewController.m; sourceTree = "<group>"; };
+		98E4C1B36B460BDE67EA05F0 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,12 +246,22 @@
 				73BED6251B3AA84E00CA4C4D /* Foundation.framework in Frameworks */,
 				73BED6231B3AA84600CA4C4D /* UIKit.framework in Frameworks */,
 				73BED61D1B3AA82000CA4C4D /* SystemConfiguration.framework in Frameworks */,
+				F0B64BAC4C3A8D9053A47BA1 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E033F00D46B74E7B6FB4EA6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				26ADA800EBEB0F0DA3097D98 /* Pods.debug.xcconfig */,
+				98E4C1B36B460BDE67EA05F0 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		73BED5DE1B3AA48600CA4C4D = {
 			isa = PBXGroup;
 			children = (
@@ -261,6 +275,7 @@
 				73BED6111B3AA59D00CA4C4D /* Frameworks */,
 				73BED6101B3AA56700CA4C4D /* WeChatSDK */,
 				73BED5E81B3AA48600CA4C4D /* Products */,
+				0E033F00D46B74E7B6FB4EA6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -291,6 +306,7 @@
 				73BED6241B3AA84E00CA4C4D /* Foundation.framework */,
 				73BED6221B3AA84600CA4C4D /* UIKit.framework */,
 				73BED61C1B3AA82000CA4C4D /* SystemConfiguration.framework */,
+				4ADE14298AD0AD62C5C4E13D /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -487,6 +503,7 @@
 		7AD8262A1B81FDF9008CA90C /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				7AF8D5461C27E6EA007D49E1 /* NetworkHandler */,
 				7A72805E1BF9FFB700AB83A1 /* API */,
 				7A72805F1BF9FFC000AB83A1 /* WX */,
 				7A7280601BF9FFC600AB83A1 /* Config */,
@@ -512,7 +529,6 @@
 			children = (
 				7AD826A51B820103008CA90C /* Definition */,
 				7AD826A81B820107008CA90C /* Encrypt */,
-				7AE8C74B1B9473560091CE4C /* NetworkHandler */,
 				7A72805C1BF9FF9600AB83A1 /* UI */,
 				7A72805D1BF9FFA400AB83A1 /* Debug */,
 			);
@@ -619,21 +635,6 @@
 			path = Store;
 			sourceTree = "<group>";
 		};
-		7AE8C74B1B9473560091CE4C /* NetworkHandler */ = {
-			isa = PBXGroup;
-			children = (
-				7AE8C74C1B9473560091CE4C /* ErrorHandler.h */,
-				7AE8C74D1B9473560091CE4C /* ErrorHandler.m */,
-				7AE8C74E1B9473560091CE4C /* ErrorTitle.h */,
-				7AE8C74F1B9473560091CE4C /* ErrorTitle.m */,
-				7AE8C7501B9473560091CE4C /* ImageCache.h */,
-				7AE8C7511B9473560091CE4C /* ImageCache.m */,
-				7AE8C7521B9473560091CE4C /* JSONRequest.h */,
-				7AE8C7531B9473560091CE4C /* JSONRequest.m */,
-			);
-			path = NetworkHandler;
-			sourceTree = "<group>";
-		};
 		7AE8C7651B9473C70091CE4C /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -645,6 +646,21 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		7AF8D5461C27E6EA007D49E1 /* NetworkHandler */ = {
+			isa = PBXGroup;
+			children = (
+				7AF8D5471C27E6EA007D49E1 /* ErrorHandler.h */,
+				7AF8D5481C27E6EA007D49E1 /* ErrorHandler.m */,
+				7AF8D5491C27E6EA007D49E1 /* ErrorTitle.h */,
+				7AF8D54A1C27E6EA007D49E1 /* ErrorTitle.m */,
+				7AF8D54B1C27E6EA007D49E1 /* ImageCache.h */,
+				7AF8D54C1C27E6EA007D49E1 /* ImageCache.m */,
+				7AF8D54D1C27E6EA007D49E1 /* JSONRequest.h */,
+				7AF8D54E1C27E6EA007D49E1 /* JSONRequest.m */,
+			);
+			path = NetworkHandler;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -652,9 +668,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 73BED60A1B3AA48600CA4C4D /* Build configuration list for PBXNativeTarget "wechatauthdemo" */;
 			buildPhases = (
+				186A11AB97A42A7640491420 /* Check Pods Manifest.lock */,
 				73BED5E31B3AA48600CA4C4D /* Sources */,
 				73BED5E41B3AA48600CA4C4D /* Frameworks */,
 				73BED5E51B3AA48600CA4C4D /* Resources */,
+				8D9C5A9F2C69E9C51C21D91B /* Embed Pods Frameworks */,
+				F3DC8191894B8291AF89F1C0 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -676,7 +695,6 @@
 				TargetAttributes = {
 					73BED5E61B3AA48600CA4C4D = {
 						CreatedOnToolsVersion = 6.3.2;
-						DevelopmentTeam = N4BU3F8P5C;
 					};
 				};
 			};
@@ -720,6 +738,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		186A11AB97A42A7640491420 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8D9C5A9F2C69E9C51C21D91B /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F3DC8191894B8291AF89F1C0 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		73BED5E31B3AA48600CA4C4D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -731,11 +797,10 @@
 				7AE8C76B1B9473C70091CE4C /* WXLoginViewController.m in Sources */,
 				7ABF02931BD4B1A4006D62D0 /* MessageBoardReplyCell.m in Sources */,
 				7A998CC31BD5E7BF005AC4D8 /* InputWithTextFeildBar.m in Sources */,
+				7AF8D5511C27E6EA007D49E1 /* ImageCache.m in Sources */,
 				7AD8269A1B8200BD008CA90C /* ADAccessLog.m in Sources */,
 				7ABF028C1BD49ABE006D62D0 /* MessageBoardCommentView.m in Sources */,
 				7AD826611B81FDF9008CA90C /* ADNetworkEngine.m in Sources */,
-				7AE8C7551B9473560091CE4C /* ErrorTitle.m in Sources */,
-				7AE8C7571B9473560091CE4C /* JSONRequest.m in Sources */,
 				7AF9535D1BF0476700C3CCCD /* ADShareViewController.m in Sources */,
 				7AD8269E1B8200BD008CA90C /* ADCheckLoginResp.m in Sources */,
 				7AA1634B1B85AAD200E54AAC /* ADNetworkConfigItem.m in Sources */,
@@ -743,16 +808,17 @@
 				7AF31E6B1BA9878B0007E389 /* LogTextViewController.m in Sources */,
 				7A6F17C21BF07D81008834FB /* InputWithTextFieldCell.m in Sources */,
 				7A2914751BCFCAE1006D6952 /* UserNickNameCell.m in Sources */,
-				7AE8C7541B9473560091CE4C /* ErrorHandler.m in Sources */,
 				7AD826B01B820107008CA90C /* MD5.m in Sources */,
 				7A8D06181BD5115A0002D804 /* ADCommentList.m in Sources */,
 				7AD826A41B8200BD008CA90C /* ADWXLoginResp.m in Sources */,
 				7A00ADC71B8353940013A0B2 /* RandomKey.m in Sources */,
 				7A8D06191BD5115A0002D804 /* ADGetCommentListResp.m in Sources */,
+				7AF8D5521C27E6EA007D49E1 /* JSONRequest.m in Sources */,
 				7A13C4C51BD0DB1B006189C9 /* AskLoginViewController.m in Sources */,
 				7A8D061C1BD521D90002D804 /* NewCommentViewController.m in Sources */,
 				7AF953601BF0477D00C3CCCD /* ADHistoryViewController.m in Sources */,
 				7ABF02901BD4AE26006D62D0 /* MessageBoardContentView.m in Sources */,
+				7AF8D5501C27E6EA007D49E1 /* ErrorTitle.m in Sources */,
 				7A8D061F1BD527D60002D804 /* UITextView+Placeholder.m in Sources */,
 				7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */,
 				7A5587D81BD0FE5700549118 /* ADReplyList.m in Sources */,
@@ -761,7 +827,6 @@
 				7AD826AF1B820107008CA90C /* AES.m in Sources */,
 				7AA163611B85DA9A00E54AAC /* UserInfoDisplayCell.m in Sources */,
 				7A998CCA1BD5EE50005AC4D8 /* ADAddCommentResp.m in Sources */,
-				7AE8C7561B9473560091CE4C /* ImageCache.m in Sources */,
 				7AB058381BCF4F6900B11365 /* UserInfoViewController.m in Sources */,
 				7A5E836E1BD679290025EFD7 /* CommentReplyFooterView.m in Sources */,
 				7ADF84401BD775370087E30A /* MessageboardHeaderView.m in Sources */,
@@ -774,6 +839,7 @@
 				7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */,
 				7A5587D91BD0FE5700549118 /* ADUser.m in Sources */,
 				7AD826621B81FDF9008CA90C /* WXApiManager.m in Sources */,
+				7AF8D54F1C27E6EA007D49E1 /* ErrorHandler.m in Sources */,
 				7AD826B11B820107008CA90C /* RSA.m in Sources */,
 				7AD826671B81FDF9008CA90C /* main.m in Sources */,
 				7A5587D71BD0FE5700549118 /* ADGetReplyListResp.m in Sources */,
@@ -874,10 +940,11 @@
 		};
 		73BED60B1B3AA48600CA4C4D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 26ADA800EBEB0F0DA3097D98 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: iOS Dev Team Wechat (T2559DMRBL)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: iOS Dev Team Wechat (T2559DMRBL)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/Util/Definition/Definition.h";
@@ -903,10 +970,11 @@
 		};
 		73BED60C1B3AA48600CA4C4D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 98E4C1B36B460BDE67EA05F0 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: iOS Dev Team Wechat (T2559DMRBL)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: iOS Dev Team Wechat (T2559DMRBL)";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/Util/Definition/Definition.h";
