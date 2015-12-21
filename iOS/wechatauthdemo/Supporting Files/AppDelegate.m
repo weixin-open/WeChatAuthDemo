@@ -172,5 +172,4 @@ static const CGFloat kNavigationTitleFontSize = 17.0f;
     return UIInterfaceOrientationMaskPortrait;
 }
 
-
 @end

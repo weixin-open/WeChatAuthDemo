@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
+#import "ResolveDebugWarning.h"
 
 int main(int argc, char * argv[]) {
     @autoreleasepool {

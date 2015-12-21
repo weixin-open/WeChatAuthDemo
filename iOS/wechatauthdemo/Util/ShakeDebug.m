@@ -9,8 +9,8 @@
 #import "ShakeDebug.h"
 #import "LogTextViewController.h"
 
-@implementation UIViewController (ShakeDebug)
 #ifdef DEBUG
+@implementation UIViewController (ShakeDebug)
 - (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     if (event.type == UIEventSubtypeMotionShake
         && [LogTextViewController sharedLogTextView].presented == NO) {
@@ -24,6 +24,5 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
-#endif
-
 @end
+#endif
