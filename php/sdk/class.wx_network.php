@@ -80,7 +80,7 @@ class WXNetwork
 		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
 		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 		$encode = $this->AES256_cbc_encrypt($data, $key, $iv);
-		$mac_server = hash_hmac('sha256', $encode, $key); // 计算mac_server
+		$mac_server = hash_hmac('sha256', $encode, $key, true); // 计算mac_server
 		$encode = base64_encode($iv . $encode . $mac_server); // 加密后输出的格式为IV+AES密文+SHA256对AES密文进行哈希后的值
 		$this->wxlog($encode);
 		return $encode;
