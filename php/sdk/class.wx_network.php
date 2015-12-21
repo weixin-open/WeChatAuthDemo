@@ -11,7 +11,6 @@ class WXNetwork
 	public function get_request($is_json = true)
 	{
 		// 获取整个request的body，因为body加密过，所以不能通过$_GET等方法获取参数
-		$this->wxlog('get_request');
 		$req = file_get_contents('php://input');
 		if ($req == false) {
 			return null;
@@ -24,7 +23,6 @@ class WXNetwork
 
 	public function response_error($errcode = -1)
 	{
-		$this->wxlog('response_error');
 		header('Content-Type: application/json; charset=utf8');
 		$resp = array(
 			'errcode' => $errcode
@@ -35,7 +33,6 @@ class WXNetwork
 
 	public function response($aes_key, $data = array(), $errcode = 0, $errmsg = '')
 	{
-		$this->wxlog('response');
 		header('Content-Type: application/json; charset=utf8');
 		$resp = array(
 			'base_resp' => array(
@@ -75,20 +72,17 @@ class WXNetwork
 
 	public function AES_encode($data, $key)
 	{
-		$this->wxlog('AES_encode');
 		$data = json_encode($data);
 		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
 		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 		$encode = $this->AES256_cbc_encrypt($data, $key, $iv);
 		$mac_server = hash_hmac('sha256', $encode, $key, true); // 计算mac_server
 		$encode = base64_encode($iv . $encode . $mac_server); // 加密后输出的格式为IV+AES密文+SHA256对AES密文进行哈希后的值
-		$this->wxlog($encode);
 		return $encode;
 	}
 
 	public function AES_decode($data, $key, $to_type = '')
 	{
-		$this->wxlog($data);
 		$data = base64_decode($data);
 		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
 		$iv = substr($data, 0, $iv_size);
@@ -125,19 +119,6 @@ class WXNetwork
 		$data = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $key, $data, MCRYPT_MODE_CBC, $iv);
 		$padding = ord($data[strlen($data) - 1]);
 		return substr($data, 0, -$padding);
-	}
-
-	protected function wxlog($str) {
-		if (!is_string($str)) {
-			$str = json_encode($str);
-		}
-		$file = WX_AUTH_STORE_PATH.'/log.txt';
-		// if (file_exists($file)) {
-		// 	file_put_contents($file, '');
-		// }
-		$fp = fopen($file, 'a');
-		fwrite($fp, date('[m-d H:i:s]')." ".$str."\n");
-		fclose($fp);
 	}
 
 } // END

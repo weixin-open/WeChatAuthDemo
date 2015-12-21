@@ -58,11 +58,6 @@ class WXAuthControllerDemo
 	 * Actions
 	 ***************************************************************/
 
-	public function action_test()
-	{
-		echo "Hello World!";
-	}
-
 	/**
 	 * 建立登录前安全信道
 	 * 获取密钥psk，并生成temp_uin
