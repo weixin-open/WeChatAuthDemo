@@ -12,6 +12,7 @@
 #import "RandomKey.h"
 #import "DataModels.h"
 #import "ImageCache.h"
+#import "AES.h"
 
 static NSString* const defaultHost = @"http://demo.maizify.com";
 static NSString* const publickeyFileName = @"rsa_public";

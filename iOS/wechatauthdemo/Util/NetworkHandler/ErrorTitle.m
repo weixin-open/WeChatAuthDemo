@@ -24,8 +24,6 @@
             errorTitle = @"账号已注册";
             break;
         case ADErrorCodeTokenExpired:
-//            errorTitle = @"太久没有使用了，为了安全起见，请重新输入密码登录";
-//            break;
         case ADErrorCodeTicketExpired:
             errorTitle = @"太久没有登录了，为了安全起见，请重新登录";
             break;
@@ -37,6 +35,9 @@
             break;
         case ADErrorCodePasswordNotMatch:
             errorTitle = @"密码不正确";
+            break;
+        case ADErrorCodeClientDescryptError:
+            errorTitle = @"网络错误";
             break;
         default:
             break;

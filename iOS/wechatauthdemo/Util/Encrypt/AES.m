@@ -12,7 +12,6 @@
 #import <CommonCrypto/CommonCrypto.h>
 
 static const int AES_256_IV_SIZE = 16;
-//static const int HMAC_SHA256_SALT_SIZE = 16;
 
 @implementation NSData (AES)
 
@@ -20,7 +19,7 @@ static const int AES_256_IV_SIZE = 16;
     NSUInteger dataLength = [self length];
     size_t bufferSize = dataLength + kCCBlockSizeAES128;
     void *buffer = malloc(bufferSize);
-    NSMutableData *data = [[NSData randomDataWithLength:AES_256_IV_SIZE] mutableCopy];
+    NSMutableData *data = [[NSData randomDataWithLength:AES_256_IV_SIZE] mutableCopy];  //IV
     
     size_t numBytesEncrypted = 0;
     CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt,
@@ -37,21 +36,24 @@ static const int AES_256_IV_SIZE = 16;
     
     
     if (cryptStatus == kCCSuccess) {
-        [data appendBytes:buffer length:numBytesEncrypted];
-        free(buffer);
-        
+        NSData *message = [NSData dataWithBytes:buffer
+                                         length:numBytesEncrypted]; //Message
         /* Do HMac */
         NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
-        NSData *hmac = [data doHmacWithKeyData:keyData];
+        NSData *hmac = [message doHmacWithKeyData:keyData];
+
+        /* IV+Message+HMac */
+        [data appendData:message];
         [data appendData:hmac];
+
+        free(buffer);
         return data;
     }
     free(buffer);
     return nil;
 }
 
-- (NSData *)doHmacWithKeyData:(NSData *)salt
-{
+- (NSData *)doHmacWithKeyData:(NSData *)salt {
     NSMutableData *macOut = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH];
     CCHmac(kCCHmacAlgSHA256,
            salt.bytes,
@@ -67,14 +69,14 @@ static const int AES_256_IV_SIZE = 16;
     
     /* Server MAC */
     unsigned char hmacSvrBuffer[CC_SHA256_DIGEST_LENGTH];
-    UInt32 hmacStartLoc = [self length]-CC_SHA256_DIGEST_LENGTH-1;
+    unsigned long hmacStartLoc = [self length]-CC_SHA256_DIGEST_LENGTH;
     [self getBytes:hmacSvrBuffer
              range:NSMakeRange(hmacStartLoc, CC_SHA256_DIGEST_LENGTH)];
-    NSData *hmacSvr = [NSData dataWithBytesNoCopy:hmacSvrBuffer
-                                           length:CC_SHA256_DIGEST_LENGTH];
+    NSData *hmacSvr = [NSData dataWithBytes:hmacSvrBuffer
+                                     length:CC_SHA256_DIGEST_LENGTH];
     
     /* Client MAC */
-    NSData *messageData = [self subdataWithRange:NSMakeRange(0, hmacStartLoc)];
+    NSData *messageData = [self subdataWithRange:NSMakeRange(AES_256_IV_SIZE, [self length]-CC_SHA256_DIGEST_LENGTH-AES_256_IV_SIZE)];
     NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
     NSData *hmacApp = [messageData doHmacWithKeyData:keyData];
     if (![hmacApp isEqualToData:hmacSvr]) {

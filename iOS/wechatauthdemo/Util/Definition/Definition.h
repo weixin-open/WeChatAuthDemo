@@ -20,6 +20,7 @@ typedef enum {
 typedef enum {
     ADErrorCodeNoError = 0,
     ADErrorCodeUnknown = -1,
+    ADErrorCodeClientDescryptError = -1001,
     ADErrorCodeCanNotAccessOpenServer = -10001,
     ADErrorCodeRequestError = -10002,
     ADErrorCodeTicketNotMatch = -20001,
@@ -29,7 +30,7 @@ typedef enum {
     ADErrorCodeUserNotExisted = 20003,
     ADErrorCodePasswordNotMatch = 20004,
     ADErrorCodeTicketExpired = 30002,
-    ADErrorCodeTokenExpired = 30003
+    ADErrorCodeTokenExpired = 30003,
 } ADErrorCode;
 
 typedef enum {

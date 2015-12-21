@@ -50,7 +50,7 @@ static NSString* const kWXNotInstallErrorTitle = @"您还没有安装微信，�
                              delegate:(id<WXAuthDelegate>)delegate {
     SendAuthReq* req = [[SendAuthReq alloc] init];
     req.scope = @"snsapi_userinfo";
-    req.state = [NSString randomKey];
+    self.authState = req.state = [NSString randomKey];
     self.delegate = delegate;
     [WXApi sendAuthReq:req viewController:viewController delegate:self];
 }

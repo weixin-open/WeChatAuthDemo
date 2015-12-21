@@ -110,6 +110,15 @@ static char sessionKeyId;
                                                           ForKeyPath:config.decryptKeyPath
                                                       UsingAlgorithm:config.decryptAlgorithm
                                                       WithSessionKey:preSessionKey];
+                               if (dict == nil) {
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       NSError *error = [NSError errorWithDomain:@"AppDescryptError"
+                                                                            code:ADErrorCodeClientDescryptError
+                                                                        userInfo:nil];
+
+                                       handler (nil, error);
+                                   });
+                               }
                                NSLog(@"DecryptData: %@", dict);
 
                                /* Get Response Buffer */
@@ -240,12 +249,16 @@ static char sessionKeyId;
     if (algorithm & EncryptAlgorithmAES) {
         toDecryptData = [toDecryptData AES256DecryptWithKey:sessionKey];
     }
+    /* Decrypt Fail */
+    if (toDecryptData == nil)
+        return nil;
+    
     /* Rplace Object for KeyPath */
     NSString *decryptedString = [[NSString alloc] initWithData:toDecryptData
                                                       encoding:NSUTF8StringEncoding];
+    /* Crash保护 */
     if (decryptedString == nil)
-        return dict;
-
+        return nil;
     NSMutableDictionary *mutableDict = [dict mutableCopy];
     [mutableDict setObject:decryptedString
                     forKey:keyPath];
