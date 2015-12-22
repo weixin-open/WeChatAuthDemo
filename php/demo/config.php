@@ -2,7 +2,7 @@
 
 /* !!! 请配置以下信息 !!! */
 
-error_reporting(E_ALL);
+error_reporting(0);
 date_default_timezone_set('Asia/Shanghai');
 
 // 应用的AppID及AppSecret，可在open.weixin.qq.com中找到，应与app客户端一致
