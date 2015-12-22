@@ -327,7 +327,6 @@ static NSString* const publickeyFileName = @"rsa_public";
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         _manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:config];
         AFJSONResponseSerializer *serializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
-        serializer.acceptableContentTypes = [NSSet setWithObjects: @"application/json", @"text/html", @"text/plain", @"text/json", @"text/javascript", @"audio/wav", nil];
         _manager.responseSerializer = serializer;
         _manager.sessionKey = [NSString randomKey];
         _manager.publicKey = self.RSAKey;
