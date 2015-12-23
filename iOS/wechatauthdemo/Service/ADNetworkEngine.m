@@ -32,7 +32,7 @@ static NSString* const publickeyFileName = @"rsa_public";
     static dispatch_once_t onceToken;
     static ADNetworkEngine *instance = nil;
     dispatch_once(&onceToken, ^{
-        NSString *savedHost = [[NSUserDefaults standardUserDefaults] objectForKey:@"ADNetworkDefaultHost"];
+        NSString *savedHost = nil;
         instance = [[ADNetworkEngine alloc] initWithHost:savedHost == nil ? defaultHost : savedHost];
     });
     return instance;

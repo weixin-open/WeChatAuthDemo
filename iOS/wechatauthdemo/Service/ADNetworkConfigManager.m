@@ -20,21 +20,6 @@ const NSString *kAddCommentCGIName = @"appcgi_addcomment";
 const NSString *kAddReplyCGIName = @"appcgi_addreply";
 
 static NSMutableDictionary *allConfig;
-static const int kCGICountNum = 9;
-
-@interface ADNetworkConfigManager ()
-
-@property (nonatomic, strong) ADNetworkConfigItem *connectConfig;
-@property (nonatomic, strong) ADNetworkConfigItem *wxLoginConfig;
-@property (nonatomic, strong) ADNetworkConfigItem *checkLoginConfig;
-@property (nonatomic, strong) ADNetworkConfigItem *getUserInfoConfig;
-@property (nonatomic, strong) ADNetworkConfigItem *makeExpiredConfig;
-@property (nonatomic, strong) ADNetworkConfigItem *getCommentListConfig;
-@property (nonatomic, strong) ADNetworkConfigItem *getReplyListConfig;
-@property (nonatomic, strong) ADNetworkConfigItem *addCommentConfig;
-@property (nonatomic, strong) ADNetworkConfigItem *addReplyConfig;
-
-@end
 
 @implementation ADNetworkConfigManager
 
@@ -65,38 +50,6 @@ static const int kCGICountNum = 9;
 
 #pragma mark - Public Methods
 - (void)setup {
-    NSData *configData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ADNetworkConfigAll"];
-    if (configData == nil) {
-        [self registerAllPrepareConfigAndSave];
-    } else {
-        allConfig = [NSKeyedUnarchiver unarchiveObjectWithData:configData];
-        if ([[self allConfigKeys] count] != kCGICountNum) {
-            [allConfig removeAllObjects];
-            [self registerAllPrepareConfigAndSave];
-        }
-    }
-}
-
-- (void)registerAllPrepareConfigAndSave {
-//    [self registerConfig:self.connectConfig
-//              forKeyPath:self.connectConfig.cgiName];
-//    [self registerConfig:self.wxLoginConfig
-//              forKeyPath:self.wxLoginConfig.cgiName];
-//    [self registerConfig:self.checkLoginConfig
-//              forKeyPath:self.checkLoginConfig.cgiName];
-//    [self registerConfig:self.getUserInfoConfig
-//              forKeyPath:self.getUserInfoConfig.cgiName];
-//    [self registerConfig:self.makeExpiredConfig
-//              forKeyPath:self.makeExpiredConfig.cgiName];
-//    [self registerConfig:self.getCommentListConfig
-//              forKeyPath:self.getCommentListConfig.cgiName];
-//    [self registerConfig:self.getReplyListConfig
-//              forKeyPath:self.getReplyListConfig.cgiName];
-//    [self registerConfig:self.addCommentConfig
-//              forKeyPath:self.addCommentConfig.cgiName];
-//    [self registerConfig:self.addReplyConfig
-//              forKeyPath:self.addReplyConfig.cgiName];
-//    [self save];
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"NetworkConfigItems" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSArray *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
@@ -105,8 +58,6 @@ static const int kCGICountNum = 9;
         [self registerConfig:item
                   forKeyPath:item.cgiName];
     }
-    [self save];
-    
 }
 
 - (void)registerConfig:(ADNetworkConfigItem *)item forKeyPath:(NSString *)keyPath {
@@ -126,164 +77,18 @@ static const int kCGICountNum = 9;
 }
 
 - (void)save {
-    [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:allConfig]
-                                              forKey:@"ADNetworkConfigAll"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-#pragma mark - Laze Initializer
-- (ADNetworkConfigItem *)connectConfig {
-    if (_connectConfig == nil) {
-        NSDictionary *configDict = @{
-                                     @"cgi_name": kConnectCGIName,
-                                     @"request_path": @"/wxoauth/demo/index.php?action=connect",
-                                     @"encrypt_algorithm":@(EncryptAlgorithmRSA|EncryptAlgorithmBase64),
-                                     @"encrypt_key_path": kEncryptWholePacketParaKey,
-                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
-                                     @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer",
-                                     @"sys_err_key_path": @"errcode"
-                                     };
-        _connectConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
+    NSArray *allKeys = [self allConfigKeys];
+    NSMutableArray *jsonArray = [NSMutableArray array];
+    for (NSString *key in allKeys) {
+        NSDictionary *dict = [allConfig[key] dictionaryRepresentation];
+        [jsonArray addObject:dict];
     }
-    return _connectConfig;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonArray
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:nil];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"NetworkConfigItems" ofType:@"json"];
+    [jsonData writeToFile:filePath
+               atomically:YES];
 }
 
-- (ADNetworkConfigItem *)wxLoginConfig {
-    if (_wxLoginConfig == nil) {
-        NSDictionary *configDict = @{
-                                     @"cgi_name": kWXLoginCGIName,
-                                     @"request_path": @"/wxoauth/demo/index.php?action=wxlogin",
-                                     @"encrypt_algorithm":@(EncryptAlgorithmAES|EncryptAlgorithmBase64),
-                                     @"encrypt_key_path": @"req_buffer",
-                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
-                                     @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer",
-                                     @"sys_err_key_path": @"errcode"
-                                     };
-        _wxLoginConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
-    }
-    return _wxLoginConfig;
-}
-
-- (ADNetworkConfigItem *)checkLoginConfig {
-    if (_checkLoginConfig == nil) {
-        NSDictionary *configDict = @{
-                                     @"cgi_name": kCheckLoginCGIName,
-                                     @"request_path": @"/wxoauth/demo/index.php?action=checklogin",
-                                     @"encrypt_algorithm":@(EncryptAlgorithmRSA|EncryptAlgorithmBase64),
-                                     @"encrypt_key_path": kEncryptWholePacketParaKey,
-                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
-                                     @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer",
-                                     @"sys_err_key_path": @"errcode"
-                                     };
-        _checkLoginConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
-    }
-    return _checkLoginConfig;
-}
-
-- (ADNetworkConfigItem *)getUserInfoConfig {
-    if (_getUserInfoConfig == nil) {
-        NSDictionary *configDict = @{
-                                     @"cgi_name": kGetUserInfoCGIName,
-                                     @"request_path": @"/wxoauth/demo/index.php?action=getuserinfo",
-                                     @"encrypt_algorithm":@(EncryptAlgorithmAES|EncryptAlgorithmBase64),
-                                     @"encrypt_key_path": @"req_buffer",
-                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
-                                     @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer",
-                                     @"sys_err_key_path": @"errcode"
-                                     };
-        _getUserInfoConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
-    }
-    return _getUserInfoConfig;
-}
-
-- (ADNetworkConfigItem *)makeExpiredConfig {
-    if (_makeExpiredConfig == nil) {
-        NSDictionary *configDict = @{
-                                     @"cgi_name": kMakeExpiredCGIName,
-                                     @"request_path": @"/wxoauth/demo/index.php?action=testfunc",
-                                     @"encrypt_algorithm":@(EncryptAlgorithmAES|EncryptAlgorithmBase64),
-                                     @"encrypt_key_path": @"req_buffer",
-                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
-                                     @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer",
-                                     @"sys_err_key_path": @"errcode"
-                                     };
-        _makeExpiredConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
-    }
-    return _makeExpiredConfig;
-}
-
-- (ADNetworkConfigItem *)getCommentListConfig {
-    if (_getCommentListConfig == nil) {
-        NSDictionary *configDict = @{
-                                     @"cgi_name": kGetCommentListCGIName,
-                                     @"request_path": @"/wxoauth/demo/index.php?action=commentlist",
-                                     @"encrypt_algorithm":@(EncryptAlgorithmAES|EncryptAlgorithmBase64),
-                                     @"encrypt_key_path": @"req_buffer",
-                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
-                                     @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer",
-                                     @"sys_err_key_path": @"errcode"
-                                     };
-        _getCommentListConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
-
-    }
-    return _getCommentListConfig;
-}
-
-- (ADNetworkConfigItem *)getReplyListConfig {
-    if (_getReplyListConfig == nil) {
-        NSDictionary *configDict = @{
-                                     @"cgi_name": kGetReplyListCGIName,
-                                     @"request_path": @"/wxoauth/demo/index.php?action=replylist",
-                                     @"encrypt_algorithm":@(EncryptAlgorithmAES|EncryptAlgorithmBase64),
-                                     @"encrypt_key_path": @"req_buffer",
-                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
-                                     @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer",
-                                     @"sys_err_key_path": @"errcode"
-                                     };
-        _getReplyListConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
-
-    }
-    return _getReplyListConfig;
-}
-
-- (ADNetworkConfigItem *)addCommentConfig {
-    if (_addCommentConfig == nil) {
-        NSDictionary *configDict = @{
-                                     @"cgi_name": kAddCommentCGIName,
-                                     @"request_path": @"/wxoauth/demo/index.php?action=addcomment",
-                                     @"encrypt_algorithm":@(EncryptAlgorithmAES|EncryptAlgorithmBase64),
-                                     @"encrypt_key_path": @"req_buffer",
-                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
-                                     @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer",
-                                     @"sys_err_key_path": @"errcode"
-                                     };
-        _addCommentConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
-    }
-    return _addCommentConfig;
-}
-
-- (ADNetworkConfigItem *)addReplyConfig {
-    if (_addReplyConfig == nil) {
-        NSDictionary *configDict = @{
-                                     @"cgi_name": kAddReplyCGIName,
-                                     @"request_path": @"/wxoauth/demo/index.php?action=addreply",
-                                     @"encrypt_algorithm":@(EncryptAlgorithmAES|EncryptAlgorithmBase64),
-                                     @"encrypt_key_path": @"req_buffer",
-                                     @"decrypt_algorithm": @(EncryptAlgorithmBase64|EncryptAlgorithmAES),
-                                     @"http_method": @"POST",
-                                     @"decrypt_key_path": @"resp_buffer",
-                                     @"sys_err_key_path": @"errcode"
-                                     };
-        _addReplyConfig = [ADNetworkConfigItem modelObjectWithDictionary:configDict];
-    }
-    return _addReplyConfig;
-}
 @end

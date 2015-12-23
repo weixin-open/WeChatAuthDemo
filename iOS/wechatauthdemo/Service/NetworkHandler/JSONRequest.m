@@ -47,7 +47,7 @@ static char sessionKeyId;
         return nil;
     }
     
-    NSLog(@"RequestCGIConfig: \n%@\nPara: %@\n", [config dictionaryRepresentation], para);
+    NSLog(@"Request:%@\n CGIConfig: \n%@\nPara: %@\n",host, [config dictionaryRepresentation], para);
     /* Encrypt Data */
     NSData *encryptedData = [self encryptJSONObject:para
                                          ForKeyPath:config.encryptKeyPath
