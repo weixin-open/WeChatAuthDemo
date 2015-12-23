@@ -57,6 +57,8 @@
 		7ABF028C1BD49ABE006D62D0 /* MessageBoardCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF028A1BD49ABE006D62D0 /* MessageBoardCommentView.m */; };
 		7ABF02901BD4AE26006D62D0 /* MessageBoardContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF028F1BD4AE26006D62D0 /* MessageBoardContentView.m */; };
 		7ABF02931BD4B1A4006D62D0 /* MessageBoardReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF02921BD4B1A4006D62D0 /* MessageBoardReplyCell.m */; };
+		7AC518001C28F2FA0082EE11 /* wechatauthdemo.com.pem in Resources */ = {isa = PBXBuildFile; fileRef = 7AC517FF1C28F2FA0082EE11 /* wechatauthdemo.com.pem */; };
+		7AC518021C28FAD70082EE11 /* server.cer in Resources */ = {isa = PBXBuildFile; fileRef = 7AC518011C28F9F50082EE11 /* server.cer */; };
 		7AD826611B81FDF9008CA90C /* ADNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */; };
 		7AD826621B81FDF9008CA90C /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8262E1B81FDF9008CA90C /* WXApiManager.m */; };
 		7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826311B81FDF9008CA90C /* AppDelegate.m */; };
@@ -184,6 +186,8 @@
 		7ABF028F1BD4AE26006D62D0 /* MessageBoardContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBoardContentView.m; sourceTree = "<group>"; };
 		7ABF02911BD4B1A4006D62D0 /* MessageBoardReplyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoardReplyCell.h; sourceTree = "<group>"; };
 		7ABF02921BD4B1A4006D62D0 /* MessageBoardReplyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBoardReplyCell.m; sourceTree = "<group>"; };
+		7AC517FF1C28F2FA0082EE11 /* wechatauthdemo.com.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wechatauthdemo.com.pem; sourceTree = "<group>"; };
+		7AC518011C28F9F50082EE11 /* server.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = server.cer; sourceTree = "<group>"; };
 		7AD8262B1B81FDF9008CA90C /* ADNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADNetworkEngine.h; sourceTree = "<group>"; };
 		7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADNetworkEngine.m; sourceTree = "<group>"; };
 		7AD8262D1B81FDF9008CA90C /* WXApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiManager.h; sourceTree = "<group>"; };
@@ -525,6 +529,8 @@
 		7AD8262F1B81FDF9008CA90C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7AC518011C28F9F50082EE11 /* server.cer */,
+				7AC517FF1C28F2FA0082EE11 /* wechatauthdemo.com.pem */,
 				7A00ADC11B8333650013A0B2 /* Default-568h@2x.png */,
 				735560791B45202D00B3EE93 /* Localizable.strings */,
 				7AD826341B81FDF9008CA90C /* Images.xcassets */,
@@ -732,9 +738,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7AC518021C28FAD70082EE11 /* server.cer in Resources */,
 				7A6F17C31BF07D81008834FB /* InputWithTextFieldCell.xib in Resources */,
 				7AE8155E1BA1B7AB00B5C7C8 /* rsa_public.key in Resources */,
 				7355607A1B45202D00B3EE93 /* Localizable.strings in Resources */,
+				7AC518001C28F2FA0082EE11 /* wechatauthdemo.com.pem in Resources */,
 				7A5E83701BD679410025EFD7 /* CommentReplyFooterView.xib in Resources */,
 				7AD826651B81FDF9008CA90C /* Images.xcassets in Resources */,
 				7AA163621B85DA9A00E54AAC /* UserInfoDisplayCell.xib in Resources */,

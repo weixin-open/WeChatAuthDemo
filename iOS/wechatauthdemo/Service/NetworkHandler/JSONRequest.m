@@ -56,13 +56,15 @@ static char sessionKeyId;
     /* 异步请求，在这里备份一份SessionKey，防止返回前SessionKey被修改。*/
     NSString *preSessionKey = self.sessionKey;
     /* Setup Request */
-    NSURL *url = [NSURL URLWithString:[host stringByAppendingString:config.requestPath]];
+    NSURL *url = [NSURL URLWithString:[host stringByAppendingFormat:@"%@",config.requestPath]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     [request addValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPMethod:config.httpMethod];
     [request setHTTPBody:encryptedData];
     if ([[url scheme] isEqualToString:@"https"]) {
-        AFSecurityPolicy * securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+        NSSet *cert = [AFSecurityPolicy certificatesInBundle:[NSBundle mainBundle]];
+        AFSecurityPolicy * securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate
+                                                             withPinnedCertificates:cert];
         securityPolicy.allowInvalidCertificates = YES;
         securityPolicy.validatesDomainName = NO;
         self.securityPolicy = securityPolicy;

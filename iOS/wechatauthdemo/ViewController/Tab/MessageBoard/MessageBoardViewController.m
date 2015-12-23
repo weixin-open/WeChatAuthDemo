@@ -349,10 +349,7 @@ UITextFieldDelegate, NewCommentViewControllerDelegate>
                                                   self.haveMoreComments = [resp.commentList count] >= resp.perpage;
                                                   [self.tableFooter.activityView stopAnimating];
                                                   self.tableFooter.hidden = YES;
-                                                  UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-                                                  contentInsets.bottom = 49;
-                                                  self.messagesTable.contentInset = contentInsets;
-                                                  self.messagesTable.scrollIndicatorInsets = contentInsets;
+                                                  self.messagesTable.scrollIndicatorInsets = self.messagesTable.contentInset = UIEdgeInsetsMake(0, 0, 49, 0);
                                                   [self.messagesTable reloadData];
                                               }];
 
@@ -397,7 +394,7 @@ UITextFieldDelegate, NewCommentViewControllerDelegate>
                                                   });
                                               }
                                               self.haveMoreComments = [resp.commentList count] >= resp.perpage;
-                                              self.messagesTable.tableFooterView.hidden = self.haveMoreComments;
+                                              self.messagesTable.tableFooterView.hidden = !self.haveMoreComments;
                                               [self.messagesTable reloadData];
                                           }];
 }

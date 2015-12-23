@@ -14,10 +14,10 @@ const NSString *kWXLoginCGIName = @"appcgi_wxlogin";
 const NSString *kCheckLoginCGIName = @"appcgi_checklogin";
 const NSString *kGetUserInfoCGIName = @"appcgi_getuserinfo";
 const NSString *kMakeExpiredCGIName = @"testfunc";
-const NSString *kGetCommentListCGIName = @"appcgi_getCommentList";
-const NSString *kGetReplyListCGIName = @"appcgi_getReplyList";
-const NSString *kAddCommentCGIName = @"appcgi_addComment";
-const NSString *kAddReplyCGIName = @"appcgi_addReply";
+const NSString *kGetCommentListCGIName = @"appcgi_commentlist";
+const NSString *kGetReplyListCGIName = @"appcgi_replylist";
+const NSString *kAddCommentCGIName = @"appcgi_addcomment";
+const NSString *kAddReplyCGIName = @"appcgi_addreply";
 
 static NSMutableDictionary *allConfig;
 static const int kCGICountNum = 9;
