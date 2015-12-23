@@ -8,8 +8,11 @@
 
 #import "LogTextViewController.h"
 #import "WXApiManager.h"
+#ifdef DEBUG
+#import "FLEXManager.h"
+#endif
 
-@interface LogTextViewController ()
+@interface LogTextViewController ()<UIActionSheetDelegate>
 
 @property (nonatomic, strong) UITextView *textView;
 
@@ -27,10 +30,10 @@
                                                                              style:UIBarButtonItemStyleDone
                                                                             target:self
                                                                             action:@selector(onClickDismiss:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"分享"
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"更多"
                                                                               style:UIBarButtonItemStyleDone
                                                                              target:self
-                                                                             action:@selector(onClickShare:)];
+                                                                             action:@selector(onClickMore:)];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -58,6 +61,17 @@
                                        AtScene:WXSceneSession];
 }
 
+- (void)onClickMore:(UIBarButtonItem *)sender {
+    if (sender != self.navigationItem.rightBarButtonItem)
+        return;
+    
+    [[[UIActionSheet alloc] initWithTitle:nil
+                                delegate:self
+                       cancelButtonTitle:@"取消"
+                  destructiveButtonTitle:nil
+                       otherButtonTitles:@"发送日志给微信好友", @"FLEX", nil] showInView:self.view];
+}
+
 #pragma mark - Public Methods
 + (instancetype)sharedLogTextView {
     static dispatch_once_t onceToken;
@@ -83,6 +97,29 @@
     self.textView.attributedText = attributeString;
     lastPos = lastPos + [log length];
     ever = !ever;
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    switch (buttonIndex) {
+        case 0:
+            [[WXApiManager sharedManager] sendFileData:[self.textView.text dataUsingEncoding:NSUTF8StringEncoding]
+                                         fileExtension:@".txt"
+                                                 Title:@"来自WeDemo的日志信息"
+                                           Description:@"来自WeDemo的日志信息"
+                                            ThumbImage:nil
+                                               AtScene:WXSceneSession];
+            break;
+        case 1:
+#ifdef DEBUG
+            [[FLEXManager sharedManager] showExplorer];
+            self.presented = NO;
+#endif
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark - Lazy Initializers

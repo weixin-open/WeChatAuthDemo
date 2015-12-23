@@ -32,9 +32,12 @@
 		7A5D46FA1C27F71600293823 /* JSONRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5D46F91C27F71600293823 /* JSONRequest.m */; };
 		7A5E836E1BD679290025EFD7 /* CommentReplyFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5E836D1BD679290025EFD7 /* CommentReplyFooterView.m */; };
 		7A5E83701BD679410025EFD7 /* CommentReplyFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A5E836F1BD679410025EFD7 /* CommentReplyFooterView.xib */; };
+		7A6B1F471C2952010092620E /* MessageboardFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6B1F451C2952010092620E /* MessageboardFooterView.m */; };
+		7A6B1F481C2952010092620E /* MessageboardFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A6B1F461C2952010092620E /* MessageboardFooterView.xib */; };
 		7A6F17C21BF07D81008834FB /* InputWithTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F17C01BF07D81008834FB /* InputWithTextFieldCell.m */; };
 		7A6F17C31BF07D81008834FB /* InputWithTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A6F17C11BF07D81008834FB /* InputWithTextFieldCell.xib */; };
 		7A7280631BFA01FE00AB83A1 /* LineColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7280621BFA01FE00AB83A1 /* LineColor.m */; };
+		7A79EDCA1C2A505F002D5C3C /* NetworkConfigItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A79EDC91C2A505F002D5C3C /* NetworkConfigItems.json */; };
 		7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */; };
 		7A8D06181BD5115A0002D804 /* ADCommentList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8D06151BD5115A0002D804 /* ADCommentList.m */; };
 		7A8D06191BD5115A0002D804 /* ADGetCommentListResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8D06171BD5115A0002D804 /* ADGetCommentListResp.m */; };
@@ -51,7 +54,6 @@
 		7AB0582F1BCF4F0600B11365 /* DocumentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB0582E1BCF4F0600B11365 /* DocumentsViewController.m */; };
 		7AB058321BCF4F1300B11365 /* MessageBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB058311BCF4F1300B11365 /* MessageBoardViewController.m */; };
 		7AB058381BCF4F6900B11365 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB058371BCF4F6900B11365 /* UserInfoViewController.m */; };
-		7AB8CD501C2800EF0017AB29 /* ResolveDebugWarning.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB8CD4F1C2800EF0017AB29 /* ResolveDebugWarning.m */; };
 		7ABF028C1BD49ABE006D62D0 /* MessageBoardCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF028A1BD49ABE006D62D0 /* MessageBoardCommentView.m */; };
 		7ABF02901BD4AE26006D62D0 /* MessageBoardContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF028F1BD4AE26006D62D0 /* MessageBoardContentView.m */; };
 		7ABF02931BD4B1A4006D62D0 /* MessageBoardReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF02921BD4B1A4006D62D0 /* MessageBoardReplyCell.m */; };
@@ -137,11 +139,15 @@
 		7A5E836C1BD679290025EFD7 /* CommentReplyFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentReplyFooterView.h; sourceTree = "<group>"; };
 		7A5E836D1BD679290025EFD7 /* CommentReplyFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentReplyFooterView.m; sourceTree = "<group>"; };
 		7A5E836F1BD679410025EFD7 /* CommentReplyFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentReplyFooterView.xib; sourceTree = "<group>"; };
+		7A6B1F441C2952010092620E /* MessageboardFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageboardFooterView.h; sourceTree = "<group>"; };
+		7A6B1F451C2952010092620E /* MessageboardFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageboardFooterView.m; sourceTree = "<group>"; };
+		7A6B1F461C2952010092620E /* MessageboardFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MessageboardFooterView.xib; sourceTree = "<group>"; };
 		7A6F17BF1BF07D81008834FB /* InputWithTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputWithTextFieldCell.h; sourceTree = "<group>"; };
 		7A6F17C01BF07D81008834FB /* InputWithTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputWithTextFieldCell.m; sourceTree = "<group>"; };
 		7A6F17C11BF07D81008834FB /* InputWithTextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputWithTextFieldCell.xib; sourceTree = "<group>"; };
 		7A7280611BFA01FE00AB83A1 /* LineColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineColor.h; sourceTree = "<group>"; };
 		7A7280621BFA01FE00AB83A1 /* LineColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineColor.m; sourceTree = "<group>"; };
+		7A79EDC91C2A505F002D5C3C /* NetworkConfigItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetworkConfigItems.json; sourceTree = "<group>"; };
 		7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonColor.h; sourceTree = "<group>"; };
 		7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonColor.m; sourceTree = "<group>"; };
 		7A8D06141BD5115A0002D804 /* ADCommentList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADCommentList.h; sourceTree = "<group>"; };
@@ -172,8 +178,6 @@
 		7AB058311BCF4F1300B11365 /* MessageBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBoardViewController.m; sourceTree = "<group>"; };
 		7AB058361BCF4F6900B11365 /* UserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
 		7AB058371BCF4F6900B11365 /* UserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoViewController.m; sourceTree = "<group>"; };
-		7AB8CD4E1C2800EF0017AB29 /* ResolveDebugWarning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolveDebugWarning.h; sourceTree = "<group>"; };
-		7AB8CD4F1C2800EF0017AB29 /* ResolveDebugWarning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolveDebugWarning.m; sourceTree = "<group>"; };
 		7ABF02891BD49ABE006D62D0 /* MessageBoardCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoardCommentView.h; sourceTree = "<group>"; };
 		7ABF028A1BD49ABE006D62D0 /* MessageBoardCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBoardCommentView.m; sourceTree = "<group>"; };
 		7ABF028E1BD4AE26006D62D0 /* MessageBoardContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoardContentView.h; sourceTree = "<group>"; };
@@ -355,6 +359,9 @@
 				7ADF843D1BD775360087E30A /* MessageboardHeaderView.h */,
 				7ADF843E1BD775370087E30A /* MessageboardHeaderView.m */,
 				7ADF843F1BD775370087E30A /* MessageboardHeaderView.xib */,
+				7A6B1F441C2952010092620E /* MessageboardFooterView.h */,
+				7A6B1F451C2952010092620E /* MessageboardFooterView.m */,
+				7A6B1F461C2952010092620E /* MessageboardFooterView.xib */,
 			);
 			name = MessageBoard;
 			sourceTree = "<group>";
@@ -405,8 +412,6 @@
 			children = (
 				7A045E641BAC264000332AC1 /* ShakeDebug.h */,
 				7A045E651BAC264000332AC1 /* ShakeDebug.m */,
-				7AB8CD4E1C2800EF0017AB29 /* ResolveDebugWarning.h */,
-				7AB8CD4F1C2800EF0017AB29 /* ResolveDebugWarning.m */,
 			);
 			name = Debug;
 			sourceTree = "<group>";
@@ -434,6 +439,7 @@
 			children = (
 				7AA163461B85A90E00E54AAC /* ADNetworkConfigManager.h */,
 				7AA163471B85A90E00E54AAC /* ADNetworkConfigManager.m */,
+				7A79EDC91C2A505F002D5C3C /* NetworkConfigItems.json */,
 			);
 			name = Config;
 			sourceTree = "<group>";
@@ -737,7 +743,9 @@
 				7ADBE6C01BCF5DDF006A8046 /* DocumentsCell.xib in Resources */,
 				7A2914761BCFCAE1006D6952 /* UserNickNameCell.xib in Resources */,
 				7A00ADC21B8333650013A0B2 /* Default-568h@2x.png in Resources */,
+				7A6B1F481C2952010092620E /* MessageboardFooterView.xib in Resources */,
 				7A998CC51BD5E7F7005AC4D8 /* InputWithTextFieldBar.xib in Resources */,
+				7A79EDCA1C2A505F002D5C3C /* NetworkConfigItems.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -815,10 +823,10 @@
 				7A2914751BCFCAE1006D6952 /* UserNickNameCell.m in Sources */,
 				7AD826B01B820107008CA90C /* MD5.m in Sources */,
 				7A8D06181BD5115A0002D804 /* ADCommentList.m in Sources */,
-				7AB8CD501C2800EF0017AB29 /* ResolveDebugWarning.m in Sources */,
 				7AD826A41B8200BD008CA90C /* ADWXLoginResp.m in Sources */,
 				7A00ADC71B8353940013A0B2 /* RandomKey.m in Sources */,
 				7A8D06191BD5115A0002D804 /* ADGetCommentListResp.m in Sources */,
+				7A6B1F471C2952010092620E /* MessageboardFooterView.m in Sources */,
 				7A13C4C51BD0DB1B006189C9 /* AskLoginViewController.m in Sources */,
 				7A8D061C1BD521D90002D804 /* NewCommentViewController.m in Sources */,
 				7AF953601BF0477D00C3CCCD /* ADHistoryViewController.m in Sources */,
@@ -951,7 +959,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: iOS Dev Team Wechat (T2559DMRBL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/Util/Definition/Definition.h";
 				HEADER_SEARCH_PATHS = (
@@ -981,7 +989,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: iOS Dev Team Wechat (T2559DMRBL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/Util/Definition/Definition.h";
 				HEADER_SEARCH_PATHS = (

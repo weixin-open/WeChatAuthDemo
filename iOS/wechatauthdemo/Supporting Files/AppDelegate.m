@@ -94,6 +94,7 @@ static const CGFloat kNavigationTitleFontSize = 17.0f;
         alertAppear = [UILabel appearanceWhenContainedIn:[UIActionSheet class], nil];
     }
     [alertAppear setAlertTitleFont:[UIFont fontWithName:kChineseFont size:kAlertTitleFontSize]];
+    
     /* Register For WeChat */
     [WXApi registerApp:YourAppIdInWeChat
        withDescription:kYourAppDescription];

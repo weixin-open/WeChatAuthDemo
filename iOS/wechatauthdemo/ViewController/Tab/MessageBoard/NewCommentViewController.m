@@ -68,6 +68,10 @@ static const CGFloat kTextFontSize = 15.0f;
                                                ForUin:[ADUserInfo currentUser].uin
                                           LoginTicket:[ADUserInfo currentUser].loginTicket
                                        WithCompletion:^(ADAddCommentResp *resp) {
+                                           if (self.delegate &&
+                                               [self.delegate respondsToSelector:@selector(onNewCommentDidFinish)]) {
+                                               [self.delegate onNewCommentDidFinish];
+                                           }
                                            [self.navigationController popViewControllerAnimated:YES];
                                        }];
 }

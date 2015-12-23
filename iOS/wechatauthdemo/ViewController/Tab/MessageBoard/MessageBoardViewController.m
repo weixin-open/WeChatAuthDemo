@@ -23,6 +23,7 @@
 #import "ADGetReplyListResp.h"
 #import "ADAddReplyResp.h"
 #import "MessageboardHeaderView.h"
+#import "MessageboardFooterView.h"
 #import "AskLoginViewController.h"
 #import "AppDelegate.h"
 
@@ -31,10 +32,12 @@ static NSString *const kCommentViewIdentifier = @"kCommentViewIdentifier";
 static NSString *const kReplyViewIdentifier = @"kReplyViewIdentifier";
 static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdentifer";
 
-@interface MessageBoardViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
+@interface MessageBoardViewController () <UITableViewDataSource, UITableViewDelegate,
+UITextFieldDelegate, NewCommentViewControllerDelegate>
 
 @property (nonatomic, strong) UITableView *messagesTable;
 @property (nonatomic, strong) MessageboardHeaderView *tableHeader;
+@property (nonatomic, strong) MessageboardFooterView *tableFooter;
 @property (nonatomic, strong) NSArray *commentsArray;
 @property (nonatomic, strong) InputWithTextFeildBar *replyAccessoryView;
 @property (nonatomic, strong) UITextView *keyBoardTool;
@@ -43,6 +46,7 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 @property (nonatomic, strong) NSMutableDictionary *footerDict;
 @property (nonatomic, weak) CommentReplyFooterView *clickFooter;
 @property (nonatomic, assign) BOOL keyboardWasShown;
+@property (nonatomic, assign) BOOL haveMoreComments;
 
 @end
 
@@ -63,6 +67,7 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     if ([[UIDevice currentDevice].systemVersion doubleValue] < 8.0) {
         self.navigationController.navigationBar.translucent = NO;
     }
+    [self refreshComments];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -76,7 +81,6 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    [self refreshComments];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -97,10 +101,15 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
 - (void)onClickNewComment: (UIBarButtonItem *)sender {
     if (sender != self.navigationItem.rightBarButtonItem)
         return;
+    if (self.keyboardWasShown) {
+        [self.replyAccessoryView.textField resignFirstResponder];
+    }
     if ([ADUserInfo currentUser].sessionExpireTime > 0) {
         NewCommentViewController *newCommentView = [[NewCommentViewController alloc] init];
         newCommentView.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:newCommentView animated:YES];
+        newCommentView.delegate = self;
+        [self.navigationController pushViewController:newCommentView
+                                             animated:YES];
     } else {
         AskLoginViewController *askLoginView = [[AskLoginViewController alloc] init];
         askLoginView.founctionName = @"发布留言";
@@ -159,6 +168,12 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     if (sender != self.replyAccessoryView.textField)
         return;
     [self resignFirstResponder];
+}
+
+#pragma mark - NewCommentViewControllerDelegate
+- (void)onNewCommentDidFinish {
+    [self refreshComments];
+    [self.messagesTable setContentOffset:CGPointMake(0, -self.messagesTable.contentInset.top) animated:NO];
 }
 
 #pragma mark - Notification
@@ -311,19 +326,79 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
     }
 }
 
+#pragma mark -UIScrollViewDelegate
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView
+                  willDecelerate:(BOOL)decelerate {
+    if (scrollView.contentOffset.y + scrollView.frame.size.height >= scrollView.contentSize.height
+        && self.haveMoreComments) {
+        self.haveMoreComments = NO;
+        self.tableFooter.hidden = NO;
+        [self.tableFooter.activityView startAnimating];
+
+        ADCommentList *lastComment = [self.commentsArray lastObject];
+        [[ADNetworkEngine sharedEngine] getCommentListForUin:[ADUserInfo currentUser].uin
+                                                        From:lastComment.commentListIdentifier
+                                              WithCompletion:^(ADGetCommentListResp *resp) {
+                                                  self.commentsArray = [self.commentsArray arrayByAddingObjectsFromArray:resp.commentList];
+                                                  if (self.clickFooter != nil) {
+                                                      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                                          self.clickFooter.onClick();
+                                                          self.clickFooter = nil;
+                                                      });
+                                                  }
+                                                  self.haveMoreComments = [resp.commentList count] >= resp.perpage;
+                                                  [self.tableFooter.activityView stopAnimating];
+                                                  self.tableFooter.hidden = YES;
+                                                  UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+                                                  contentInsets.bottom = 49;
+                                                  self.messagesTable.contentInset = contentInsets;
+                                                  self.messagesTable.scrollIndicatorInsets = contentInsets;
+                                                  [self.messagesTable reloadData];
+                                              }];
+
+//        [UIView animateWithDuration:0.3 animations:^{
+//        } completion:^(BOOL finished) {
+//            ADCommentList *lastComment = [self.commentsArray lastObject];
+//            [[ADNetworkEngine sharedEngine] getCommentListForUin:[ADUserInfo currentUser].uin
+//                                                            From:lastComment.commentListIdentifier
+//                                                  WithCompletion:^(ADGetCommentListResp *resp) {
+//                                                      self.commentsArray = [self.commentsArray arrayByAddingObjectsFromArray:resp.commentList];
+//                                                      if (self.clickFooter != nil) {
+//                                                          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                                                              self.clickFooter.onClick();
+//                                                              self.clickFooter = nil;
+//                                                          });
+//                                                      }
+//                                                      self.haveMoreComments = [resp.commentList count] >= resp.perpage;
+//                                                      [self.tableFooter.activityView stopAnimating];
+//                                                      self.tableFooter.hidden = YES;
+//                                                      UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+//                                                      contentInsets.bottom = 49;
+//                                                      self.messagesTable.contentInset = contentInsets;
+//                                                      self.messagesTable.scrollIndicatorInsets = contentInsets;
+//                                                      [self.messagesTable reloadData];
+//                                                  }];
+//        }];
+        
+    }
+}
+
+
 #pragma mark -Private Methods
 - (void)refreshComments {
     [[ADNetworkEngine sharedEngine] getCommentListForUin:[ADUserInfo currentUser].uin
                                                     From:nil
                                           WithCompletion:^(ADGetCommentListResp *resp) {
                                               self.commentsArray = resp.commentList;
-                                              [self.messagesTable reloadData];
                                               if (self.clickFooter != nil) {
                                                   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                                                       self.clickFooter.onClick();
                                                       self.clickFooter = nil;
                                                   });
                                               }
+                                              self.haveMoreComments = [resp.commentList count] >= resp.perpage;
+                                              self.messagesTable.tableFooterView.hidden = self.haveMoreComments;
+                                              [self.messagesTable reloadData];
                                           }];
 }
 
@@ -341,16 +416,28 @@ static NSString *const kCommentReplyFooterIdentifer = @"kCommentReplyFooterIdent
         _messagesTable.dataSource = self;
         _messagesTable.delegate = self;
         _messagesTable.tableHeaderView = self.tableHeader;
+        _messagesTable.tableFooterView = self.tableFooter;
     }
     return _messagesTable;
 }
 
 - (MessageboardHeaderView *)tableHeader {
     if (_tableHeader == nil) {
-        _tableHeader = [[[NSBundle mainBundle] loadNibNamed:@"MessageboardHeaderView" owner:nil options:nil] firstObject];
+        _tableHeader = [[[NSBundle mainBundle] loadNibNamed:@"MessageboardHeaderView"
+                                                      owner:nil
+                                                    options:nil] firstObject];
     }
     return _tableHeader;
 };
+
+- (MessageboardFooterView *)tableFooter {
+    if (_tableFooter == nil) {
+        _tableFooter = [[[NSBundle mainBundle] loadNibNamed:@"MessageboardFooterView"
+                                                      owner:nil
+                                                    options:nil] firstObject];
+    }
+    return _tableFooter;
+}
 
 - (InputWithTextFeildBar *)replyAccessoryView {
     if (_replyAccessoryView == nil) {

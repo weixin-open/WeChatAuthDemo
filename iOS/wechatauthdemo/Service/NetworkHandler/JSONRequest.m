@@ -64,7 +64,7 @@ static char sessionKeyId;
     if ([[url scheme] isEqualToString:@"https"]) {
         AFSecurityPolicy * securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
         securityPolicy.allowInvalidCertificates = YES;
-        securityPolicy.validatesDomainName = YES;
+        securityPolicy.validatesDomainName = NO;
         self.securityPolicy = securityPolicy;
     } else {
         self.securityPolicy = [AFSecurityPolicy defaultPolicy];

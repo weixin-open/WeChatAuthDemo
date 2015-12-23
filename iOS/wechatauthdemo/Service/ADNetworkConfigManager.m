@@ -78,25 +78,35 @@ static const int kCGICountNum = 9;
 }
 
 - (void)registerAllPrepareConfigAndSave {
-    [self registerConfig:self.connectConfig
-              forKeyPath:self.connectConfig.cgiName];
-    [self registerConfig:self.wxLoginConfig
-              forKeyPath:self.wxLoginConfig.cgiName];
-    [self registerConfig:self.checkLoginConfig
-              forKeyPath:self.checkLoginConfig.cgiName];
-    [self registerConfig:self.getUserInfoConfig
-              forKeyPath:self.getUserInfoConfig.cgiName];
-    [self registerConfig:self.makeExpiredConfig
-              forKeyPath:self.makeExpiredConfig.cgiName];
-    [self registerConfig:self.getCommentListConfig
-              forKeyPath:self.getCommentListConfig.cgiName];
-    [self registerConfig:self.getReplyListConfig
-              forKeyPath:self.getReplyListConfig.cgiName];
-    [self registerConfig:self.addCommentConfig
-              forKeyPath:self.addCommentConfig.cgiName];
-    [self registerConfig:self.addReplyConfig
-              forKeyPath:self.addReplyConfig.cgiName];
+//    [self registerConfig:self.connectConfig
+//              forKeyPath:self.connectConfig.cgiName];
+//    [self registerConfig:self.wxLoginConfig
+//              forKeyPath:self.wxLoginConfig.cgiName];
+//    [self registerConfig:self.checkLoginConfig
+//              forKeyPath:self.checkLoginConfig.cgiName];
+//    [self registerConfig:self.getUserInfoConfig
+//              forKeyPath:self.getUserInfoConfig.cgiName];
+//    [self registerConfig:self.makeExpiredConfig
+//              forKeyPath:self.makeExpiredConfig.cgiName];
+//    [self registerConfig:self.getCommentListConfig
+//              forKeyPath:self.getCommentListConfig.cgiName];
+//    [self registerConfig:self.getReplyListConfig
+//              forKeyPath:self.getReplyListConfig.cgiName];
+//    [self registerConfig:self.addCommentConfig
+//              forKeyPath:self.addCommentConfig.cgiName];
+//    [self registerConfig:self.addReplyConfig
+//              forKeyPath:self.addReplyConfig.cgiName];
+//    [self save];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"NetworkConfigItems" ofType:@"json"];
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    NSArray *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    for (NSDictionary *dict in json) {
+        ADNetworkConfigItem *item = [ADNetworkConfigItem modelObjectWithDictionary:dict];
+        [self registerConfig:item
+                  forKeyPath:item.cgiName];
+    }
     [self save];
+    
 }
 
 - (void)registerConfig:(ADNetworkConfigItem *)item forKeyPath:(NSString *)keyPath {
