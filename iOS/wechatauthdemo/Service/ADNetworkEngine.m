@@ -14,7 +14,8 @@
 #import "ImageCache.h"
 #import "AES.h"
 
-static NSString* const defaultHost = @"http://demo.maizify.com";
+//static NSString* const defaultHost = @"http://demo.maizify.com";
+static NSString* const defaultHost = @"https://wechatauthdemo.com";
 static NSString* const publickeyFileName = @"rsa_public";
 
 @interface ADNetworkEngine ()
@@ -325,6 +326,8 @@ static NSString* const publickeyFileName = @"rsa_public";
     if (_manager == nil) {
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
         _manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:config];
+        AFJSONResponseSerializer *serializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
+        _manager.responseSerializer = serializer;
         _manager.sessionKey = [NSString randomKey];
         _manager.publicKey = self.RSAKey;
     }
