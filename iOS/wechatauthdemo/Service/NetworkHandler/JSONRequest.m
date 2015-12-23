@@ -38,9 +38,9 @@ static char sessionKeyId;
 @implementation AFURLSessionManager (JSONRequest)
 
 - (NSURLSessionTask *)JSONTaskForHost:(NSString *)host
-                   Para:(NSDictionary *)para
-          ConfigKeyPath:(NSString *)configKeyPath
-         WithCompletion:(JSONCallBack)handler {
+                                 Para:(NSDictionary *)para
+                        ConfigKeyPath:(NSString *)configKeyPath
+                       WithCompletion:(JSONCallBack)handler {
     ADNetworkConfigItem *config = [[ADNetworkConfigManager sharedManager] getConfigForKeyPath:configKeyPath];
     if (config == nil) {
         NSLog(@"Configure Item Not Exist For This Request: %@", configKeyPath);
@@ -66,7 +66,7 @@ static char sessionKeyId;
         AFSecurityPolicy * securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate
                                                              withPinnedCertificates:cert];
         securityPolicy.allowInvalidCertificates = YES;
-        securityPolicy.validatesDomainName = NO;
+        securityPolicy.validatesDomainName = YES;
         self.securityPolicy = securityPolicy;
     } else {
         self.securityPolicy = [AFSecurityPolicy defaultPolicy];
