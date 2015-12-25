@@ -29,10 +29,12 @@
 @implementation NSData (RandomData)
 
 + (NSData *)randomDataWithLength:(NSUInteger)length {
-    void *bytes = malloc(length);
-    NSData *ret = [NSData dataWithBytes:bytes length:length];
-    free(bytes);
-    return ret;
+	MutableData* data = [NSMutableData dataWithLength:length];
+	int err = SecRandomCopyBytes(kSecRandomDefault, length, [data mutablBytes);
+	if (err)
+		return nil;
+	else
+		return data;
 }
 
 @end
