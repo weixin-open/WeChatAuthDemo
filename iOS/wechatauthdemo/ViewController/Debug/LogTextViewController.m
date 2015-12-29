@@ -8,9 +8,6 @@
 
 #import "LogTextViewController.h"
 #import "WXApiManager.h"
-#ifdef DEBUG
-#import "FLEXManager.h"
-#endif
 
 @interface LogTextViewController ()<UIActionSheetDelegate>
 
@@ -69,7 +66,7 @@
                                 delegate:self
                        cancelButtonTitle:@"取消"
                   destructiveButtonTitle:nil
-                       otherButtonTitles:@"发送日志给微信好友", @"FLEX", nil] showInView:self.view];
+                       otherButtonTitles:@"发送日志给微信好友", nil] showInView:self.view];
 }
 
 #pragma mark - Public Methods
@@ -109,13 +106,6 @@
                                            Description:@"来自WeDemo的日志信息"
                                             ThumbImage:nil
                                                AtScene:WXSceneSession];
-            break;
-        case 1:
-#ifdef DEBUG
-            [[FLEXManager sharedManager] showExplorer];
-            self.presented = NO;
-#endif
-            [self.navigationController popViewControllerAnimated:YES];
             break;
         default:
             break;

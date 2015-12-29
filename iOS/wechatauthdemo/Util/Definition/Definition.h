@@ -68,18 +68,7 @@ typedef void(^ButtonCallBack)(id sender);
     });                                                                         \
 } while (0)
 #else
-#define NSLog(format, ...) do {                                                 \
-    char logCharArray[1000] = {0};                                              \
-    sprintf(logCharArray, "<%s : %d> %s\n",                                     \
-    [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String],  \
-    __LINE__, __func__);                                                        \
-    NSMutableString *logString = [[NSMutableString alloc] initWithCString:logCharArray encoding:NSUTF8StringEncoding];                                                  \
-    [logString appendFormat:format, ##__VA_ARGS__];                             \
-    [logString appendFormat: @"\n-------\n"];                                   \
-    dispatch_async(dispatch_get_main_queue(), ^{                                \
-        [[LogTextViewController sharedLogTextView] insertLog:logString];        \
-    });                                                                         \
-} while(0)
+#define NSLog(format, ...)
 #endif
 
 //A better version of extern

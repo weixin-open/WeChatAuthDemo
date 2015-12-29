@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 #import <sys/time.h>
+#import <Security/SecRandom.h>
 #import "RandomKey.h"
 #import "MD5.h"
 
@@ -29,8 +30,8 @@
 @implementation NSData (RandomData)
 
 + (NSData *)randomDataWithLength:(NSUInteger)length {
-	MutableData* data = [NSMutableData dataWithLength:length];
-	int err = SecRandomCopyBytes(kSecRandomDefault, length, [data mutablBytes);
+	NSMutableData* data = [NSMutableData dataWithLength:length];
+	int err = SecRandomCopyBytes(kSecRandomDefault, length, [data mutableBytes]);
 	if (err)
 		return nil;
 	else
