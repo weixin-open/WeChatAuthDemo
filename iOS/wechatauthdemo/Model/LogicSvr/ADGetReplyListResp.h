@@ -1,7 +1,7 @@
 //
 //  ADGetReplyListResp.h
 //
-//  Created by Jeason  on 16/10/2015
+//  Created by WeChat  on 16/10/2015
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 

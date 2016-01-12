@@ -2,7 +2,7 @@
 //  UIColor+LineColor.m
 //  wechatauthdemo
 //
-//  Created by Jeason on 16/11/2015.
+//  Created by WeChat on 16/11/2015.
 //  Copyright © 2015 boshao. All rights reserved.
 //
 

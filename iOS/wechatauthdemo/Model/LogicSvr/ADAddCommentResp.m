@@ -1,7 +1,7 @@
 //
 //  ADAddCommentResp.m
 //
-//  Created by Jeason  on 20/10/2015
+//  Created by WeChat  on 20/10/2015
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 

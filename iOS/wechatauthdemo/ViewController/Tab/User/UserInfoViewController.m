@@ -2,7 +2,7 @@
 //  UserInfoViewController.m
 //  wechatauthdemo
 //
-//  Created by Jeason on 15/10/2015.
+//  Created by WeChat on 15/10/2015.
 //  Copyright © 2015 boshao. All rights reserved.
 //
 

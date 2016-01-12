@@ -1,7 +1,7 @@
 //
 //  ADNetworkConfigItem.m
 //
-//  Created by Jeason  on 20/08/2015
+//  Created by WeChat  on 20/08/2015
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
@@ -17,7 +17,6 @@ NSString *const kADNetworkConfigItemHttpMethod = @"http_method";
 NSString *const kADNetworkConfigItemSysErrKeyPath = @"sys_err_key_path";
 
 NSString *const kEncryptWholePacketParaKey = @"kEncryptWholePacketParaKey";
-NSString *const kDecryptWholePacketRespKey = @"kDecryptWholePacketRespKey";
 
 
 @interface ADNetworkConfigItem ()
@@ -51,8 +50,8 @@ NSString *const kDecryptWholePacketRespKey = @"kDecryptWholePacketRespKey";
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
             self.cgiName = [self objectOrNilForKey:kADNetworkConfigItemCgiName fromDictionary:dict];
             self.encryptKeyPath = [self objectOrNilForKey:kADNetworkConfigItemEncryptKeyPath fromDictionary:dict];
-            self.encryptAlgorithm = [[self objectOrNilForKey:kADNetworkConfigItemEncryptAlgorithm fromDictionary:dict] doubleValue];
-            self.decryptAlgorithm = [[self objectOrNilForKey:kADNetworkConfigItemDecryptAlgorithm fromDictionary:dict] doubleValue];
+            self.encryptAlgorithm = [[self objectOrNilForKey:kADNetworkConfigItemEncryptAlgorithm fromDictionary:dict] intValue];
+            self.decryptAlgorithm = [[self objectOrNilForKey:kADNetworkConfigItemDecryptAlgorithm fromDictionary:dict] intValue];
             self.requestPath = [self objectOrNilForKey:kADNetworkConfigItemRequestPath fromDictionary:dict];
             self.decryptKeyPath = [self objectOrNilForKey:kADNetworkConfigItemDecryptKeyPath fromDictionary:dict];
             self.httpMethod = [self objectOrNilForKey:kADNetworkConfigItemHttpMethod fromDictionary:dict];

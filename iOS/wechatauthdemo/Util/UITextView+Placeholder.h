@@ -2,7 +2,7 @@
 //  UITextView+Placeholder.h
 //  wechatauthdemo
 //
-//  Created by Jeason on 18/09/2015.
+//  Created by WeChat on 18/09/2015.
 //  Copyright © 2015 Tencent. All rights reserved.
 //
 

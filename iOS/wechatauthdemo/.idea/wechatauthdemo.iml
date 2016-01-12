@@ -95,6 +95,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Service/ADNetworkConfigManager.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/ADNetworkEngine.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/ADNetworkEngine.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Service/NetworkConfigItems.json" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/NetworkHandler/ErrorHandler.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/NetworkHandler/ErrorHandler.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/NetworkHandler/ErrorTitle.h" isTestSource="false" />
@@ -111,8 +112,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Supporting Files/Info.plist" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Supporting Files/main.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Supporting Files/rsa_public.key" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Supporting Files/server.cer" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Supporting Files/wechatauthdemo.com.pem" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Supporting Files/wechatauthdemo.cer" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Util/AlertTitleFont.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Util/AlertTitleFont.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Util/ButtonColor.h" isTestSource="false" />
@@ -129,8 +129,6 @@
       <sourceFolder url="file://$MODULE_DIR$/Util/Encrypt/RSA.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Util/LineColor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Util/LineColor.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Util/ResolveDebugWarning.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Util/ResolveDebugWarning.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Util/ShakeDebug.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Util/ShakeDebug.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Util/UITextView+Placeholder.h" isTestSource="false" />
@@ -151,6 +149,9 @@
       <sourceFolder url="file://$MODULE_DIR$/View/MessageBoardCommentView.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/View/MessageBoardContentView.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/View/MessageBoardContentView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/View/MessageboardFooterView.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/View/MessageboardFooterView.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/View/MessageboardFooterView.xib" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/View/MessageboardHeaderView.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/View/MessageboardHeaderView.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/View/MessageboardHeaderView.xib" isTestSource="false" />

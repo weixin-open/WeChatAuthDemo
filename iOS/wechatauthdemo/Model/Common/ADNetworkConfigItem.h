@@ -1,14 +1,13 @@
 //
 //  ADNetworkConfigItem.h
 //
-//  Created by Jeason  on 20/08/2015
+//  Created by WeChat  on 20/08/2015
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 AUTH_DEMO_EXTERN NSString *const kEncryptWholePacketParaKey;
-AUTH_DEMO_EXTERN NSString *const kDecryptWholePacketRespKey;
 
 @interface ADNetworkConfigItem : NSObject <NSCoding, NSCopying>
 

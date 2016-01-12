@@ -2,7 +2,7 @@
 //  AskLoginViewController.m
 //  wechatauthdemo
 //
-//  Created by Jeason on 16/10/2015.
+//  Created by WeChat on 16/10/2015.
 //  Copyright © 2015 boshao. All rights reserved.
 //
 

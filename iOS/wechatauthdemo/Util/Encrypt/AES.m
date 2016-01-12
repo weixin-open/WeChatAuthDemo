@@ -2,7 +2,7 @@
 //  NSData+AES.m
 //  AuthSDKDemo
 //
-//  Created by Jeason on 12/08/2015.
+//  Created by WeChat on 12/08/2015.
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 

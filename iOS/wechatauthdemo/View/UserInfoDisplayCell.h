@@ -2,7 +2,7 @@
 //  UserInfoDisplayCell.h
 //  wechatauthdemo
 //
-//  Created by Jeason on 20/08/2015.
+//  Created by WeChat on 20/08/2015.
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 

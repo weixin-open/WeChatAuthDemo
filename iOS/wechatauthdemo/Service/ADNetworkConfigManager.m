@@ -2,7 +2,7 @@
 //  ADNetworkConfigManager.m
 //  wechatauthdemo
 //
-//  Created by Jeason on 20/08/2015.
+//  Created by WeChat on 20/08/2015.
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
@@ -52,7 +52,9 @@ static NSMutableDictionary *allConfig;
 - (void)setup {
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"NetworkConfigItems" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
-    NSArray *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+    NSArray *json = [NSJSONSerialization JSONObjectWithData:data
+                                                    options:NSJSONReadingAllowFragments
+                                                      error:nil];
     for (NSDictionary *dict in json) {
         ADNetworkConfigItem *item = [ADNetworkConfigItem modelObjectWithDictionary:dict];
         [self registerConfig:item

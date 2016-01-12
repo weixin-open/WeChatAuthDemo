@@ -2,7 +2,7 @@
 //  MessageBoardContentView.h
 //  wechatauthdemo
 //
-//  Created by Jeason on 19/10/2015.
+//  Created by WeChat on 19/10/2015.
 //  Copyright © 2015 boshao. All rights reserved.
 //
 
