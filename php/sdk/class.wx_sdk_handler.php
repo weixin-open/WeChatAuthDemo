@@ -18,7 +18,6 @@ class WXSDKHandler
 	protected $opt = array();
 	protected $delegate = null;
 
-
 	function __construct($opt)
 	{
 		$this->opt = $opt;
@@ -86,10 +85,8 @@ class WXSDKHandler
 
 		$api_data = $this->api->request_access_token($code);
 		if (!$api_data) {
-			wxlog('Cannot access to WxOpenServer');
 			$this->session_end(null, WX_ERR_CANNOT_ACCESS_OPENSERVER, 'Cannot access to WxOpenServer');
 		} else if (isset($api_data['errcode'])) {
-			wxlog('Fail to get access_token with errcode: '.$api_data['errcode']);
 			$this->session_end(null, $api_data['errcode'], 'Fail to get access_token with errcode: '.$api_data['errcode']);
 		}
 		$api_data['create_time'] = time();
@@ -251,7 +248,7 @@ class WXSDKHandler
 			if (isset($result['errcode'])) {
 				return $result;
 			}
-			
+
 			$uin = $this->request_data['uin'];
 			$oauth = array_merge($oauth, $result);
 			$oauth['create_time'] = time();
@@ -290,7 +287,6 @@ class WXSDKHandler
 	 ***
 	 ***************************************************************/
 
-
 	// 生成10位长度uin
 	public function generate_uin()
 	{
@@ -316,11 +312,6 @@ class WXSDKHandler
 		return substr( md5(uniqid()), 0, 32 );
 	}
 
-	
-
-
 } // END
-
-
 
 /* END file */

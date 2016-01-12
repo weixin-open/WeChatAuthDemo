@@ -2,7 +2,7 @@
 
 /* !!! 请配置以下信息 !!! */
 
-error_reporting(E_ALL);
+error_reporting(0);
 date_default_timezone_set('Asia/Shanghai');
 
 // 应用的AppID及AppSecret，可在open.weixin.qq.com中找到，应与app客户端一致
@@ -34,20 +34,5 @@ define('WX_ERR_INVALID_REPLY_CONTENT',				-40002);	//回复内容不合法
 define('WX_ERR_NO_COMMENT',							-40003);	//留言不存在
 
 /* !!! 请配置以上信息 !!! */
-
-
-function wxlog($str) {
-	if (!is_string($str)) {
-		$str = json_encode($str);
-	}
-	$file = WX_AUTH_STORE_PATH.'/log.txt';
-	if (!file_exists($file)) {
-		file_put_contents($file, '');
-	}
-	$fp = fopen($file, 'a');
-	fwrite($fp, date('[m-d H:i:s]')." ".$str."\n");
-	fclose($fp);
-}
-
 
 /* END file */

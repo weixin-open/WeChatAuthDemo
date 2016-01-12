@@ -73,7 +73,7 @@ class WXAuthControllerDemo
 
 		$resp = $this->sdk->wxlogin();
 
-		//记录登陆信息
+		// 登陆成功后记录登陆信息
 		$uin = $resp['uin'];
 		$api_data = $this->db->get_oauth_by_uin($uin);
 		$openid = $api_data['openid'];
@@ -493,7 +493,6 @@ class WXAuthControllerDemo
 		fwrite($fp, date('[m-d H:i:s]')." ".$str."\n");
 		fclose($fp);
 	}
-
 
 } // END
 

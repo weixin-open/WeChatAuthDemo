@@ -60,7 +60,7 @@ class WXNetwork
 		fclose($fp);
 		$res = openssl_pkey_get_private($key);
 		$data = base64_decode($data);
-		if (openssl_private_decrypt($data, $decode, $res, OPENSSL_PKCS1_PADDING)) {
+		if (openssl_private_decrypt($data, $decode, $res, OPENSSL_PKCS1_OAEP_PADDING)) {
 			if ($to_type == 'json') {
 				$decode = json_decode($decode, true);
 			}
@@ -76,7 +76,8 @@ class WXNetwork
 		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
 		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
 		$encode = $this->AES256_cbc_encrypt($data, $key, $iv);
-		$encode = base64_encode($iv . $encode);
+		$mac_server = hash_hmac('sha256', $encode, $key, true); // 计算mac_server
+		$encode = base64_encode($iv . $encode . $mac_server); // 加密后输出的格式为IV+AES密文+SHA256对AES密文进行哈希后的值
 		return $encode;
 	}
 
@@ -85,17 +86,25 @@ class WXNetwork
 		$data = base64_decode($data);
 		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
 		$iv = substr($data, 0, $iv_size);
-		$encode = substr($data, $iv_size);
-		$decode = $this->AES256_cbc_decrypt($encode, $key, $iv);
-		if (!$decode) {
+		$mac_client = substr($data, -32);
+		$encode = substr($data, $iv_size, -32);
+		$mac_server = hash_hmac('sha256', $encode, $key, true); // 计算mac_server
+
+		// 检测包的合法性
+		if ($mac_client == $mac_server){
+			$decode = $this->AES256_cbc_decrypt($encode, $key, $iv);
+			if (!$decode) {
+				return null;
+			}
+			if ($to_type == 'json') {
+				$decode = json_decode($decode, true);
+			}
+			return $decode;
+		} else {
 			return null;
 		}
-		if ($to_type == 'json') {
-			$decode = json_decode($decode, true);
-		}
-		return $decode;
 	}
-	
+
 	protected function AES256_cbc_encrypt($data, $key, $iv) {
 		if (32 !== strlen($key)) $key = hash('SHA256', $key, true);
 		if (16 !== strlen($iv)) $iv = hash('MD5', $iv, true);

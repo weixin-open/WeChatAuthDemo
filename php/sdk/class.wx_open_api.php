@@ -56,7 +56,7 @@ class WXOpenAPI
 		));
 		return $json;
 	}
-	
+
 } // END
 
 /* END file */

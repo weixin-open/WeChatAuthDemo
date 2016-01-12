@@ -24,6 +24,7 @@ AppServer->AppClient: 4. ConnectResponse: psk作为密钥的\nAES加密(temp_uin
 
 note left of AppClient: 5. AppClient用psk作为密钥的\nAES解密保存temp_uin
 -->
+
 ![](http://jeason.gitcafe.io/images/2015/09/02/connect.png)
 
 <b>以下为详细说明:</b>
@@ -34,11 +35,11 @@ note left of AppClient: 5. AppClient用psk作为密钥的\nAES解密保存temp_u
 
 3. AppServer用RSA私钥解密包获得psk，生成一个临时的用户标示符temp_uin并建立```temp_uin<->psk```的映射。
 
-4. AppServer用psk作为密钥，将```temp_uin```AES加密后用Base64 Encoding后返回给AppClient。
+4. AppServer用psk作为密钥，将```temp_uin```AES加密，在末尾加上HMac-SHA256的MAC后用Base64 Encoding后返回给AppClient。
 
-5. AppClient对回包进行Base64 Decode之后，用psk作为密钥进行AES解密获得temp_uin保存到内存中.
+5. AppClient对回包进行Base64 Decode之后，验证MAC一致后用psk作为密钥进行AES解密获得temp_uin保存到内存中.
 
-<b>至此AppClient和AppServer之间的登录前安全信道建立完成，之后一直至[使用登录票据登录AppServer](#wow6)之前，AppClient和AppServer都使用psk作为密钥加密报文，并把密文经过Base64Encode之后，并带上temp_uin一并发送出去。</b>
+<b>至此AppClient和AppServer之间的登录前安全信道建立完成，之后一直至[使用登录票据登录AppServer](#wow6)之前，AppClient和AppServer都使用psk作为密钥加密报文，并把密文＋HMac-SHA256的MAC进行Base64Encode，并带上temp_uin一并发送出去。</b>
 
 <h2 id="wow2">二、换取登录票据</h2>
 
@@ -70,9 +71,9 @@ note left of AppClient: 8. 用psk解密Uin，\nLoginTicket并保存。
 
 1. AppClient通过微信SDK拉起微信客户端，用户通过在微信客户端同意授权后，返回一个code给AppClient。
 
-2. AppClient用psk对codeAES加密后进行Base64 Encode，连带temp_uin（明文）一并发给AppServer。
+2. AppClient用psk对codeAES加密，在末尾加上HMac-SHA256的MAC后进行Base64 Encode，连带temp_uin（明文）一并发给AppServer。
 
-3. AppServer通过明文获得temp_uin并索引到psk，解密后获得code参数。
+3. AppServer通过明文获得temp_uin并索引到psk，验证MAC一致并解密后获得code参数。
 
 4. AppServer用存在本地的AppID，AppSecret以及code参数发向微信OpenServer请求Token信息。<font color=red size=4><b>注意，这里AppSecret只能存在于AppServer中，不能让AppClient直接请求Token信息。</b></font>
 
@@ -80,9 +81,9 @@ note left of AppClient: 8. 用psk解密Uin，\nLoginTicket并保存。
 
 6. AppServer根据OpenId查询Uin，若无则生成新的Uin和LoginTicket，并建立```OpenId<->Uin<->LoginTicket```的映射。
 
-7. AppServer用psk对{LoginTicket, Uin}加密后经过Base64 Encoding发送给AppClient。
+7. AppServer用psk对{LoginTicket, Uin}加密，在末尾加上HMac-SHA256的MAC后经过Base64 Encoding发送给AppClient。
 
-8. AppClient收到，解密Uin和LoginTicket并保存到本地。
+8. AppClient收到并验证MAC一致后，解密Uin和LoginTicket并保存到本地。
 
 <h2 id="wow4">三、使用登录票据登录并建立正式安全信道</h2>
 <b>当AppClient获得正式Uin和LoginTicket时，会触发通过登录票据登录AppServer事件，此部分跟安全信道无关，时序图如下所示 ：</b>
@@ -110,11 +111,11 @@ note left of AppClient: 5. 用temp_key解密SK，\nexpireTime并保存。
 
 3. AppServer通过RSA私钥解密获得temp_key, Uin, LoginTicket, 之后尝试匹配Uin和LoginTicket并且检查LoginTicket是否过期。如果票据是很久之前（例如三个月之前的）生成的，或者最近没有使用过（例如一周没使用过），那么票据就是过期的。若检查都成功则生成一个密钥SK(*SessionKey*)和对应的过期时间expireTime，并建立```Uin<->SK```的映射。
 
-4. AppServer用temp_key对{SK, expireTime}进行AES加密后经过Base64 Encoding发送给AppClient。
+4. AppServer用temp_key对{SK, expireTime}进行AES加密，在末尾加上HMac-SHA256的MAC后经过Base64 Encoding发送给AppClient。
 
-5. AppClient收到后，用temp_key作为密钥解密获得SK和expireTime并保存到内存。
+5. AppClient收到并验证MAC一致后，用temp_key作为密钥解密获得SK和expireTime并保存到内存。
 
-<b>至此，AppClient和AppServer之间的正式安全信道建立完成，直至expireTime之前，AppClient和AppServer都使用SK作为密钥加密报文，并把密文经过Base64Encode之后，并带上Uin（明文）一并发送出去。 </b>
+<b>至此，AppClient和AppServer之间的正式安全信道建立完成，直至expireTime之前，AppClient和AppServer都使用SK作为密钥加密报文，并在密文末尾加上HMac-SHA256的MAC，用Base64Encoding后带上Uin（明文）一并发送出去。 </b>
 
 <h2 id="wow5">四、获得用户信息</h2>
 <b>当AppClient获得SK和expireTime时，会触发获得用户信息事件，此部分需在[正式安全信道](#wow6)中进行，时序图如下所示 ：</b>
@@ -139,17 +140,17 @@ note left of AppClient: 6. 解密用户信息\n并保存显示。
 
 <b>以下为详细说明:</b>
 
-1. AppClient用SK对｛Uin，LoginTicket｝加密并Base64 Encode之后，与Uin(明文)一同发给AppServer。
+1. AppClient用SK对｛Uin，LoginTicket｝加密，将密文末尾加上HMac-SHA256的MAC后，进行Base64 Encoding与Uin(明文)一同发给AppServer。
 
-2. AppServer通过明文获得Uin并索引到SK，若SK已过期，则触发[App登录态/SK过期](#wow12)子事件, 否则解密获得LoginTicket。之后查询Uin和LoginTicket是否匹配，若成功，则根据Uin查询获得用户OpenId等用户信息。
+2. AppServer通过明文获得Uin并索引到SK，若SK已过期，则触发[App登录态/SK过期](#wow12)子事件, 否则验证MAC一致并解密获得LoginTicket。之后查询Uin和LoginTicket是否匹配，若成功，则根据Uin查询获得用户OpenId等用户信息。
 
 3. AppServer利用OpenId和AccessToken向WXOpenServer查询用户的微信信息。<font color=red size=4>注意，这里AccessToken和RefreshToken只能存在于AppServer中，不能让AppClient直接请求微信用户信息。</font>
 	
 4. 若AccessToken未过期，WXOpenServer返回对应的微信用户信息，包括微信昵称，头像Url等，若已过期，则触发[微信登录的Token过期](#wow13)子事件。
 
-5. AppServer用SK对用户信息（包括昵称，头像，OpenId，AccessToken有效期，Refresh Token有效期）进行AES加密发送给AppClient。
+5. AppServer用SK对用户信息（包括昵称，头像，OpenId，AccessToken有效期，Refresh Token有效期）进行AES加密，在末尾加上HMac-SHA256的MAC后经过Base64Encoding发送给AppClient。
 
-6. AppClient收到后，用SK作为密钥解密获得用户信息并保存到内存中和展示在屏幕上。
+6. AppClient收到验证MAC一致后，用SK作为密钥解密获得用户信息并保存到内存中和展示在屏幕上。
 
 
 <h2 id="wow6">五、App登录态/SK过期</h2>
