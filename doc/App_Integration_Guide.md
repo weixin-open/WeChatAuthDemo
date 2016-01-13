@@ -40,7 +40,7 @@ open .
 
 在弹出的Finder窗口中打开工程文件```wechatauthdemo.xcworkspace```。在工程树中找到并修改**Info.plist**中的App信息,如下图所示：
 
-![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/WXAppInfo.jpg)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/WXAppInfo.jpg)
 
 将图中的WXAppInfo中的AppId和AppDescription的值修改为你在[https://open.weixin.qq.com](https://open.weixin.qq.com)上注册的App信息，否则将无法在应用程序启动时向微信注册。
 
@@ -50,7 +50,7 @@ open .
 
 在工程树设置文件中找到Bundle Indentifier的值修改为你在[https://open.weixin.qq.com](https://open.weixin.qq.com)上登记的Bundle Id，如下图所示：
 
-![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/BundleId.jpg)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/BundleId.jpg)
 
 ##修改服务器信息
 
@@ -59,7 +59,7 @@ open .
 ###替换服务器地址
 找到[BaseNetworkEngine.m](https://github.com/weixin-open/WeChatAuthDemo/blob/master/iOS/wechatauthdemo/Service/BaseNetworkEngine.m)文件，修改defaultHost的值为你自己的服务器地址，如下图所示：
 
-![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/defaultHost.tiff)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/defaultHost.jpg)
 
 ###替换服务器RSA公钥和自签名SSL证书
 
@@ -74,7 +74,7 @@ cp your/path/to/publickey/rsa_public.key \
 
 接下来将原来的工程的Bundle Resource中的SSL证书替换成你自己的自签名证书，如下图所示：
 
-![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/serverCer.jpg)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/serverCer.jpg)
 
 ##编写新的功能
 你可以在WeChatAuthDemo的基础上添加你自己的功能，完成你的App。
@@ -82,7 +82,7 @@ cp your/path/to/publickey/rsa_public.key \
 ###增加CGI配置
 按照[ConfigItemsMaker.h](https://github.com/weixin-open/WeChatAuthDemo/blob/master/iOS/wechatauthdemo/Service/ConfigItemsMaker.h)的格式，增加你需要增加的CGI的配置信息，包括请求的路径，加解密算法等，参考示例如下(在[ConfigItemsMaker.h](https://github.com/weixin-open/WeChatAuthDemo/blob/master/iOS/wechatauthdemo/Service/ConfigItemsMaker.h))：
 
-```swift
+```objective-c
 @{
 	@"cgi_name": @"appcgi_replylist", //这个配置的ID
 	@"request_path": @"/wxoauth/demo/index.php?action=replylist", //请求路径
@@ -98,7 +98,7 @@ cp your/path/to/publickey/rsa_public.key \
 ###编写你自己的Engine
 之后只需要继承[BaseNetworkEngine](https://github.com/weixin-open/WeChatAuthDemo/blob/master/iOS/wechatauthdemo/Service/BaseNetworkEngine.m)，然后用```JSONTaskForHost:Para:ConfigKeyPath:WithCompletion:```建立一个网络请求并发起即可，参考示例如下(在[ADNetworkEngine.m](https://github.com/weixin-open/WeChatAuthDemo/blob/master/iOS/wechatauthdemo/Service/ADNetworkEngine.m)中):
 
-```swift
+```objective-c
 - (void)getReplyListForUin:(UInt32)uin
                  OfComment:(NSString *)commentId
             WithCompletion:(GetReplyListCallBack)completion {
