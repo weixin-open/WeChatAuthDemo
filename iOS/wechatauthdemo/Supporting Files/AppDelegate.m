@@ -21,8 +21,10 @@
 #import "ADGetUserInfoResp.h"
 #import "MessageBoardViewController.h"
 
-static NSString* const YourAppIdInWeChat = @"wxbeafe42095e03edf";
-static NSString* const kYourAppDescription = @"AuthDemo 2.0";
+#warning 请在Info.plist中替换你自己的AppId和AppDescription
+static NSString* const kWXAppInfoKeyName = @"WXAPPInfo";
+static NSString* const kWXAppInfoAppIdKeyName = @"AppId";
+static NSString* const kWXAppInfoAppDescKeyName = @"AppDescription";
 static NSString* const kMessageBoardViewTitle = @"留言板";
 static NSString* const kUserInfoViewTitle = @"我";
 static NSString* const kDocumentsViewTitle = @"开发文档";
@@ -96,8 +98,9 @@ static const CGFloat kNavigationTitleFontSize = 17.0f;
     [alertAppear setAlertTitleFont:[UIFont fontWithName:kChineseFont size:kAlertTitleFontSize]];
     
     /* Register For WeChat */
-    [WXApi registerApp:YourAppIdInWeChat
-       withDescription:kYourAppDescription];
+    NSDictionary *WXAppInfo = [[NSBundle mainBundle] objectForInfoDictionaryKey:kWXAppInfoKeyName];
+    [WXApi registerApp:WXAppInfo[kWXAppInfoAppIdKeyName]
+       withDescription:WXAppInfo[kWXAppInfoAppDescKeyName]];
     
     /* Setup Network */
     [[ADNetworkConfigManager sharedManager] setup];

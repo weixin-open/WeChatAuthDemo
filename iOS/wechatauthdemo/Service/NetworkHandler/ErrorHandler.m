@@ -27,7 +27,7 @@ static int const kHandleErrorMaxDepth = 3;
                           InDepth:(int)depth {
     if (depth <= kHandleErrorMaxDepth) {
         switch (resp.errcode) {
-            case ADErrorCodeSessionKeyExpired: {    //会话过期，再次登陆
+            case ADErrorCodeSessionKeyExpired: {    //会话过期，再次登录
                 NSLog(@"Session Key Is Expired");
                 [[ADNetworkEngine sharedEngine] checkLoginForUin:[ADUserInfo currentUser].uin
                                                      LoginTicket:[ADUserInfo currentUser].loginTicket

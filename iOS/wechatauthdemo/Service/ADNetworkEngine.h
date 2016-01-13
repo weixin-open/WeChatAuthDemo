@@ -39,10 +39,10 @@ typedef void(^AddReplyCallBack)(ADAddReplyResp *resp);
 + (instancetype)sharedEngine;
 
 /**
- *  与服务器握手，交换psk建立登陆前的安全通道.
+ *  与服务器握手，交换psk建立登录前的安全通道.
  *
  *  @abstract 客户端通过RSA加密一个随机密钥psk给服务器，服务器解密后保存.
- *  之后双方的通信（登陆前）都采用psk作为key进行AES加密报文.
+ *  之后双方的通信（登录前）都采用psk作为key进行AES加密报文.
  *
  *  @param completion 握手完成的回调，参数包括一个临时的Uin，以后的请求都需要带上这个Uin以让服务器可以索引到对应的psk.
  */
@@ -51,10 +51,10 @@ typedef void(^AddReplyCallBack)(ADAddReplyResp *resp);
 /**
  *  微信登录.
  *
- *  @restrict 必须在登陆前安全通道进行.
+ *  @restrict 必须在登录前安全通道进行.
  *
  *  @param code       微信授权后获得的code
- *  @param completion 微信登录完成的回调，参数包括一个正式Uin和登陆票据
+ *  @param completion 微信登录完成的回调，参数包括一个正式Uin和登录票据
  */
 - (void)wxLoginForAuthCode:(NSString *)code
             WithCompletion:(WXLoginCallBack)completion;
@@ -111,19 +111,60 @@ typedef void(^AddReplyCallBack)(ADAddReplyResp *resp);
  */
 - (void)makeRefreshTokenExpired:(UInt32)uin LoginTicket:(NSString *)loginTicket;
 
+/**
+ *  获取某个startId之后的留言板的留言。
+ *
+ *  @restrict 可以在临时或正式安全通道里进行.
+ *  
+ *  @param uin 正式Uin
+ *  @param startId 开始的留言Id，nil则为从头开始
+ *  @param completion 获取完成的回调，参数包括留言列表，留言个数，每页的最多数量。
+ */
 - (void)getCommentListForUin:(UInt32)uin
                         From:(NSString *)startId
               WithCompletion:(GetCommentListCallBack)completion;
 
+/**
+ *  获取某个留言下的评论。
+ *  
+ *  @restrict 可以在临时或正式安全通道里进行.
+ *
+ *  @param uin 正式Uin
+ *  @param commentId 该留言的Id
+ *  @param completion 获取完成的回调.
+ */
 - (void)getReplyListForUin:(UInt32)uin
                  OfComment:(NSString *)commentId
             WithCompletion:(GetReplyListCallBack)completion;
 
+/**
+ *  发布一条留言
+ *  
+ *  @restrict 必须在正式安全通道里进行.
+ *
+ *  @param content 留言的文字
+ *  @param uin 正式uin
+ *  @param loginTicket 用户的登录票据
+ *  @param completion 发布完成的回调
+ *
+ */
 - (void)addCommentContent:(NSString *)content
                    ForUin:(UInt32)uin
               LoginTicket:(NSString *)loginTicket
            WithCompletion:(AddCommentCallBack)completion;
 
+/**
+ *  发布一条评论
+ *
+ *  @restrict 必须在正式安全通道里进行.
+ *
+ *  @param content
+ *  @param commentId
+ *  @param replyId
+ *  @param uin
+ *  @param loginTicket
+ *  @param completion
+ */
 - (void)addReplyContent:(NSString *)content
               ToComment:(NSString *)commentId
               OrToReply:(NSString *)replyId
