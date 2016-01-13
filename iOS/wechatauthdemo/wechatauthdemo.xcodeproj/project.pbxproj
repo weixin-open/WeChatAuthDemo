@@ -38,7 +38,6 @@
 		7A6F17C21BF07D81008834FB /* InputWithTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A6F17C01BF07D81008834FB /* InputWithTextFieldCell.m */; };
 		7A6F17C31BF07D81008834FB /* InputWithTextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A6F17C11BF07D81008834FB /* InputWithTextFieldCell.xib */; };
 		7A7280631BFA01FE00AB83A1 /* LineColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A7280621BFA01FE00AB83A1 /* LineColor.m */; };
-		7A79EDCA1C2A505F002D5C3C /* NetworkConfigItems.json in Resources */ = {isa = PBXBuildFile; fileRef = 7A79EDC91C2A505F002D5C3C /* NetworkConfigItems.json */; };
 		7A89F6731B8AC0E00007ACA7 /* ButtonColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */; };
 		7A8D06181BD5115A0002D804 /* ADCommentList.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8D06151BD5115A0002D804 /* ADCommentList.m */; };
 		7A8D06191BD5115A0002D804 /* ADGetCommentListResp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A8D06171BD5115A0002D804 /* ADGetCommentListResp.m */; };
@@ -52,12 +51,14 @@
 		7AA1634B1B85AAD200E54AAC /* ADNetworkConfigItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1634A1B85AAD200E54AAC /* ADNetworkConfigItem.m */; };
 		7AA163611B85DA9A00E54AAC /* UserInfoDisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AA1635F1B85DA9A00E54AAC /* UserInfoDisplayCell.m */; };
 		7AA163621B85DA9A00E54AAC /* UserInfoDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */; };
+		7AA343E91C461B68004F17F9 /* BaseNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AA343E81C461B68004F17F9 /* BaseNetworkEngine.m */; };
 		7AB0582F1BCF4F0600B11365 /* DocumentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB0582E1BCF4F0600B11365 /* DocumentsViewController.m */; };
 		7AB058321BCF4F1300B11365 /* MessageBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB058311BCF4F1300B11365 /* MessageBoardViewController.m */; };
 		7AB058381BCF4F6900B11365 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB058371BCF4F6900B11365 /* UserInfoViewController.m */; };
 		7ABF028C1BD49ABE006D62D0 /* MessageBoardCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF028A1BD49ABE006D62D0 /* MessageBoardCommentView.m */; };
 		7ABF02901BD4AE26006D62D0 /* MessageBoardContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF028F1BD4AE26006D62D0 /* MessageBoardContentView.m */; };
 		7ABF02931BD4B1A4006D62D0 /* MessageBoardReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ABF02921BD4B1A4006D62D0 /* MessageBoardReplyCell.m */; };
+		7AC681021C46333C001EB0C5 /* ADKeyChainWrap.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC681011C46333C001EB0C5 /* ADKeyChainWrap.m */; };
 		7AD826611B81FDF9008CA90C /* ADNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */; };
 		7AD826621B81FDF9008CA90C /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD8262E1B81FDF9008CA90C /* WXApiManager.m */; };
 		7AD826631B81FDF9008CA90C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD826311B81FDF9008CA90C /* AppDelegate.m */; };
@@ -149,7 +150,6 @@
 		7A6F17C11BF07D81008834FB /* InputWithTextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputWithTextFieldCell.xib; sourceTree = "<group>"; };
 		7A7280611BFA01FE00AB83A1 /* LineColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineColor.h; sourceTree = "<group>"; };
 		7A7280621BFA01FE00AB83A1 /* LineColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineColor.m; sourceTree = "<group>"; };
-		7A79EDC91C2A505F002D5C3C /* NetworkConfigItems.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = NetworkConfigItems.json; sourceTree = "<group>"; };
 		7A89F6711B8AC0E00007ACA7 /* ButtonColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonColor.h; sourceTree = "<group>"; };
 		7A89F6721B8AC0E00007ACA7 /* ButtonColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonColor.m; sourceTree = "<group>"; };
 		7A8D06141BD5115A0002D804 /* ADCommentList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADCommentList.h; sourceTree = "<group>"; };
@@ -174,6 +174,8 @@
 		7AA1635E1B85DA9A00E54AAC /* UserInfoDisplayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoDisplayCell.h; sourceTree = "<group>"; };
 		7AA1635F1B85DA9A00E54AAC /* UserInfoDisplayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoDisplayCell.m; sourceTree = "<group>"; };
 		7AA163601B85DA9A00E54AAC /* UserInfoDisplayCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserInfoDisplayCell.xib; sourceTree = "<group>"; };
+		7AA343E71C461B68004F17F9 /* BaseNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNetworkEngine.h; sourceTree = "<group>"; };
+		7AA343E81C461B68004F17F9 /* BaseNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNetworkEngine.m; sourceTree = "<group>"; };
 		7AB0582D1BCF4F0600B11365 /* DocumentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentsViewController.h; sourceTree = "<group>"; };
 		7AB0582E1BCF4F0600B11365 /* DocumentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentsViewController.m; sourceTree = "<group>"; };
 		7AB058301BCF4F1300B11365 /* MessageBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoardViewController.h; sourceTree = "<group>"; };
@@ -186,6 +188,9 @@
 		7ABF028F1BD4AE26006D62D0 /* MessageBoardContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBoardContentView.m; sourceTree = "<group>"; };
 		7ABF02911BD4B1A4006D62D0 /* MessageBoardReplyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoardReplyCell.h; sourceTree = "<group>"; };
 		7ABF02921BD4B1A4006D62D0 /* MessageBoardReplyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBoardReplyCell.m; sourceTree = "<group>"; };
+		7AC680FF1C462D76001EB0C5 /* ConfigItemsMaker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConfigItemsMaker.h; sourceTree = "<group>"; };
+		7AC681001C46333C001EB0C5 /* ADKeyChainWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADKeyChainWrap.h; sourceTree = "<group>"; };
+		7AC681011C46333C001EB0C5 /* ADKeyChainWrap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADKeyChainWrap.m; sourceTree = "<group>"; };
 		7AD8262B1B81FDF9008CA90C /* ADNetworkEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADNetworkEngine.h; sourceTree = "<group>"; };
 		7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADNetworkEngine.m; sourceTree = "<group>"; };
 		7AD8262D1B81FDF9008CA90C /* WXApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiManager.h; sourceTree = "<group>"; };
@@ -423,6 +428,8 @@
 			children = (
 				7AD8262B1B81FDF9008CA90C /* ADNetworkEngine.h */,
 				7AD8262C1B81FDF9008CA90C /* ADNetworkEngine.m */,
+				7AA343E71C461B68004F17F9 /* BaseNetworkEngine.h */,
+				7AA343E81C461B68004F17F9 /* BaseNetworkEngine.m */,
 			);
 			name = API;
 			sourceTree = "<group>";
@@ -439,9 +446,11 @@
 		7A7280601BF9FFC600AB83A1 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				7AC681001C46333C001EB0C5 /* ADKeyChainWrap.h */,
+				7AC681011C46333C001EB0C5 /* ADKeyChainWrap.m */,
 				7AA163461B85A90E00E54AAC /* ADNetworkConfigManager.h */,
 				7AA163471B85A90E00E54AAC /* ADNetworkConfigManager.m */,
-				7A79EDC91C2A505F002D5C3C /* NetworkConfigItems.json */,
+				7AC680FF1C462D76001EB0C5 /* ConfigItemsMaker.h */,
 			);
 			name = Config;
 			sourceTree = "<group>";
@@ -749,7 +758,6 @@
 				7A00ADC21B8333650013A0B2 /* Default-568h@2x.png in Resources */,
 				7A6B1F481C2952010092620E /* MessageboardFooterView.xib in Resources */,
 				7A998CC51BD5E7F7005AC4D8 /* InputWithTextFieldBar.xib in Resources */,
-				7A79EDCA1C2A505F002D5C3C /* NetworkConfigItems.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,6 +830,7 @@
 				7AD8269E1B8200BD008CA90C /* ADCheckLoginResp.m in Sources */,
 				7AA1634B1B85AAD200E54AAC /* ADNetworkConfigItem.m in Sources */,
 				7ADBE6BF1BCF5DDF006A8046 /* DocumentsCell.m in Sources */,
+				7AC681021C46333C001EB0C5 /* ADKeyChainWrap.m in Sources */,
 				7AF31E6B1BA9878B0007E389 /* LogTextViewController.m in Sources */,
 				7A6F17C21BF07D81008834FB /* InputWithTextFieldCell.m in Sources */,
 				7A2914751BCFCAE1006D6952 /* UserNickNameCell.m in Sources */,
@@ -857,6 +866,7 @@
 				7AD8269B1B8200BD008CA90C /* ADBaseResp.m in Sources */,
 				7A5587D91BD0FE5700549118 /* ADUser.m in Sources */,
 				7AD826621B81FDF9008CA90C /* WXApiManager.m in Sources */,
+				7AA343E91C461B68004F17F9 /* BaseNetworkEngine.m in Sources */,
 				7AF8D54F1C27E6EA007D49E1 /* ErrorHandler.m in Sources */,
 				7AD826B11B820107008CA90C /* RSA.m in Sources */,
 				7AD826671B81FDF9008CA90C /* main.m in Sources */,

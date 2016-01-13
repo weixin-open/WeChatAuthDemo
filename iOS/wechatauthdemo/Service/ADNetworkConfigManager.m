@@ -8,6 +8,8 @@
 
 #import "ADNetworkConfigManager.h"
 #import "ADNetworkConfigItem.h"
+#import "ConfigItemsMaker.h"
+#import "ADKeyChainWrap.h"
 
 const NSString *kConnectCGIName = @"appcgi_connect";
 const NSString *kWXLoginCGIName = @"appcgi_wxlogin";
@@ -19,7 +21,13 @@ const NSString *kGetReplyListCGIName = @"appcgi_replylist";
 const NSString *kAddCommentCGIName = @"appcgi_addcomment";
 const NSString *kAddReplyCGIName = @"appcgi_addreply";
 
-static NSMutableDictionary *allConfig;
+static NSString* const kConfigureItemsKeyName = @"kConfigureItemsKeyName";
+
+@interface ADNetworkConfigManager()
+
+@property (nonatomic, strong) NSMutableDictionary *allConfig;
+
+@end
 
 @implementation ADNetworkConfigManager
 
@@ -35,7 +43,7 @@ static NSMutableDictionary *allConfig;
 
 - (instancetype)initInPrivate {
     if (self = [super init]) {
-        allConfig = [[NSMutableDictionary alloc] init];
+        self.allConfig = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -50,47 +58,51 @@ static NSMutableDictionary *allConfig;
 
 #pragma mark - Public Methods
 - (void)setup {
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"NetworkConfigItems" ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:filePath];
-    NSArray *json = [NSJSONSerialization JSONObjectWithData:data
-                                                    options:NSJSONReadingAllowFragments
-                                                      error:nil];
-    for (NSDictionary *dict in json) {
-        ADNetworkConfigItem *item = [ADNetworkConfigItem modelObjectWithDictionary:dict];
-        [self registerConfig:item
-                  forKeyPath:item.cgiName];
+    [self loadLocalConfig];
+    NSArray *json = defaultConfigItems();
+    if ([[self.allConfig allKeys] count] != [json count]) {
+        //在这里应该跟服务器检查一下版本号，若服务器版本号较大则重新加载配置，这里简单起见就直接比较数目
+        [self.allConfig removeAllObjects];
+        for (NSDictionary *dict in json) {
+            ADNetworkConfigItem *item = [ADNetworkConfigItem modelObjectWithDictionary:dict];
+            [self registerConfig:item
+                      forKeyPath:item.cgiName];
+        }
     }
 }
 
 - (void)registerConfig:(ADNetworkConfigItem *)item forKeyPath:(NSString *)keyPath {
-    [allConfig setObject:item forKey:keyPath];
+    [self.allConfig setObject:item forKey:keyPath];
 }
 
 - (void)removeConfigForKeyPath:(NSString *)keyPath {
-    [allConfig removeObjectForKey:keyPath];
+    [self.allConfig removeObjectForKey:keyPath];
 }
 
 - (ADNetworkConfigItem *)getConfigForKeyPath:(NSString *)keyPath {
-    return [allConfig objectForKey:keyPath];
+    return [self.allConfig objectForKey:keyPath];
 }
 
 - (NSArray *)allConfigKeys {
-    return [allConfig allKeys];
+    return [self.allConfig allKeys];
+}
+
+- (void)loadLocalConfig {
+    NSData *data = [ADKeyChainWrap getDataForKey:kConfigureItemsKeyName];
+    self.allConfig = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 - (void)save {
-    NSArray *allKeys = [self allConfigKeys];
-    NSMutableArray *jsonArray = [NSMutableArray array];
-    for (NSString *key in allKeys) {
-        NSDictionary *dict = [allConfig[key] dictionaryRepresentation];
-        [jsonArray addObject:dict];
+    [ADKeyChainWrap setData:[NSKeyedArchiver archivedDataWithRootObject:self.allConfig]
+                     ForKey:kConfigureItemsKeyName];
+}
+
+#pragma mark - Lazy Initializers
+- (NSMutableDictionary *)allConfig {
+    if (_allConfig == nil) {
+        _allConfig = [NSMutableDictionary dictionary];
     }
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonArray
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:nil];
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"NetworkConfigItems" ofType:@"json"];
-    [jsonData writeToFile:filePath
-               atomically:YES];
+    return _allConfig;
 }
 
 @end

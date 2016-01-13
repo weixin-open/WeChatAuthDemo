@@ -21,8 +21,8 @@
 #import "ADGetUserInfoResp.h"
 #import "MessageBoardViewController.h"
 
-#warning 请在Info.plist中替换你自己的AppId和AppDescription
-static NSString* const kWXAppInfoKeyName = @"WXAPPInfo";
+#warning Replace your own WXAppInfo and URLTypes In Info.plist
+static NSString* const kWXAppInfoKeyName = @"WXAppInfo";
 static NSString* const kWXAppInfoAppIdKeyName = @"AppId";
 static NSString* const kWXAppInfoAppDescKeyName = @"AppDescription";
 static NSString* const kMessageBoardViewTitle = @"留言板";
