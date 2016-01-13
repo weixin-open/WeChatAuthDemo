@@ -117,5 +117,12 @@ cp your/path/to/publickey/rsa_public.key \
 }
 ```
 
+###调试
 
+WeChatAuthDemo在Debug模式下还在首页提供了一个可以修改CGI配置的调试页面，同时还在App全局提供摇一摇手势呼出日志窗口，你还可以在他们上面集成其它调试工具如[FLEX](https://github.com/Flipboard/FLEX)等, enjoy! :-)。
 
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/Index.jpg)
+
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/Debug.jpg)
+
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/Log.jpg)

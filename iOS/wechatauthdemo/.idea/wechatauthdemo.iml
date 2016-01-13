@@ -91,11 +91,15 @@
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods/Pods-resources.sh" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods/Pods.debug.xcconfig" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Pods/Target Support Files/Pods/Pods.release.xcconfig" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Service/ADKeyChainWrap.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Service/ADKeyChainWrap.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/ADNetworkConfigManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/ADNetworkConfigManager.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/ADNetworkEngine.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/ADNetworkEngine.m" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Service/NetworkConfigItems.json" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Service/BaseNetworkEngine.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Service/BaseNetworkEngine.m" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Service/ConfigItemsMaker.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/NetworkHandler/ErrorHandler.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/NetworkHandler/ErrorHandler.m" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Service/NetworkHandler/ErrorTitle.h" isTestSource="false" />
