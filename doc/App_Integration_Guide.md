@@ -40,7 +40,7 @@ open .
 
 在弹出的Finder窗口中打开工程文件```wechatauthdemo.xcworkspace```。在工程树中找到并修改**Info.plist**中的App信息,如下图所示：
 
-![](WXAppInfo.jpg)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/WXAppInfo.jpg)
 
 将图中的WXAppInfo中的AppId和AppDescription的值修改为你在[https://open.weixin.qq.com](https://open.weixin.qq.com)上注册的App信息，否则将无法在应用程序启动时向微信注册。
 
@@ -50,7 +50,7 @@ open .
 
 在工程树设置文件中找到Bundle Indentifier的值修改为你在[https://open.weixin.qq.com](https://open.weixin.qq.com)上登记的Bundle Id，如下图所示：
 
-![](BundleId.jpg)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/BundleId.jpg)
 
 ##修改服务器信息
 
@@ -59,7 +59,7 @@ open .
 ###替换服务器地址
 找到[BaseNetworkEngine.m](https://github.com/weixin-open/WeChatAuthDemo/blob/master/iOS/wechatauthdemo/Service/BaseNetworkEngine.m)文件，修改defaultHost的值为你自己的服务器地址，如下图所示：
 
-![](defaultHost.tiff)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/defaultHost.tiff)
 
 ###替换服务器RSA公钥和自签名SSL证书
 
@@ -74,7 +74,7 @@ cp your/path/to/publickey/rsa_public.key \
 
 接下来将原来的工程的Bundle Resource中的SSL证书替换成你自己的自签名证书，如下图所示：
 
-![](serverCer.jpg)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/serverCer.jpg)
 
 ##编写新的功能
 你可以在WeChatAuthDemo的基础上添加你自己的功能，完成你的App。

@@ -12,6 +12,8 @@
 
 * [微信AuthDemoApp交互时序说明文档](https://github.com/weixin-open/WeChatAuthDemo/wiki/微信Auth-Demo-App交互时序说明文档)
 
+* [WeChatAuthDemo客户端接入指南](https://github.com/weixin-open/WeChatAuthDemo/wiki/WeChatAuthDemo客户端接入指南)
+
 ##License
 Copyright (c) 2015 Tencent
 
