@@ -61,7 +61,8 @@ static NSString* const kConfigureItemsKeyName = @"kConfigureItemsKeyName";
     [self loadLocalConfig];
     NSArray *json = defaultConfigItems();
     if ([[self.allConfig allKeys] count] != [json count]) {
-        //在这里应该跟服务器检查一下版本号，若服务器版本号较大则重新加载配置，这里简单起见就直接比较数目
+        // 在这里应该跟服务器检查一下版本号，若服务器版本号较大则重新加载配置,
+        // 这里只有在Debug模式下才会将配置持久化，所以简单起见就直接比较数目
         [self.allConfig removeAllObjects];
         for (NSDictionary *dict in json) {
             ADNetworkConfigItem *item = [ADNetworkConfigItem modelObjectWithDictionary:dict];
@@ -89,7 +90,9 @@ static NSString* const kConfigureItemsKeyName = @"kConfigureItemsKeyName";
 
 - (void)loadLocalConfig {
     NSData *data = [ADKeyChainWrap getDataForKey:kConfigureItemsKeyName];
-    self.allConfig = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (data != nil) {
+        self.allConfig = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    }
 }
 
 - (void)save {

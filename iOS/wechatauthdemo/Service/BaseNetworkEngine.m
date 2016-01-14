@@ -20,7 +20,6 @@ static NSString* const publickeyFileName = @"rsa_public";
 @interface BaseNetworkEngine ()
 
 @property (nonatomic, strong, readwrite) AFURLSessionManager *manager;
-@property (nonatomic, strong, readwrite) NSString *RSAKey;
 
 @end
 
@@ -28,12 +27,19 @@ static NSString* const publickeyFileName = @"rsa_public";
 
 #pragma mark - Life Cycle
 + (instancetype)sharedEngine {
+    static NSMutableDictionary *instanceMap;
     static dispatch_once_t onceToken;
-    static id instance = nil;
     dispatch_once(&onceToken, ^{
-        instance = [[[self class] alloc] initWithHost:defaultHost];
+        instanceMap = [NSMutableDictionary dictionary];
     });
-    return instance;
+    NSString *className = NSStringFromClass([self class]);
+    @synchronized(instanceMap) {
+        if (instanceMap[className]) {
+            return instanceMap[className];
+        } else {
+            return instanceMap[className] = [[[self class] alloc] initWithHost:defaultHost];
+        }
+    }
 }
 
 - (instancetype)initWithHost:(NSString *)host {
@@ -189,13 +195,15 @@ static NSString* const publickeyFileName = @"rsa_public";
 }
 
 - (NSString *)RSAKey {
-    if (_RSAKey == nil) {
-        NSString *keyPath = [[NSBundle mainBundle] pathForResource:publickeyFileName ofType:@"key"];
-        NSData *keyData = [[NSFileManager defaultManager] contentsAtPath:keyPath];
-        _RSAKey = [[NSString alloc] initWithData:keyData
-                                        encoding:NSUTF8StringEncoding];
-    }
-    return _RSAKey;
+    return @"-----BEGIN PUBLIC KEY-----\n\
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvNqqzcNyCDAQdCq+SZNv\n\
+    8PX5C1MnxoVMAUBqT4Sbl8vEpNkTg4Ng+bWrBjUU6P++g4dK4e+Dp8RaauS2+kAm\n\
+    ScJLp6tKms0gt9POfC79s3JZqlG8TiRvbJZ9ez5rKjSI2JueqwXPVQsnJigTWxX6\n\
+    hQ8W6jLFgQ7UoSTHvcIRnebg8Bz0EAUrO7F3GOzsDv6tQ2Rg5MTWCsfSLyF1fQ0J\n\
+    NeEBaZVyb8WoUdBroOa0vsYQPv8TLLkjr78vld2GVcJK7QjnmLbqQEQDNo1UWA97\n\
+    AOIDcRDkF0UT36a+A9HL8sq05k2QZehtDG7aa5UnqAbLtDhRTlPwuvuBIbNrKU0V\n\
+    qwIDAQAB\n\
+    -----END PUBLIC KEY-----";
 }
 
 @end

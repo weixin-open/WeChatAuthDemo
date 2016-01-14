@@ -76,7 +76,6 @@
 		7ADBE6C01BCF5DDF006A8046 /* DocumentsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ADBE6BE1BCF5DDF006A8046 /* DocumentsCell.xib */; };
 		7ADF84401BD775370087E30A /* MessageboardHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7ADF843E1BD775370087E30A /* MessageboardHeaderView.m */; };
 		7ADF84411BD775370087E30A /* MessageboardHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7ADF843F1BD775370087E30A /* MessageboardHeaderView.xib */; };
-		7AE8155E1BA1B7AB00B5C7C8 /* rsa_public.key in Resources */ = {isa = PBXBuildFile; fileRef = 7A00ADC31B83369B0013A0B2 /* rsa_public.key */; };
 		7AE8C76B1B9473C70091CE4C /* WXLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8C7691B9473C70091CE4C /* WXLoginViewController.m */; };
 		7AF31E6B1BA9878B0007E389 /* LogTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF31E6A1BA9878B0007E389 /* LogTextViewController.m */; };
 		7AF8D54F1C27E6EA007D49E1 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8D5481C27E6EA007D49E1 /* ErrorHandler.m */; };
@@ -103,7 +102,6 @@
 		73BED6221B3AA84600CA4C4D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		73BED6241B3AA84E00CA4C4D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7A00ADC11B8333650013A0B2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
-		7A00ADC31B83369B0013A0B2 /* rsa_public.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rsa_public.key; sourceTree = "<group>"; };
 		7A00ADC51B8353940013A0B2 /* RandomKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RandomKey.h; sourceTree = "<group>"; };
 		7A00ADC61B8353940013A0B2 /* RandomKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RandomKey.m; sourceTree = "<group>"; };
 		7A0440D81BA7BEF000574AA2 /* DebugViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DebugViewController.h; path = Debug/DebugViewController.h; sourceTree = "<group>"; };
@@ -542,7 +540,6 @@
 				7AD826341B81FDF9008CA90C /* Images.xcassets */,
 				7AD826351B81FDF9008CA90C /* Info.plist */,
 				7AD826361B81FDF9008CA90C /* main.m */,
-				7A00ADC31B83369B0013A0B2 /* rsa_public.key */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -746,7 +743,6 @@
 			files = (
 				7A389A8C1C2AED5E000AF45C /* wechatauthdemo.cer in Resources */,
 				7A6F17C31BF07D81008834FB /* InputWithTextFieldCell.xib in Resources */,
-				7AE8155E1BA1B7AB00B5C7C8 /* rsa_public.key in Resources */,
 				7355607A1B45202D00B3EE93 /* Localizable.strings in Resources */,
 				7A5E83701BD679410025EFD7 /* CommentReplyFooterView.xib in Resources */,
 				7AD826651B81FDF9008CA90C /* Images.xcassets in Resources */,
