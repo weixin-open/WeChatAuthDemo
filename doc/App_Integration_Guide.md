@@ -67,7 +67,7 @@ open .
 
 ![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/RSAPublicKey.jpg)
 
-<font color=red>注意，我们这里强烈建议使用2048 bytes以上的钥匙对，具体生成密钥指南详见[WeChatAuthDemo生成RSA钥匙对与自签名证书指南]()</font>。
+**注意，我们这里强烈建议使用2048位以上的钥匙对，具体生成密钥指南详见[WeChatAuthDemo生成RSA钥匙对与自签名证书指南](https://github.com/weixin-open/WeChatAuthDemo/wiki/WeChatAuthDemo生成密钥与自签名证书指南)**。
 
 接下来将原来的工程的Bundle Resource中的SSL证书替换成你自己的自签名证书，如下图所示：
 

@@ -14,6 +14,8 @@
 
 * [WeChatAuthDemo客户端接入指南](https://github.com/weixin-open/WeChatAuthDemo/wiki/WeChatAuthDemo客户端接入指南)
 
+* [WeChatAuthDemo生成密钥与自签名证书指南](https://github.com/weixin-open/WeChatAuthDemo/wiki/WeChatAuthDemo生成密钥与自签名证书指南)
+
 ##License
 Copyright (c) 2015 Tencent
 
