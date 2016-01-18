@@ -2,8 +2,8 @@
 //  BaseEngine.h
 //  wechatauthdemo
 //
-//  Created by Jeason on 13/01/2016.
-//  Copyright © 2016 boshao. All rights reserved.
+//  Created by WeChat on 13/01/2016.
+//  Copyright © 2016 Tencent. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
