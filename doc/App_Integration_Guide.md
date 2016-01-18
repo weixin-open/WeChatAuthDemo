@@ -63,12 +63,9 @@ open .
 
 ###替换服务器RSA公钥和自签名SSL证书
 
-将服务器中用于与App通信的RSA公钥和SSL证书下载下来，在终端模拟器中输入以下命令以替换RSA公钥：
+将服务器中用于与App通信的RSA公钥和SSL证书下载下来, 然后打开[BaseNetworkEngine.m](https://github.com/weixin-open/WeChatAuthDemo/blob/master/iOS/wechatauthdemo/Service/BaseNetworkEngine.m)文件，将公钥内容复制替换掉，如下图所示：
 
-```bash
-cp your/path/to/publickey/rsa_public.key \
- your/path/to/WeChatAuthDemo/iOS/wechatauthdemo/Supporting\ Files/
-```
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/RSAPublicKey.jpg)
 
 <font color=red>注意，我们这里强烈建议使用2048 bytes以上的钥匙对，具体生成密钥指南详见[WeChatAuthDemo生成RSA钥匙对与自签名证书指南]()</font>。
 
@@ -119,10 +116,8 @@ cp your/path/to/publickey/rsa_public.key \
 
 ###调试
 
-WeChatAuthDemo在Debug模式下还在首页提供了一个可以修改CGI配置的调试页面，同时还在App全局提供摇一摇手势呼出日志窗口，你还可以在他们上面集成其它调试工具如[FLEX](https://github.com/Flipboard/FLEX)等, enjoy! :-)。
+WeChatAuthDemo在Debug模式下还在首页提供了一个可以修改CGI配置的调试页面，同时还在App全局提供摇一摇手势呼出日志窗口，你还可以在他们上面集成其它调试工具如[FLEX](https://github.com/Flipboard/FLEX)等, enjoy! **:-)**。
 
-![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/Index.jpg)
-
-![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/Debug.jpg)
-
-![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/Log.jpg)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/Index.jpg)|![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/Debug.jpg)
+-------|-------
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/Log.jpg)|
