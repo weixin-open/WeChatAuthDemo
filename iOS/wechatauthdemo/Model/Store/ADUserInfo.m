@@ -6,7 +6,7 @@
 //
 
 #import "ADUserInfo.h"
-
+#import "ADKeyChainWrap.h"
 
 NSString *const kADUserInfoOpenid = @"openid";
 NSString *const kADUserInfoUin = @"uin";
@@ -18,6 +18,8 @@ NSString *const kADUserInfoUnionid = @"unionid";
 NSString *const kADUserInfoAuthCode = @"auth_code";
 NSString *const kADUserInfoHeadimgurl = @"headimgurl";
 NSString *const kADUserInfoSex = @"sex";
+
+static NSString *const kSavedUserInfoKeyName = @"kSavedUserInfoKeyName";
 
 @interface ADUserInfo ()
 
@@ -87,18 +89,33 @@ NSString *const kADUserInfoSex = @"sex";
 }
 
 - (BOOL)save {
-    [[NSUserDefaults standardUserDefaults] setObject:@(self.uin)
-                                              forKey:kADUserInfoUin];
-    [[NSUserDefaults standardUserDefaults] setObject:self.loginTicket
-                                              forKey:kADUserInfoLoginTicket];
-    return [[NSUserDefaults standardUserDefaults] synchronize];
+    NSDictionary *savedUserInfo = @{
+                                    kADUserInfoUin: @(self.uin),
+                                    kADUserInfoLoginTicket: self.loginTicket
+                                    };
+    NSData *data = [NSJSONSerialization dataWithJSONObject:savedUserInfo
+                                                   options:NSJSONWritingPrettyPrinted
+                                                     error:nil];
+    return [ADKeyChainWrap setData:data
+                            ForKey:kSavedUserInfoKeyName];
 }
 
 - (BOOL)load {
+    NSData *data = [ADKeyChainWrap getDataForKey:kSavedUserInfoKeyName];
+    if (data == nil)
+        return NO;
+    NSError *error = nil;
+    NSDictionary *savedUserInfo = [NSJSONSerialization JSONObjectWithData:data
+                                                                  options:NSJSONReadingAllowFragments
+                                                                    error:&error];
+    if (error) {
+        NSLog(@"load local userinfo error %@", [error description]);
+        return  NO;
+    }
     self.uin = [[self objectOrNilForKey:kADUserInfoUin
-                        fromUserDefault:[NSUserDefaults standardUserDefaults]] intValue];
+                        fromDictionary:savedUserInfo] intValue];
     self.loginTicket = [self objectOrNilForKey:kADUserInfoLoginTicket
-                               fromUserDefault:[NSUserDefaults standardUserDefaults]];
+                                fromDictionary:savedUserInfo];
     return self.uin != 0 && self.loginTicket != nil;
 }
 
@@ -146,12 +163,6 @@ NSString *const kADUserInfoSex = @"sex";
     id object = [dict objectForKey:aKey];
     return [object isEqual:[NSNull null]] ? nil : object;
 }
-
-- (id)objectOrNilForKey:(id)aKey fromUserDefault:(NSUserDefaults *)dict {
-    id object = [dict objectForKey:aKey];
-    return [object isEqual:[NSNull null]] ? nil : object;
-}
-
 
 #pragma mark - NSCoding Methods
 
