@@ -6,8 +6,8 @@ error_reporting(0);
 date_default_timezone_set('Asia/Shanghai');
 
 // 应用的AppID及AppSecret，可在open.weixin.qq.com中找到，应与app客户端一致
-define('WX_APP_ID', 'wxbeafe42095e03edf');
-define('WX_APP_SECRET', '52bdd90af64b2f70f28bfe19532befb1');
+define('WX_APP_ID', 'XXXXXXXXXXXXXXXXXX');
+define('WX_APP_SECRET', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
 
 // SDK路径
 define('WX_AUTH_SDK_PATH', __DIR__ . '/../sdk/');
