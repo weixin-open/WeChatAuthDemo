@@ -17,7 +17,6 @@
         [LogTextViewController sharedLogTextView].presented = YES;
         [self.navigationController pushViewController:[LogTextViewController sharedLogTextView]
                                              animated:YES];
-        
     } else if (event.type == UIEventSubtypeMotionShake
                && [LogTextViewController sharedLogTextView].presented == YES) {
         [LogTextViewController sharedLogTextView].presented = NO;
