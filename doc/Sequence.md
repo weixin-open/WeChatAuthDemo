@@ -12,6 +12,7 @@
     *   [Refresh Token过期](#wow9)
     
 <h2 id="wow1">一、建立登录前安全信道</h2>
+
 <b>当App尚未登录服务器前，App与Server之间会经过一次握手建立登录前安全信道，时序图如下所示：</b>
 
 <!--title 建立登录前安全信道的时序
@@ -25,7 +26,7 @@ AppServer->AppClient: 4. ConnectResponse: psk作为密钥的\nAES加密(temp_uin
 note left of AppClient: 5. AppClient用psk作为密钥的\nAES解密保存temp_uin
 -->
 
-![](http://jeason.gitcafe.io/images/2015/09/02/connect.png)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/connect.png)
 
 <b>以下为详细说明:</b>
 
@@ -44,6 +45,7 @@ note left of AppClient: 5. AppClient用psk作为密钥的\nAES解密保存temp_u
 <h2 id="wow2">二、换取登录票据</h2>
 
 <h3 id="wow3"> 利用微信SSO换取登录票据</h3>
+
 <b>当用户点击“微信登录”按钮时，会触发利用微信SSO换取登录票据事件，此部分需在[登录前安全信道](#wow1)中进行，时序图如下所示：</b>
 
 <!--title 利用微信SSO换取登录票据
@@ -65,7 +67,7 @@ AppServer->AppClient: 7. WXLoginResponse: AES加密(loginTicket, Uin)
 note left of AppClient: 8. 用psk解密Uin，\nLoginTicket并保存。
 -->
 
-![](http://jeason.gitcafe.io/images/2015/09/02/wxLogin.png)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/wxLogin.png)
 
 <b>以下为详细说明: </b>
 
@@ -86,6 +88,7 @@ note left of AppClient: 8. 用psk解密Uin，\nLoginTicket并保存。
 8. AppClient收到并验证MAC一致后，解密Uin和LoginTicket并保存到本地。
 
 <h2 id="wow4">三、使用登录票据登录并建立正式安全信道</h2>
+
 <b>当AppClient获得正式Uin和LoginTicket时，会触发通过登录票据登录AppServer事件，此部分跟安全信道无关，时序图如下所示 ：</b>
 
 <!--title 通过登录票据登录AppServer
@@ -101,7 +104,7 @@ AppServer->AppClient: 4. CheckLoginResponse: temp_key\n作为密钥的AES加密(
 note left of AppClient: 5. 用temp_key解密SK，\nexpireTime并保存。
 -->
 
-![](http://jeason.gitcafe.io/images/2015/09/02/checkLogin.png)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/checkLogin.png)
 
 <b>以下为详细说明:</b>
 
@@ -118,6 +121,7 @@ note left of AppClient: 5. 用temp_key解密SK，\nexpireTime并保存。
 <b>至此，AppClient和AppServer之间的正式安全信道建立完成，直至expireTime之前，AppClient和AppServer都使用SK作为密钥加密报文，并在密文末尾加上HMac-SHA256的MAC，用Base64Encoding后带上Uin（明文）一并发送出去。 </b>
 
 <h2 id="wow5">四、获得用户信息</h2>
+
 <b>当AppClient获得SK和expireTime时，会触发获得用户信息事件，此部分需在[正式安全信道](#wow6)中进行，时序图如下所示 ：</b>
 
 <!--title 获得用户信息
@@ -136,7 +140,7 @@ AppServer->AppClient: 5. GetUserInfoResponse: SK\n作为密钥的AES加密(App�
 note left of AppClient: 6. 解密用户信息\n并保存显示。
 -->
 
-![](http://jeason.gitcafe.io/images/2015/09/02/getUserInfo.png)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/getUserInfo.png)
 
 <b>以下为详细说明:</b>
 
@@ -178,7 +182,7 @@ note left of AppClient: 8. 更新SK和有效期\n重发请求
 AppClient->AppServer: 9. GetUserInfoRequest或\nwxBindAppRequest或\nappBindWXRequest
 -->
 
-![](http://jeason.gitcafe.io/images/2015/09/02/SKExpired.png)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/SKExpired.png)
 
 <b>以下为详细说明：</b>
 
@@ -211,7 +215,7 @@ WXOpenServer->AppServer: 3. {New AccessToken ExpireTime}
 
 note left of AppServer: 4. 再次请求微信信息
 -->
-![](http://jeason.gitcafe.io/images/2015/09/02/accessTokenExpired.png)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/accessTokenExpired.png)
 
 <b>以下为详细说明：</b>
 
@@ -240,7 +244,7 @@ note over AppClient, AppServer: 4. 重新进行利用微信SSO\n换取登录票�
 note left of AppClient: 5. 重新登录AppServer\n并获取用户信息
 -->
 
-![](http://jeason.gitcafe.io/images/2015/09/02/refreshTokenExpired.png)
+![](https://raw.githubusercontent.com/weixin-open/WeChatAuthDemo/master/doc/image/refreshTokenExpired.png)
 
 <b>以下为详细说明：</b>
 
