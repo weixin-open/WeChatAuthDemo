@@ -2,7 +2,7 @@
 //  WXApiManager.m
 //  wechatauthdemo
 //
-//  Created by Chuang Chen on 6/25/15.
+//  Created by WeChat on 6/25/15.
 //  Copyright (c) 2015 Tencent. All rights reserved.
 //
 
