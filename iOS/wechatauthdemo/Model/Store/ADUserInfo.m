@@ -120,9 +120,7 @@ static NSString *const kSavedUserInfoKeyName = @"kSavedUserInfoKeyName";
 }
 
 - (void)clear {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kADUserInfoUin];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kADUserInfoLoginTicket];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [ADKeyChainWrap deleteDataForKey:kSavedUserInfoKeyName];
     self.openid = nil;
     self.mail = nil;
     self.pwdH1 = nil;
